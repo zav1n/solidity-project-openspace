@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.20;
 
-import {Test, console} from "forge-std/Test.sol";
+import "forge-std/Test.sol";
 import { Bank } from "../../src/Bank/Bank.sol";
 
 
 contract BankTest is Test {
     Bank public bank;
-
     function setUp() public {
         bank = new Bank();
     }
@@ -15,15 +14,22 @@ contract BankTest is Test {
     function test_depositETH() public {
         address user = address(this); // 当前测试用户
         uint256 depositAmount = 1 ether;
+        
+        vm.startPrank(user);
+        /**
+          Q: 如何理解expectEmit‘
+          Q: 为什么不能放在 bank.depositETH 后面
+          报错信息: [FAIL: expected an emit, but no logs were emitted afterwards. you might have mismatched events or not enough events were emitted]
+        */
 
-        // 设置期望的事件和对应参数
-        // vm.expectEmit(true, true, false, true); // 设置捕获事件的参数
-        // emit Deposit(user, depositAmount);      // 期望的事件数据
+        vm.expectEmit(true, true, false, true); // 设置捕获事件的参数
+        emit Bank.Deposit(user, depositAmount);      // 期望的事件数据
 
         // 调用 depositETH 函数
         bank.depositETH{value: depositAmount}();
 
-        console.log('balanceOf user', bank.balanceOf(user));
+        vm.stopPrank();
+        
         // 断言检查存款前后用户在 Bank 合约中的存款额更新是否正确。
         assertEq(bank.balanceOf(user), depositAmount);
     }
@@ -32,6 +38,9 @@ contract BankTest is Test {
 /**
 vm.deal
 vm.prank
+vm.startPrank
+vm.stopPrank
+vm.expectEmit
 
 
 

@@ -1,4 +1,7 @@
 {
+  // "solidity.remappings": [
+  //   "@openzeppelin/=project/contracts/lib/openzeppelin-contracts/"
+  // ],
   "solidity.packageDefaultDependenciesContractsDirectory": "src",
   "solidity.packageDefaultDependenciesDirectory": "lib"
 }
