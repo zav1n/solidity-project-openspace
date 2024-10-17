@@ -19,6 +19,7 @@ contract BankTest is Test {
         /**
           Q: 如何理解expectEmit‘
           Q: 为什么不能放在 bank.depositETH 后面
+          因为需要先埋点时间, 才能在出发事件的时候去执行埋点
           报错信息: [FAIL: expected an emit, but no logs were emitted afterwards. you might have mismatched events or not enough events were emitted]
         */
 

@@ -7,3 +7,4 @@ openzeppelin-contracts/=lib/openzeppelin-contracts/
 
 
 @std/=lib/forge-std/src/
+@src/=src/
