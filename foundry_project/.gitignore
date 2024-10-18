@@ -15,3 +15,5 @@ docs/
 
 # other
 .DS_Store
+
+node_modules
