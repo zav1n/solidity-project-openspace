@@ -164,26 +164,44 @@ contract NFTMarketTest is Test {
     
   }
 
-  // TODO 模糊测试：测试随机使用 0.01-10000 Token价格上架NFT，并随机使用任意Address购买NFT
-  // forge test --mt test_fuzz_listAndBuyNFT --mp ./test/NFTMarketTest/NFTMarket.t.sol -vvvvv
-  // function test_fuzz_listAndBuyNFT() public {
-  //     // 安全性问题: 随机数是时间戳(block.timestamp)生成, 
-  //     // 使用 chainlink vrf (https://docs.chain.link/vrf/v2-5/best-practices)
-  //     // 暂时先用不安全的吧  没时间搞了
+  // 测试模糊转账
+  // forge test --mt test_fuzz_transfer --mp ./test/NFTMarketTest/NFTMarket.t.sol -vvvvv
+  /**
+		forge-config:default.fuzz.runs=256
+	*/
+  function test_fuzz_transfer(address alice,uint256[] memory amounts) public {
+      // uint256 randomPrice = uint256(keccak256(abi.encodePacked(block.timestamp))) % 10000 + 1;
+      // 安全性问题: 随机数是时间戳(block.timestamp)生成, 
+      // 使用 chainlink vrf (https://docs.chain.link/vrf/v2-5/best-practices)
+      // 暂时先用不安全的吧  没时间搞了
+      vm.assume(alice != address(0));
+      vm.assume(amounts.length > 0);
+      address[] memory recipients = new address[](amounts.length);
 
-  //     uint256 randomPrice = uint256(keccak256(abi.encodePacked(block.timestamp))) % 10000 + 1;
-  //     uint256 tokenId = nft721.mint(suzefeng, "tokenURI");
-  //     vm.prank(suzefeng);
-  //     market.list(tokenId, randomPrice);
+      uint256 total = 0;
+      
+      for(uint256 i = 0; i < recipients.length; i++) {
+          recipients[i] = address(uint160(i + 1));
+          vm.assume(amounts[i] < 1e18);
+          total += amounts[i];
+      }
+      deal(address(token), alice, total);
 
-  //     // address randomBuyer = makeAddr("randomBuyer");
-  //     // vm.prank(randomBuyer);
-  //     // token.approve(address(market), randomPrice);
-  //     // vm.prank(randomBuyer);
-  //     // market.buyNFT(tokenId);
+      vm.startPrank(alice);
+        for(uint256 i = 0; i < recipients.length; i++) {
+          bool success = token.transfer(recipients[i], amounts[i]);
+          
+          assertTrue(success, "Transfer failed");
 
-  //     // assertEq(nft721.ownerOf(tokenId), randomBuyer, "NFT should be transferred to randomBuyer");
-  //   }
+        }
+
+        for (uint256 i = 0; i < recipients.length; i++) {
+            assertEq(token.balanceOf(recipients[i]), amounts[i]);
+        }
+      vm.stopPrank();
+
+      
+    }
 
     // TODO 「可选」不可变测试：测试无论如何买卖，NFTMarket合约中都不可能有 Token 持仓
 }
