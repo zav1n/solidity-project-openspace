@@ -203,6 +203,33 @@ contract NFTMarketTest is Test {
       
     }
 
-    // TODO 模糊测试：测试随机使用 0.01-10000 Token价格上架NFT，并随机使用任意Address购买NFT
-    // TODO 「可选」不可变测试：测试无论如何买卖，NFTMarket合约中都不可能有 Token 持仓
+    // 模糊测试：测试随机使用 0.01-10000 Token价格上架NFT，并随机使用任意Address购买NFT
+    // forge test --mt test_fuzz_buyNft --mp ./test/NFTMarketTest/NFTMarket.t.sol -vvvvv
+    function test_fuzz_buyNft(address radmonBuyer, uint256 upAmount) public {
+      vm.assume(upAmount > 0.01 ether && upAmount < 10000 ether);
+      vm.assume(radmonBuyer != address(0));
+
+      address alice = makeAddr("alice");
+      uint256 chargeAmount = 10000000 ether;
+
+      token.transfer(alice, chargeAmount);
+      token.transfer(radmonBuyer, chargeAmount);
+
+      vm.startPrank(alice);
+        uint256 tokenId = nft721.mint(alice, "tokenURI");
+        nft721.approve(address(market), tokenId);
+        market.list(tokenId, upAmount);
+      vm.stopPrank();
+
+      vm.startPrank(radmonBuyer);
+        token.approve(address(market), chargeAmount);
+        market.buyNFT(radmonBuyer, tokenId);
+      vm.stopPrank();
+
+      // 不可变测试：测试无论如何买卖，NFTMarket合约中都不可能有 Token 持仓
+      assertEq(token.balanceOf(address(nft721)), 0, "NFT Market should't have any token ");
+    }
+
+
+
 }
