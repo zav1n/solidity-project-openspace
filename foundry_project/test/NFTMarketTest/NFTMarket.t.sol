@@ -203,5 +203,6 @@ contract NFTMarketTest is Test {
       
     }
 
+    // TODO 模糊测试：测试随机使用 0.01-10000 Token价格上架NFT，并随机使用任意Address购买NFT
     // TODO 「可选」不可变测试：测试无论如何买卖，NFTMarket合约中都不可能有 Token 持仓
 }
