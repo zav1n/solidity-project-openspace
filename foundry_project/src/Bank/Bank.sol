@@ -30,6 +30,11 @@ contract Bank {
         _;
     }
 
+    function setAdmin(address addr) public onlyAdmin {
+        require(addr != address(0), "address can not be 0");
+        admin = addr;
+    }
+
     function deposit() external payable {
         require(msg.value > 0, "amount must be more than 0");
         balances[msg.sender] += msg.value;
