@@ -14,10 +14,10 @@ import "../src/MyToken.sol";
  */
 
 
-contract DeployMyToken is Script {
+contract DeploySZFToken is Script {
     function run() external {
-        string memory name = "MyToken";
-        string memory symbol = "MTK";
+        string memory name = "suzefeng";
+        string memory symbol = "SZF";
         // 如果createSelectFork这个没有设置,则命令需要配置 --rpc-url
         vm.createSelectFork("sepolia");
         vm.startBroadcast();

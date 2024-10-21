@@ -41,8 +41,12 @@ contract Bank {
         top_three(msg.sender);
     }
 
-    function getContractBalance() external view returns(uint256) {
+    function getContractBalance() public view returns(uint256) {
         return address(this).balance;
+    }
+
+    function getBalance(address addr) external view returns(uint256) {
+        return balances[addr];
     }
 
     function withdraw() external payable onlyAdmin {
