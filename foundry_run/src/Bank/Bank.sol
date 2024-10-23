@@ -32,6 +32,19 @@ contract Bank is IBank {
         payable(admin).transfer(balance);
         emit Withdraw(msg.sender, balance);
     }
+    
+    function setAdmin(address addr) public onlyAdmin {
+        require(addr != address(0), "address can not be 0");
+        admin = addr;
+    }
+
+    function getContractBalance() public view returns(uint256) {
+        return address(this).balance;
+    }
+
+    function balanceOf(address addr) external view returns(uint256) {
+        return balances[addr];
+    }
 
     // 记录充值前3名
     function depositTopThree(address depositor) internal {

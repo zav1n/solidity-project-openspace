@@ -2,19 +2,19 @@
 pragma solidity ^0.8.20;
 
 import "forge-std/Test.sol";
-import { DecertERC721 } from "@src/NFTMarket/Decert721.sol";
-import { BaseERC20 } from "@src/NFTMarket/BaseERC20.sol";
+import { DecertERC721 } from "@src/DecertERC721.sol";
+import { DecertERC20 } from "@src/DecertERC20.sol";
 import { NFTMarket } from "@src/NFTMarket/NFTMarketV2.sol";
 
 contract NFTMarketTest is Test {
-    BaseERC20 public token;
+    DecertERC20 public token;
     DecertERC721 public nft721;
     NFTMarket public market;
 
     address suzefeng;
 
     function setUp() public {
-        token = new BaseERC20("USD", "USDT");
+        token = new DecertERC20("USD", "USDT");
         nft721 = new DecertERC721("SeafoodMarket", "SFM");
         market = new NFTMarket(address(token), address(nft721));
         suzefeng = makeAddr("suzefeng");

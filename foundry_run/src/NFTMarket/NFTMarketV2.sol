@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 // import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import { BaseERC20 } from "./BaseERC20.sol";
+import { DecertERC20 } from "@src/DecertERC20.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 
@@ -13,7 +13,7 @@ contract NFTMarket is IERC721Receiver {
     using Address for address;
 
     // ERC20 token contract (our custom extended token)
-    BaseERC20 public paymentToken;
+    DecertERC20 public paymentToken;
 
     // NFT contract
     IERC721 public nftContract;
@@ -35,7 +35,7 @@ contract NFTMarket is IERC721Receiver {
 
     // Constructor: initialize the ERC20 token and NFT contract
     constructor(address _paymentToken, address _nftContract) {
-        paymentToken = BaseERC20(_paymentToken);
+        paymentToken = DecertERC20(_paymentToken);
         nftContract = IERC721(_nftContract);
     }
 
