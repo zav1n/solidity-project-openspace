@@ -5,7 +5,7 @@ interface ITokenReceiver {
     function tokensReceived(address from, uint256 amount) external;
 }
 
-contract BaseERC20 {
+contract DecertERC20 {
     string public name; 
     string public symbol; 
     uint8 public decimals; 
