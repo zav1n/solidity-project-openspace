@@ -2,6 +2,8 @@
 sudo remixd -s /Users/zaven/code/management_foundry/foundry_run/src --remix-ide https://remix.ethereum.org
 Tip: you must be remixd to run cmd
 
+remixd: https://remix-ide.readthedocs.io/zh-cn/latest/remixd.html#remixd-installation
+
 ## Foundry
 
 **Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**

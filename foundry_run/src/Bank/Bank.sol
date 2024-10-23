@@ -1,78 +1,83 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.21;
+pragma solidity ^0.8.20;
 
-// 编写一个 Bank 合约，实现功能：
-// 可以通过 Metamask 等钱包直接给 Bank 合约地址存款
-// 在 Bank 合约记录每个地址的存款金额
-// 编写 withdraw() 方法，仅管理员可以通过该方法提取资金。
-// 用数组记录存款金额的前 3 名用户
-// 请提交完成项目代码或 github 仓库地址。
+import "./IBank.sol";
 
-contract Bank {
-    address public admin; // 管理员地址
-    uint public minIndex;
+contract Bank is IBank {
+    address public admin;
+    mapping(address => uint256) public balances;
+    address[] public topList;
+
     constructor() {
         admin = msg.sender;
     }
 
-    mapping(address => uint) public balances;
-    // mapping(address => account) public accounts;
-
-    struct Accounts {
-        address addr;
-        uint balance;
-    }
-
-    Accounts[] public top_three_list;
-
     modifier onlyAdmin {
-        require(msg.sender == admin, "only admin can be operate");
+        require(admin == msg.sender, "only admin operate");
         _;
     }
 
-    function setAdmin(address addr) public onlyAdmin {
-        require(addr != address(0), "address can not be 0");
-        admin = addr;
-    }
-
-    function deposit() external payable {
-        require(msg.value > 0, "amount must be more than 0");
+    // 存款
+    function deposit() public payable virtual {
+        require(msg.value > 0, "amount can't zero");
         balances[msg.sender] += msg.value;
-        top_three(msg.sender);
+        emit Deposit(msg.sender, msg.value);
+        depositTopThree(msg.sender);
     }
 
-    function getContractBalance() public view returns(uint256) {
-        return address(this).balance;
+    // 提款
+    function withdraw() external override onlyAdmin {
+        uint balance = address(this).balance;
+        require(balance > 0, "contract balance is zero");
+        payable(admin).transfer(balance);
+        emit Withdraw(msg.sender, balance);
     }
 
-    function getBalance(address addr) external view returns(uint256) {
-        return balances[addr];
-    }
+    // 记录充值前3名
+    function depositTopThree(address depositor) internal {
+        bool exists = false;
+        for(uint256 i = 0; i < topList.length; i++) {
+            if(topList[i] == depositor) {
+                exists = true;
+                break;
+            }
+        }
 
-    function withdraw() external payable onlyAdmin {
-        uint allBalance = address(this).balance;
-        payable(admin).transfer(allBalance);
-    }
+        if(!exists) {
+            topList.push(depositor);
+        }
 
-    function top_three(address sender) internal {
-        uint256 senderInContractAmount = balances[sender];
-
-        if(top_three_list.length < 3) {
-            top_three_list.push(Accounts({addr: sender, balance: senderInContractAmount}));
-        } else {
-            for(uint i = 0; i < top_three_list.length; i++) {
-                if(top_three_list[i].balance < top_three_list[minIndex].balance) {
-                    minIndex = i;
+        for (uint256 i = 0; i < topList.length; i++) {
+            for (uint256 j = i + 1; j < topList.length; j++) {
+                if (balances[topList[i]] < balances[topList[j]]) {
+                    address temp = topList[i];
+                    topList[i] = topList[j];
+                    topList[j] = temp;
                 }
             }
+        }
 
-            if(senderInContractAmount > top_three_list[minIndex].balance) {
-                top_three_list[minIndex] = Accounts({addr: sender, balance: senderInContractAmount});
-            }
+        if(topList.length > 3) {
+            topList.pop();
         }
     }
 
-    function getTopThree() external view returns(Accounts[] memory) {
-        return top_three_list;
+    // 获取地址余额
+    function getBalance(address addr) external view override returns(uint256) {
+        return balances[addr];
+    }
+
+    // 获取前3位的地址和余额
+    function getTop() external view override returns(Account[] memory) {
+        Account[] memory accounts = new Account[](3);
+        for (uint256 i = 0; i < topList.length; i++) {
+            accounts[i] = Account({addr: topList[i], balance: balances[topList[i]]});
+        }
+        return accounts;
+    }
+
+    // 即使不调用deposit, 也可以直接给合约转帐
+    receive() external payable { 
+        this.deposit();
     }
 }
