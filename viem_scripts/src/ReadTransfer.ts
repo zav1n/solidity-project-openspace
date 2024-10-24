@@ -1,31 +1,33 @@
-import { createPublicClient, http, parseAbiItem, formatUnits } from "viem";
+import { createPublicClient, http, formatUnits } from "viem";
 import { mainnet } from "viem/chains";
+import { parseAbiItem } from "viem";
 
-// USDC 合约地址
-const USDC_CONTRACT_ADDRESS = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
+const rpc = process.env.ETH_RPC_URL;
 
-// Transfer 事件的 ABI 格式
-const TRANSFER_EVENT_ABI = parseAbiItem(
-  "event Transfer(address indexed from, address indexed to, uint256 value)"
-);
+export const publicClient = createPublicClient({
+  chain: mainnet,
+  transport: http("https://rpc.flashbots.net")
+});
+
 
 async function main() {
-  const client = createPublicClient({
-    chain: mainnet,
-    transport: http("https://rpc.flashbots.net")
+  const filter = await publicClient.createEventFilter({
+    address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+    event: parseAbiItem(
+      "event Transfer(address indexed from, address indexed to, uint256 value)"
+    ),
+    fromBlock: BigInt(await publicClient.getBlockNumber()) - BigInt(100),
+    toBlock: "latest",
+    // args: {
+    //   from: "0x099bc3af8a85015d1A39d80c42d10c023F5162F0",
+    //   to: "0xA4D65Fd5017bB20904603f0a174BBBD04F81757c"
+    // }
   });
 
-  const latestBlock = await client.getBlockNumber();
-  const startBlock = BigInt(latestBlock) - BigInt(100);
 
-  const filter = await client.createEventFilter({
-    address: USDC_CONTRACT_ADDRESS,
-    event: TRANSFER_EVENT_ABI,
-    fromBlock: startBlock,
-    toBlock: "latest"
-  });
+  // console.log("filter", filter);
 
-  const logs = await client.getFilterLogs({ filter });
+  const logs = await publicClient.getFilterLogs({ filter });
 
   for (const log of logs) {
     const { from, to, value } = log.args || {};
@@ -38,6 +40,8 @@ async function main() {
       console.log("日志解析错误：", log);
     }
   }
+
+  // console.log('logs', logs);
 }
 
 main().catch(console.error);
