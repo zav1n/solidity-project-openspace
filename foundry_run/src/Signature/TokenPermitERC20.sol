@@ -4,7 +4,7 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 
-contract TokenPremit is ERC20Permit, Ownable {
+contract TokenPermit is ERC20Permit, Ownable {
     constructor(
       string memory tokenName,
       string memory tokenSymbol,
@@ -21,6 +21,7 @@ contract TokenPremit is ERC20Permit, Ownable {
         return keccak256("Permit(address owner,address spender,uint256 value,uint256 nonce,uint256 deadline)");
     }
 
+    // 等同于 token.DOMAIN_SEPARATOR();  ERC20Permit提供的DOMAIN_SEPARATOR方法
     function getDomainSeparator() public view returns (bytes32) {
         return _domainSeparatorV4();
     }

@@ -6,10 +6,10 @@ contract DecertERC721 is ERC721URIStorage {
 uint256 private _tokenIds;
 constructor(string memory name, string memory token) ERC721(name,token) {}
 
-    function mint(address student, string memory tokenURI) public returns (uint256) {
+    function mint(address mintor, string memory tokenURI) public returns (uint256) {
         _tokenIds++;
 
-        _mint(student, _tokenIds);
+        _mint(mintor, _tokenIds);
         _setTokenURI(_tokenIds, tokenURI);
 
         return _tokenIds;

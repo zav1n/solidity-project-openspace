@@ -3,11 +3,11 @@ pragma solidity ^0.8.20;
 
 import "forge-std/Test.sol";
 import { TokenBank } from "../../src/Signature/TokenBank.sol";
-import { TokenPremit } from "@src/Signature/TokenPremitERC20.sol";
+import { TokenPermit } from "@src/Signature/TokenPermitERC20.sol";
 
 contract TokenBankTest is Test {
     TokenBank public bank;
-    TokenPremit public token;
+    TokenPermit public token;
     address public owner;
     uint256 private ownerPrivateKey;
 
@@ -15,7 +15,7 @@ contract TokenBankTest is Test {
       ownerPrivateKey = uint256(keccak256(abi.encodePacked("owner")));
       owner = vm.addr(ownerPrivateKey);
 
-      token = new TokenPremit("test", "TTT", 100000 * 10 ** 18);
+      token = new TokenPermit("test", "TTT", 100000 * 10 ** 18);
 
       bank = new TokenBank();
 
@@ -43,22 +43,27 @@ contract TokenBankTest is Test {
       uint256 nonce = token.nonces(owner);
       uint256 deadline = block.timestamp + 1 days;
 
-      bytes32 permitHash = keccak256(
-        abi.encodePacked(
-          "\x19\x01",
-          token.getDomainSeparator(),
-          keccak256(abi.encode(
+
+      // 我们所说的EIP2612标准 满足keccak256(abi.encodePacked("lx19lx01", domainSeparator, hashstruct)
+      // domainSeparator = keccak256("Permit(address owner,address spender,uint256 value,uint256 nonce,uint256 deadline)");
+      bytes32 domainSeparator = token.getDomainSeparator();
+      bytes32 hashStruct = keccak256(abi.encode(
             token.getPermitTypehash(),
             owner,
             address(bank),
             amount,
             nonce,
             deadline
-          ))
-        )
-      );
+          ));
+      
+      // 再拿私钥和hash获取v，r，s
+      bytes32 permitHash = keccak256(abi.encodePacked("\x19\x01", domainSeparator, hashStruct));
 
       (uint8 v, bytes32 r, bytes32 s) = vm.sign(ownerPrivateKey, permitHash);
+
+      address signer = ecrecover(permitHash, v, r, s);
+
+      assertEq(owner, signer);
 
       vm.prank(owner);
       bank.permitDeposit(token, owner, amount, deadline, v, r, s);
