@@ -4,13 +4,15 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "./TokenPermitERC20.sol";
 
+import "@src/Signature/IMarket.sol";
+
+
 contract NFTMarketplace is IERC721Receiver {
     TokenPermit public paymentToken;
     ERC721 public nft721;
 
-    address public owner;
     mapping(address => bool) public whitelist;
-    bytes32 private immutable _domainSeparator;
+    bytes32 public _domainSeparator;
     uint256 private _tokenIds;
 
     struct Listing {
@@ -27,16 +29,17 @@ contract NFTMarketplace is IERC721Receiver {
     // Event for purchase
     event Purchased(address indexed buyer, uint256 indexed tokenId, uint256 price);
 
-    constructor(address _tokenAddress,address _nft721, string memory name, string memory version) {
+    constructor(address _tokenAddress,address _nft721, string memory name) {
         nft721 = ERC721(_nft721);
         paymentToken = TokenPermit(_tokenAddress);
-        owner = msg.sender;
 
         _domainSeparator = keccak256(
             abi.encode(
-                keccak256("EIP712Domain(string name,string version)"),
+                keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"),
                 keccak256(bytes(name)),
-                keccak256(bytes(version))
+                keccak256(bytes("1")),
+                block.chainid,
+                address(this)
             )
         );
     }
@@ -59,24 +62,24 @@ contract NFTMarketplace is IERC721Receiver {
     }
 
     // Buy the NFT by transferring the required token amount
-    function buyNFT(uint256 tokenId) external {
+    function buyNFT(address buyer,uint256 tokenId) public {
         Listing memory listing = listings[tokenId];
         require(listing.price > 0, "NFT is not listed");
-        require(msg.sender != listing.seller, "don't buy youself nft");
-        require(paymentToken.balanceOf(msg.sender) > listing.price, "not enought amount");
+        require(buyer != listing.seller, "don't buy youself nft");
+        require(paymentToken.balanceOf(buyer) > listing.price, "not enought amount");
         
         // Transfer the required payment tokens from the buyer to the seller
         // paymentToken.transferWithCallback(msg.sender, listing.price);
-        paymentToken.transferFrom(msg.sender, listing.seller, listing.price);
+        paymentToken.transferFrom(buyer, listing.seller, listing.price);
         
 
         // Transfer the NFT to the buyer
-        nft721.safeTransferFrom(address(this), msg.sender, tokenId);
+        nft721.safeTransferFrom(address(this), buyer, tokenId);
 
         // Remove the listing
         delete listings[tokenId];
 
-        emit Purchased(msg.sender, tokenId, listing.price);
+        emit Purchased(buyer, tokenId, listing.price);
     }
 
     // Handle receiving tokens, this function is triggered by ERC20 transfer
@@ -116,27 +119,42 @@ contract NFTMarketplace is IERC721Receiver {
         return IERC721Receiver.onERC721Received.selector;
     }
 
-    // Adding user to the whitelist with the owner's signature
-    function permitBuy(
-        address buyer,
-        uint256 tokenId,
-        uint256 amount,
-        uint256 deadline,
+    function permitBuy(uint nftTokenId, IMarket.WhiteList memory whiteList, uint8 v, bytes32 r, bytes32 s) public {
+        //verify
+        require(verify(whiteList,v,r,s),"invalid white list");
+        //check in list
+        for(uint i = 0; i<whiteList.whiteList.length;i++){
+            if(whiteList.whiteList[0] == msg.sender){
+                //allow to buyNFT
+                buyNFT(msg.sender, nftTokenId);
+                return;
+            }
+        }
+        revert("you are not in white list");
+    }
+
+    function verify(
+        IMarket.WhiteList memory whiteList,
         uint8 v,
         bytes32 r,
         bytes32 s
-    ) public {
-        require(owner == ecrecover(keccak256(abi.encodePacked(buyer, tokenId, amount, deadline)), v, r, s), "Not whitelisted");
-
-        require(paymentToken.transferFrom(buyer, owner, amount), "Payment failed");
+    ) internal view returns (bool) {
+        // Note: we need to use `encodePacked` here instead of `encode`.
+        bytes32 digest = keccak256(
+            abi.encodePacked("\x19\x01", _domainSeparator, hashStruct(whiteList))
+        );
+        //ensure whiteList came from tokenAddress' project launcher
+        return ecrecover(digest, v, r, s) == address(this); // TODO
     }
 
-    function addToWhitelist(address user) external {
-        whitelist[user] = true; // 这里可以加入更复杂的逻辑，例如权限控制
-    }
-
-    function DOMAIN_SEPARATOR() public view returns (bytes32) {
-        return _domainSeparator;
+    function hashStruct(IMarket.WhiteList memory whiteList) internal pure returns (bytes32) {
+        return
+            keccak256(
+            abi.encode(
+                keccak256("WhiteList(address[] whiteList)"),
+                whiteList.whiteList
+            )
+        );
     }
 
 }
