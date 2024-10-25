@@ -1,24 +1,19 @@
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
-
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
-import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
-import "./TokenPermitERC20.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "../TokenPermitERC20.sol";
+
+import "./IMarket.sol";
 
 
-
-contract NFTMarketplace is IERC721Receiver, EIP712 {
-    using ECDSA for bytes32;
-
+contract NFTMarketplace is IERC721Receiver {
     TokenPermit public paymentToken;
     ERC721 public nft721;
 
     mapping(address => bool) public whitelist;
-    // bytes32 private immutable _domainSeparator;
-    bytes32 private immutable PERMIT_TYPEHASH;
-    mapping(address => uint256) public nonces;
+    bytes32 public _domainSeparator;
+    uint256 private _tokenIds;
 
     struct Listing {
         uint256 price;      // Price in ERC20 tokens
@@ -34,25 +29,18 @@ contract NFTMarketplace is IERC721Receiver, EIP712 {
     // Event for purchase
     event Purchased(address indexed buyer, uint256 indexed tokenId, uint256 price);
 
-    constructor(
-        address _tokenAddress,
-        address _nft721, 
-        string memory name
-    ) EIP712 (name, "1") {
+    constructor(address _tokenAddress,address _nft721, string memory name) {
         nft721 = ERC721(_nft721);
         paymentToken = TokenPermit(_tokenAddress);
-        
-        // _domainSeparator = keccak256(
-        //     abi.encode(
-        //         keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"),
-        //         keccak256(bytes(name)),
-        //         keccak256(bytes("1")),
-        //         block.chainid,
-        //         address(this)
-        //     )
-        // );
-        PERMIT_TYPEHASH = keccak256(
-            abi.encodePacked("Permit(address buyer,address market,uint256 tokenId,uint256 deadline)")
+
+        _domainSeparator = keccak256(
+            abi.encode(
+                keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"),
+                keccak256(bytes(name)),
+                keccak256(bytes("1")),
+                block.chainid,
+                address(this)
+            )
         );
     }
 
@@ -131,81 +119,42 @@ contract NFTMarketplace is IERC721Receiver, EIP712 {
         return IERC721Receiver.onERC721Received.selector;
     }
 
-    function permitBuy(
-        address buyer,
-        uint256 tokenId,
-        uint256 nonce,
-        uint256 deadline,
-        uint8 v, 
-        bytes32 r, 
-        bytes32 s, 
-        bytes32 signatureWL
-    ) public {
-        // 检查当前时间是否超过了 deadline
-        require(block.timestamp <= deadline, "Signature expired");
+    function permitBuy(uint nftTokenId, IMarket.WhiteList memory whiteList, uint8 v, bytes32 r, bytes32 s) public {
+        //verify
+        require(verify(whiteList,v,r,s),"invalid white list");
+        //check in list
+        for(uint i = 0; i<whiteList.whiteList.length;i++){
+            if(whiteList.whiteList[0] == msg.sender){
+                //allow to buyNFT
+                buyNFT(msg.sender, nftTokenId);
+                return;
+            }
+        }
+        revert("you are not in white list");
+    }
 
-        // 校验当前 nonce
-        uint256 currentNonce = nonces[buyer];
-
-        // 验证白名单
-        bool isValid = verifySignature(
-            buyer,
-            currentNonce,
-            v,
-            r,
-            s,
-            signatureWL
+    function verify(
+        IMarket.WhiteList memory whiteList,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) internal view returns (bool) {
+        // Note: we need to use `encodePacked` here instead of `encode`.
+        bytes32 digest = keccak256(
+            abi.encodePacked("\x19\x01", _domainSeparator, hashStruct(whiteList))
         );
-        require(isValid, "you'r not have whitelist");
-        // 增加用户的 nonce
-        nonces[buyer]++;
-
-        buyNFT(buyer, tokenId);
+        //ensure whiteList came from tokenAddress' project launcher
+        return ecrecover(digest, v, r, s) == address(this); // TODO
     }
 
-    // 合约验证白名单
-    function verifySignature(
-        address buyer,
-        uint256 nonce,
-        uint8 v, 
-        bytes32 r, 
-        bytes32 s, 
-        bytes32 signatureWL
-    ) internal returns (bool) {
-        // address signer = ecrecover(signatureWL, v, r, s);
-        address signer = ECDSA.recover(signatureWL, v, r, s);
-        return buyer == signer;
-    }
-
-
-    function getPermitTypeHash(
-        address buyer,
-        address market,
-        uint256 tokenId,
-        uint256 nonce,
-        uint256 deadline
-    ) public view returns (bytes32) {
-        bytes32 structHash = keccak256(
+    function hashStruct(IMarket.WhiteList memory whiteList) internal pure returns (bytes32) {
+        return
+            keccak256(
             abi.encode(
-                PERMIT_TYPEHASH,
-                buyer,
-                market,
-                tokenId,
-                nonce,
-                deadline
+                keccak256("WhiteList(address[] whiteList)"),
+                whiteList.whiteList
             )
         );
-
-        // origin EIP712 
-        return _hashTypedDataV4(structHash);
-
-        // address signer = ECDSA.recover(hash, v, r, s);
-        // if (signer != owner) {
-        //     revert ERC2612InvalidSigner(signer, owner);
-        // }
     }
 
-    function getDomain() public view returns (bytes32) {
-        return _domainSeparatorV4();
-    }
 }

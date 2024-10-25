@@ -1,0 +1,100 @@
+aven@zaven-Mac foundry_run % forge test test/Signature/TokenBank.t.sol -vvvvvv
+[⠊] Compiling...
+[⠊] Compiling 2 files with Solc 0.8.25
+[⠢] Solc 0.8.25 finished in 2.03s
+
+Ran 2 tests for test/Signature/TokenBank.t.sol:TokenBankTest
+[PASS] testDeposit() (gas: 80879)
+Traces:
+  [1563854] TokenBankTest::setUp()
+    ├─ [0] VM::addr(<pk>) [staticcall]
+    │   └─ ← [Return] 0x7c8999dC9a822c1f0Df42023113EDB4FDd543266
+    ├─ [981091] → new TokenPermit@0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: TokenBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: TokenBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 100000000000000000000000 [1e23])
+    │   └─ ← [Return] 4313 bytes of code
+    ├─ [415472] → new TokenBank@0x2e234DAe75C793f67A35089C9d99245E1C58470b
+    │   └─ ← [Return] 1854 bytes of code
+    ├─ [222] TokenPermit::decimals() [staticcall]
+    │   └─ ← [Return] 18
+    ├─ [25142] TokenPermit::mint(0x7c8999dC9a822c1f0Df42023113EDB4FDd543266, 1000000000000000000000 [1e21])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: 0x7c8999dC9a822c1f0Df42023113EDB4FDd543266, value: 1000000000000000000000 [1e21])
+    │   └─ ← [Stop] 
+    └─ ← [Stop] 
+
+  [100779] TokenBankTest::testDeposit()
+    ├─ [222] TokenPermit::decimals() [staticcall]
+    │   └─ ← [Return] 18
+    ├─ [0] VM::prank(0x7c8999dC9a822c1f0Df42023113EDB4FDd543266)
+    │   └─ ← [Return] 
+    ├─ [24762] TokenPermit::approve(TokenBank: [0x2e234DAe75C793f67A35089C9d99245E1C58470b], 100000000000000000000 [1e20])
+    │   ├─ emit Approval(owner: 0x7c8999dC9a822c1f0Df42023113EDB4FDd543266, spender: TokenBank: [0x2e234DAe75C793f67A35089C9d99245E1C58470b], value: 100000000000000000000 [1e20])
+    │   └─ ← [Return] true
+    ├─ [0] VM::prank(0x7c8999dC9a822c1f0Df42023113EDB4FDd543266)
+    │   └─ ← [Return] 
+    ├─ [55337] TokenBank::deposit(TokenPermit: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f], 100000000000000000000 [1e20])
+    │   ├─ [30885] TokenPermit::transferFrom(0x7c8999dC9a822c1f0Df42023113EDB4FDd543266, TokenBank: [0x2e234DAe75C793f67A35089C9d99245E1C58470b], 100000000000000000000 [1e20])
+    │   │   ├─ emit Transfer(from: 0x7c8999dC9a822c1f0Df42023113EDB4FDd543266, to: TokenBank: [0x2e234DAe75C793f67A35089C9d99245E1C58470b], value: 100000000000000000000 [1e20])
+    │   │   └─ ← [Return] true
+    │   ├─ emit Deposit(: 0x7c8999dC9a822c1f0Df42023113EDB4FDd543266, : 100000000000000000000 [1e20])
+    │   └─ ← [Stop] 
+    ├─ [651] TokenPermit::balanceOf(TokenBank: [0x2e234DAe75C793f67A35089C9d99245E1C58470b]) [staticcall]
+    │   └─ ← [Return] 100000000000000000000 [1e20]
+    ├─ [0] VM::assertEq(100000000000000000000 [1e20], 100000000000000000000 [1e20]) [staticcall]
+    │   └─ ← [Return] 
+    ├─ [766] TokenBank::getBalance(TokenPermit: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f], 0x7c8999dC9a822c1f0Df42023113EDB4FDd543266) [staticcall]
+    │   └─ ← [Return] 100000000000000000000 [1e20]
+    ├─ [0] VM::assertEq(100000000000000000000 [1e20], 100000000000000000000 [1e20]) [staticcall]
+    │   └─ ← [Return] 
+    └─ ← [Stop] 
+
+[PASS] test_permitDeposit() (gas: 112748)
+Traces:
+  [1563854] TokenBankTest::setUp()
+    ├─ [0] VM::addr(<pk>) [staticcall]
+    │   └─ ← [Return] 0x7c8999dC9a822c1f0Df42023113EDB4FDd543266
+    ├─ [981091] → new TokenPermit@0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: TokenBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: TokenBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 100000000000000000000000 [1e23])
+    │   └─ ← [Return] 4313 bytes of code
+    ├─ [415472] → new TokenBank@0x2e234DAe75C793f67A35089C9d99245E1C58470b
+    │   └─ ← [Return] 1854 bytes of code
+    ├─ [222] TokenPermit::decimals() [staticcall]
+    │   └─ ← [Return] 18
+    ├─ [25142] TokenPermit::mint(0x7c8999dC9a822c1f0Df42023113EDB4FDd543266, 1000000000000000000000 [1e21])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: 0x7c8999dC9a822c1f0Df42023113EDB4FDd543266, value: 1000000000000000000000 [1e21])
+    │   └─ ← [Stop] 
+    └─ ← [Stop] 
+
+  [132648] TokenBankTest::test_permitDeposit()
+    ├─ [2616] TokenPermit::nonces(0x7c8999dC9a822c1f0Df42023113EDB4FDd543266) [staticcall]
+    │   └─ ← [Return] 0
+    ├─ [407] TokenPermit::getDomainSeparator() [staticcall]
+    │   └─ ← [Return] 0xadebf0db77466971a96bb3d6b4774b93dfc9e1f25adba3dab07e57a98a5b0ad4
+    ├─ [215] TokenPermit::getPermitTypehash() [staticcall]
+    │   └─ ← [Return] 0x6e71edae12b1b97f4d1f60370fef10105fa2faae0126114a169c64845d6126c9
+    ├─ [0] VM::sign("<pk>", 0x947b42e885e6f3d7118964a323237387a67f270a313177bb361f1c1ad31e37f9) [staticcall]
+    │   └─ ← [Return] 27, 0x98c1505e6713687a8df72ac9507472aa2a79d1fc2ceba992ff38b41320e69066, 0x1b0804ea97fc19343cddf15b22f8b2840de418f758f68a01ef6facb8dd8d6d61
+    ├─ [3000] PRECOMPILES::ecrecover(0x947b42e885e6f3d7118964a323237387a67f270a313177bb361f1c1ad31e37f9, 27, 69093109152956599244970648704862043656275348628560541453846311840632896131174, 12226615619885190166637501899042430087788856504443801936753435939366543125857) [staticcall]
+    │   └─ ← [Return] 0x0000000000000000000000007c8999dc9a822c1f0df42023113edb4fdd543266
+    ├─ [0] VM::assertEq(0x7c8999dC9a822c1f0Df42023113EDB4FDd543266, 0x7c8999dC9a822c1f0Df42023113EDB4FDd543266) [staticcall]
+    │   └─ ← [Return] 
+    ├─ [0] VM::prank(0x7c8999dC9a822c1f0Df42023113EDB4FDd543266)
+    │   └─ ← [Return] 
+    ├─ [105566] TokenBank::permitDeposit(TokenPermit: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f], 0x7c8999dC9a822c1f0Df42023113EDB4FDd543266, 100000000000000000000 [1e20], 86401 [8.64e4], 27, 0x98c1505e6713687a8df72ac9507472aa2a79d1fc2ceba992ff38b41320e69066, 0x1b0804ea97fc19343cddf15b22f8b2840de418f758f68a01ef6facb8dd8d6d61)
+    │   ├─ [49462] TokenPermit::permit(0x7c8999dC9a822c1f0Df42023113EDB4FDd543266, TokenBank: [0x2e234DAe75C793f67A35089C9d99245E1C58470b], 100000000000000000000 [1e20], 86401 [8.64e4], 27, 0x98c1505e6713687a8df72ac9507472aa2a79d1fc2ceba992ff38b41320e69066, 0x1b0804ea97fc19343cddf15b22f8b2840de418f758f68a01ef6facb8dd8d6d61)
+    │   │   ├─ [3000] PRECOMPILES::ecrecover(0x947b42e885e6f3d7118964a323237387a67f270a313177bb361f1c1ad31e37f9, 27, 69093109152956599244970648704862043656275348628560541453846311840632896131174, 12226615619885190166637501899042430087788856504443801936753435939366543125857) [staticcall]
+    │   │   │   └─ ← [Return] 0x0000000000000000000000007c8999dc9a822c1f0df42023113edb4fdd543266
+    │   │   ├─ emit Approval(owner: 0x7c8999dC9a822c1f0Df42023113EDB4FDd543266, spender: TokenBank: [0x2e234DAe75C793f67A35089C9d99245E1C58470b], value: 100000000000000000000 [1e20])
+    │   │   └─ ← [Stop] 
+    │   ├─ [30885] TokenPermit::transferFrom(0x7c8999dC9a822c1f0Df42023113EDB4FDd543266, TokenBank: [0x2e234DAe75C793f67A35089C9d99245E1C58470b], 100000000000000000000 [1e20])
+    │   │   ├─ emit Transfer(from: 0x7c8999dC9a822c1f0Df42023113EDB4FDd543266, to: TokenBank: [0x2e234DAe75C793f67A35089C9d99245E1C58470b], value: 100000000000000000000 [1e20])
+    │   │   └─ ← [Return] true
+    │   ├─ emit Deposit(: 0x7c8999dC9a822c1f0Df42023113EDB4FDd543266, : 100000000000000000000 [1e20])
+    │   └─ ← [Stop] 
+    └─ ← [Stop] 
+
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 7.54ms (3.13ms CPU time)
+
+Ran 1 test suite in 1.42s (7.54ms CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)
+zaven@zaven-Mac foundry_run % 
