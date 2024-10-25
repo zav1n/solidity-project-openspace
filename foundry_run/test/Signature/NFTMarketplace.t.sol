@@ -47,24 +47,29 @@ contract TokenBankNFTMarketTest is Test {
 
     }
     
-    function test_PermitBuy() public {
-        uint256 tokenId = nft721.mint(alice, "abcd");
+    function test_mintAndListing() public returns(uint256 tokenId){
+        uint256 id = nft721.mint(alice, "ipfs://abcdefghijklnmopqrstuvwxyz0123456789");
         
+        uint256 listingPrice = 1000 ether;
         vm.startPrank(alice);
-            nft721.approve(address(nftMarket), tokenId);
-            nftMarket.list(tokenId, 1000 ether);
-            (uint256 price, address seller) = nftMarket.listings(tokenId);
+            nft721.approve(address(nftMarket), id);
+            nftMarket.list(id, listingPrice);
+            (uint256 price, address seller) = nftMarket.listings(id);
+            assertEq(listingPrice, price);
+            assertEq(alice, seller);
         vm.stopPrank();
-
-
         
+        return id;
+    }
+    function test_PermitBuy() public {
+        // if don't that to get tokenId, you will be to see a disgusting "Stack too deep" error
+        uint256 tokenId = test_mintAndListing();
 
         uint256 buyerPrivateKey = uint256(keccak256(abi.encodePacked("buyer")));
         address buyer = vm.addr(buyerPrivateKey);
 
         token.transfer(buyer, 99999 ether);
 
-        // uint256 tokenId = 1;
         uint256 nonce = nftMarket.nonces(buyer);
         uint256 deadline = block.timestamp + 1 days;
         

@@ -146,11 +146,11 @@ contract NFTMarketplace is IERC721Receiver, EIP712 {
 
         // 校验当前 nonce
         uint256 currentNonce = nonces[buyer];
+        require(currentNonce == nonce, "Invalid nonce");
 
         // 验证白名单
         bool isValid = verifySignature(
             buyer,
-            currentNonce,
             v,
             r,
             s,
@@ -166,12 +166,11 @@ contract NFTMarketplace is IERC721Receiver, EIP712 {
     // 合约验证白名单
     function verifySignature(
         address buyer,
-        uint256 nonce,
         uint8 v, 
         bytes32 r, 
         bytes32 s, 
         bytes32 signatureWL
-    ) internal returns (bool) {
+    ) internal pure returns (bool) {
         // address signer = ecrecover(signatureWL, v, r, s);
         address signer = ECDSA.recover(signatureWL, v, r, s);
         return buyer == signer;
@@ -198,11 +197,7 @@ contract NFTMarketplace is IERC721Receiver, EIP712 {
 
         // origin EIP712 
         return _hashTypedDataV4(structHash);
-
-        // address signer = ECDSA.recover(hash, v, r, s);
-        // if (signer != owner) {
-        //     revert ERC2612InvalidSigner(signer, owner);
-        // }
+        
     }
 
     function getDomain() public view returns (bytes32) {
