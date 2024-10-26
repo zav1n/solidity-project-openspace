@@ -70,21 +70,18 @@ contract TokenBankNFTMarketTest is Test {
         // if don't that to get tokenId, you will be to see a disgusting "Stack too deep" error
         uint256 tokenId = test_mintAndListing();
 
-        // uint256 buyerPrivateKey = uint256(keccak256(abi.encodePacked("buyer")));
-        // address buyer = vm.addr(buyerPrivateKey);
-
         vm.prank(deployer);
         token.transfer(alice, 99999 ether);
 
         uint256 nonce = nftMarket.nonces(alice);
         uint256 deadline = block.timestamp + 1 days;
         
-        // alice 去项目方要签名, 然后项目方去执行签名
+        // project party sign alice
         vm.prank(deployer);
         (uint8 v, bytes32 r, bytes32 s) = projectSignWhiteList(alice, tokenId, nonce, deadline);
 
 
-        // 购买者调用permitBuy
+        // alice(buyer) buy NFT
         vm.startPrank(alice);
             token.approve(address(nftMarket), 99999 ether);
             nftMarket.permitBuy(
@@ -98,21 +95,22 @@ contract TokenBankNFTMarketTest is Test {
         vm.stopPrank();
     }
 
-    // 项目方签名
+    // the project party sign the buyer on the whitelist
     function projectSignWhiteList(
         address buyer,
         uint256 tokenId, 
         uint256 nonce, 
         uint256 deadline
     ) public view returns (uint8 v, bytes32 r, bytes32 s){
-        // 模拟白名单放在中性化服务去做判断和签
+
+        // Simulate the signing and judgment of neutral services by the project team
         bool isWhite = false;
         for(uint i = 0; i < whiteList.length; i++){
             if(whiteList[i] == buyer) {
                 isWhite = true;
             }
         }
-        require(isWhite, "whiteList not your");
+        require(isWhite, "Not on the whitelist");
         
         bytes32 doamin = nftMarket.getDomain();
         bytes32 structHash = nftMarket.getPermitTypeHash(

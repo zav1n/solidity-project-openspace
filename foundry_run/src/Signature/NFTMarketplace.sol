@@ -141,24 +141,24 @@ contract NFTMarketplace is IERC721Receiver, EIP712 {
         bytes32 r, 
         bytes32 s
     ) public {
-        // 检查当前时间是否超过了 deadline
+        // Checke exceeeded deadline
         require(block.timestamp <= deadline, "Signature expired");
 
-        // 校验当前 nonce
+        // Checke valid nonce
         uint256 currentNonce = nonces[msg.sender];
         require(currentNonce == nonce, "Invalid nonce");
 
-        // 验证白名单
+        // valid whitelist
         bool isValid = verifySignature( tokenId,nonce,deadline,v, r, s );
         require(isValid, "you'r not have whitelist");
         
-        // 增加用户的 nonce
+        // increase buyer nonce, Prevent reuse
         nonces[msg.sender]++;
 
         buyNFT(msg.sender, tokenId);
     }
 
-    // 合约验证白名单
+    // valid whitelist
     function verifySignature(
         uint256 tokenId,
         uint256 nonce,
