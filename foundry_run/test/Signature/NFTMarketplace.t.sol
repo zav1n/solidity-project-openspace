@@ -10,16 +10,20 @@ contract TokenBankNFTMarketTest is Test {
     TokenPermit token;
     NFTMarketplace nftMarket;
     DecertERC721 nft721;
-    address owner;
+    address deployer;
     uint256 private ownerPrivateKey;
     address alice = address(0x5B38Da6a701c568545dCfcB03FcB875f56beddC4);
+    address[] private whiteList = [alice];
 
     function setUp() public {
         ownerPrivateKey = uint256(keccak256(abi.encodePacked("owner")));
+        deployer = vm.addr(ownerPrivateKey);
 
-        token = new TokenPermit("test", "TTT", (10 ** 10) * 10 ** 18);
-        nft721 = new DecertERC721("SeafoodMarket", "SFM");
-        nftMarket = new NFTMarketplace(address(token), address(nft721), "testNFT");
+        vm.startPrank(deployer);
+            token = new TokenPermit("test", "TTT", (10 ** 10) * 10 ** 18);
+            nft721 = new DecertERC721("SeafoodMarket", "SFM");
+            nftMarket = new NFTMarketplace(address(token), address(nft721), "testNFT");
+        vm.stopPrank();
 
 
     }
@@ -48,15 +52,16 @@ contract TokenBankNFTMarketTest is Test {
     }
     
     function test_mintAndListing() public returns(uint256 tokenId){
-        uint256 id = nft721.mint(alice, "ipfs://abcdefghijklnmopqrstuvwxyz0123456789");
+        address bob = makeAddr("bob");
+        uint256 id = nft721.mint(bob, "ipfs://abcdefghijklnmopqrstuvwxyz0123456789");
         
         uint256 listingPrice = 1000 ether;
-        vm.startPrank(alice);
+        vm.startPrank(bob);
             nft721.approve(address(nftMarket), id);
             nftMarket.list(id, listingPrice);
             (uint256 price, address seller) = nftMarket.listings(id);
             assertEq(listingPrice, price);
-            assertEq(alice, seller);
+            assertEq(bob, seller);
         vm.stopPrank();
         
         return id;
@@ -65,16 +70,50 @@ contract TokenBankNFTMarketTest is Test {
         // if don't that to get tokenId, you will be to see a disgusting "Stack too deep" error
         uint256 tokenId = test_mintAndListing();
 
-        uint256 buyerPrivateKey = uint256(keccak256(abi.encodePacked("buyer")));
-        address buyer = vm.addr(buyerPrivateKey);
+        // uint256 buyerPrivateKey = uint256(keccak256(abi.encodePacked("buyer")));
+        // address buyer = vm.addr(buyerPrivateKey);
 
-        token.transfer(buyer, 99999 ether);
+        vm.prank(deployer);
+        token.transfer(alice, 99999 ether);
 
-        uint256 nonce = nftMarket.nonces(buyer);
+        uint256 nonce = nftMarket.nonces(alice);
         uint256 deadline = block.timestamp + 1 days;
         
+        // alice 去项目方要签名, 然后项目方去执行签名
+        vm.prank(deployer);
+        (uint8 v, bytes32 r, bytes32 s) = projectSignWhiteList(alice, tokenId, nonce, deadline);
 
-        // 项目方签名
+
+        // 购买者调用permitBuy
+        vm.startPrank(alice);
+            token.approve(address(nftMarket), 99999 ether);
+            nftMarket.permitBuy(
+                tokenId,
+                nonce,
+                deadline,
+                v,
+                r,
+                s
+            );
+        vm.stopPrank();
+    }
+
+    // 项目方签名
+    function projectSignWhiteList(
+        address buyer,
+        uint256 tokenId, 
+        uint256 nonce, 
+        uint256 deadline
+    ) public view returns (uint8 v, bytes32 r, bytes32 s){
+        // 模拟白名单放在中性化服务去做判断和签
+        bool isWhite = false;
+        for(uint i = 0; i < whiteList.length; i++){
+            if(whiteList[i] == buyer) {
+                isWhite = true;
+            }
+        }
+        require(isWhite, "whiteList not your");
+        
         bytes32 doamin = nftMarket.getDomain();
         bytes32 structHash = nftMarket.getPermitTypeHash(
             buyer,
@@ -83,25 +122,8 @@ contract TokenBankNFTMarketTest is Test {
             nonce,
             deadline
         );
-
         bytes32 signatureWL = keccak256(abi.encodePacked("\x19\x01", doamin, structHash));
-
-        // 用户签名
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(buyerPrivateKey, signatureWL);
-
-        // 
-        vm.startPrank(buyer);
-            token.approve(address(nftMarket), 99999 ether);
-            nftMarket.permitBuy(
-                buyer,
-                tokenId,
-                nonce,
-                deadline,
-                v,
-                r,
-                s,
-                signatureWL
-            );
-        vm.stopPrank();
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(ownerPrivateKey, signatureWL);
+        return(v, r, s);
     }
 }

@@ -16,7 +16,7 @@ contract TokenBankNFTMarketTest is Test {
     address owner;
     uint256 private ownerPrivateKey;
     address alice = address(0x5B38Da6a701c568545dCfcB03FcB875f56beddC4);
-    address [] public _whiteList = [alice];
+    address[] public _whiteList = [alice];
 
     function setUp() public {
         ownerPrivateKey = uint256(keccak256(abi.encodePacked("owner")));

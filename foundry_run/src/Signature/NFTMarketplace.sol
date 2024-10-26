@@ -14,6 +14,7 @@ contract NFTMarketplace is IERC721Receiver, EIP712 {
 
     TokenPermit public paymentToken;
     ERC721 public nft721;
+    address owner;
 
     mapping(address => bool) public whitelist;
     // bytes32 private immutable _domainSeparator;
@@ -41,6 +42,7 @@ contract NFTMarketplace is IERC721Receiver, EIP712 {
     ) EIP712 (name, "1") {
         nft721 = ERC721(_nft721);
         paymentToken = TokenPermit(_tokenAddress);
+        owner = msg.sender;
         
         // _domainSeparator = keccak256(
         //     abi.encode(
@@ -132,48 +134,50 @@ contract NFTMarketplace is IERC721Receiver, EIP712 {
     }
 
     function permitBuy(
-        address buyer,
         uint256 tokenId,
         uint256 nonce,
         uint256 deadline,
         uint8 v, 
         bytes32 r, 
-        bytes32 s, 
-        bytes32 signatureWL
+        bytes32 s
     ) public {
         // 检查当前时间是否超过了 deadline
         require(block.timestamp <= deadline, "Signature expired");
 
         // 校验当前 nonce
-        uint256 currentNonce = nonces[buyer];
+        uint256 currentNonce = nonces[msg.sender];
         require(currentNonce == nonce, "Invalid nonce");
 
         // 验证白名单
-        bool isValid = verifySignature(
-            buyer,
-            v,
-            r,
-            s,
-            signatureWL
-        );
+        bool isValid = verifySignature( tokenId,nonce,deadline,v, r, s );
         require(isValid, "you'r not have whitelist");
+        
         // 增加用户的 nonce
-        nonces[buyer]++;
+        nonces[msg.sender]++;
 
-        buyNFT(buyer, tokenId);
+        buyNFT(msg.sender, tokenId);
     }
 
     // 合约验证白名单
     function verifySignature(
-        address buyer,
-        uint8 v, 
-        bytes32 r, 
-        bytes32 s, 
-        bytes32 signatureWL
-    ) internal pure returns (bool) {
-        // address signer = ecrecover(signatureWL, v, r, s);
-        address signer = ECDSA.recover(signatureWL, v, r, s);
-        return buyer == signer;
+        uint256 tokenId,
+        uint256 nonce,
+        uint256 deadline,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) internal view returns (bool) {
+        bytes32 structHash = getPermitTypeHash(
+            msg.sender,
+            address(this),
+            tokenId,
+            nonce,
+            deadline
+        );
+        bytes32 sign = keccak256(abi.encodePacked("\x19\x01", getDomain(), structHash));
+        address signer = ECDSA.recover(sign, v, r, s);
+        require(signer == owner, "Invalid signature");
+        return owner == signer;
     }
 
 
