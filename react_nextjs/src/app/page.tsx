@@ -6,21 +6,32 @@ import {
   useAppKit,
   useWalletInfo,
 } from "@reown/appkit/react";
-import { useDisconnect } from "wagmi";
-import { useSignMessage } from "wagmi";
+import { useDisconnect, useSignMessage } from "wagmi";
+import { useNFTMarket } from "@/src/hooks/useMarket";
+import { addWhiteList } from "@/axios/api/marketApi";
 
 export default function Home() {
-  const { address, caipAddress, status } = useAppKitAccount();
+  const { address: currentAddress, caipAddress, status } = useAppKitAccount();
   const { open } = useAppKit();
   const { disconnect } = useDisconnect();
   const { walletInfo } = useWalletInfo();
   const { signMessage } = useSignMessage();
+  const { permitBuyNFT } = useNFTMarket();
 
   const infos = [
-    { label: "address", value: address },
+    { label: "address", value: currentAddress },
     { label: "caipAddress", value: caipAddress },
-    { label: "status", value: status },
+    { label: "status", value: status }
   ];
+
+  const buyNft = (tokenId: number) => {
+    if (currentAddress) {
+      permitBuyNFT(currentAddress, tokenId);
+    } else {
+      console.error("currentAddress is undefined");
+    }
+  }
+  
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -72,6 +83,25 @@ export default function Home() {
         >
           Sign message ( you will be sign message is hello world )
         </button>
+        <div style={{ display: "flex" }}>
+          <button
+            onClick={async () => 
+              {
+                const data = await addWhiteList(currentAddress);
+                alert(data.message);
+              }
+            }
+            className={styles.btn}
+          >
+            add current address to whiteList
+          </button>
+        </div>
+        <div style={{ display: "flex" }}>
+          <button onClick={() => buyNft(1)} className={styles.btn}>
+            buyNft
+          </button>
+          <input type="text" style={{ marginLeft: "6px" }} />
+        </div>
       </main>
       <footer className={styles.footer}>
         <a
