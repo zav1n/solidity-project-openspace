@@ -1,11 +1,13 @@
-## uee remixd cmd
+## Setp 1: install solmate/openzeppelin lib
+- forge install transmissions11/solmate Openzeppelin/openzeppelin-contracts
+
+
+## You can use remixd cmd
 use local file to run remix in the web
 - sudo remixd -s /Users/zaven/code/management_foundry/foundry_run/src --remix-ide https://remix.ethereum.org
 >>> Tip: you must be remixd to run cmd
 >>> see: remixd: https://remix-ide.readthedocs.io/zh-cn/latest/remixd.html#remixd-installation
 
-## install solmate/openzeppelin lib
-- forge install transmissions11/solmate Openzeppelin/openzeppelin-contracts
 
 
 
