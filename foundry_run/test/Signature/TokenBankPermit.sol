@@ -2,7 +2,7 @@
 pragma solidity ^0.8.20;
 
 import "forge-std/Test.sol";
-import { TokenBank } from "../../src/Signature/TokenBank.sol";
+import { TokenBank } from "../../src/Signature/TokenBankPermit.sol";
 import { TokenPermit } from "@src/Signature/TokenPermitERC20.sol";
 
 contract TokenBankTest is Test {

@@ -1,9 +1,9 @@
-aven@zaven-Mac foundry_run % forge test test/Signature/TokenBank.t.sol -vvvvvv
+aven@zaven-Mac foundry_run % forge test test/Signature/TokenBankPermit.t.sol -vvvvvv
 [⠊] Compiling...
 [⠊] Compiling 2 files with Solc 0.8.25
 [⠢] Solc 0.8.25 finished in 2.03s
 
-Ran 2 tests for test/Signature/TokenBank.t.sol:TokenBankTest
+Ran 2 tests for test/Signature/TokenBankPermit.t.sol:TokenBankTest
 [PASS] testDeposit() (gas: 80879)
 Traces:
   [1563854] TokenBankTest::setUp()

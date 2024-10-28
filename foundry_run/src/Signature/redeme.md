@@ -1,6 +1,6 @@
 ## foundry test file
 test NFTMarketplace.sol: test/Signature/NFTMarketplace.t.sol
-test TokenBank.sol: test/Signature/TokenBank.t.sol
+test TokenBank.sol: test/Signature/TokenBankPermit.t.sol
 
 EIP 712 和 EIP2612 的区别是什么
 EIP-712 和 EIP-2612 是两个不同的以太坊提案（EIP），它们有不同的目的，但可以协同工作。让我们分别解释它们的定义和区别。
