@@ -1,0 +1,41 @@
+Submitting verification for [src/Signature/TokenPermitERC20.sol:TokenPermit] 0x53Af50a4C99eeF3C49A0284659A8EFad736CB87d.
+Submitted contract for verification:
+        Response: `OK`
+        GUID: `isptqqwfliri3wktzv9c6hthpvcgfglkjtymkqrhzw8ufi63qy`
+        URL: https://sepolia.etherscan.io/address/0x53af50a4c99eef3c49a0284659a8efad736cb87d
+Contract verification status:
+Response: `NOTOK`
+Details: `Pending in queue`
+Contract verification status:
+Response: `OK`
+Details: `Pass - Verified`
+Contract successfully verified
+Start verifying contract `0xe05Af581c07a7C46F33d2d18802B2BF74d5B2A48` deployed on sepolia
+
+Submitting verification for [src/DecertERC721.sol:DecertERC721] 0xe05Af581c07a7C46F33d2d18802B2BF74d5B2A48.
+Submitted contract for verification:
+        Response: `OK`
+        GUID: `vxxhrmdwukr1ux5wytvua2tykjxapi67ttbicyhngztn8ntnrz`
+        URL: https://sepolia.etherscan.io/address/0xe05af581c07a7c46f33d2d18802b2bf74d5b2a48
+Contract verification status:
+Response: `NOTOK`
+Details: `Pending in queue`
+Contract verification status:
+Response: `OK`
+Details: `Pass - Verified`
+Contract successfully verified
+Start verifying contract `0x1BCC2A2f646b17360622097DCB8635F9EF4D5699` deployed on sepolia
+
+Submitting verification for [src/Signature/NFTMarketplace.sol:NFTMarketplace] 0x1BCC2A2f646b17360622097DCB8635F9EF4D5699.
+Submitted contract for verification:
+        Response: `OK`
+        GUID: `mc73au4zy7pdzbejysmmtrczcaz6rxra9pxw1qthfd1ayessip`
+        URL: https://sepolia.etherscan.io/address/0x1bcc2a2f646b17360622097dcb8635f9ef4d5699
+Contract verification status:
+Response: `NOTOK`
+Details: `Pending in queue`
+Contract verification status:
+Response: `OK`
+Details: `Pass - Verified`
+Contract successfully verified
+All (3) contracts were verified!
