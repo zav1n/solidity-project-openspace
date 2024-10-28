@@ -1,5 +1,5 @@
 ## Setp 1: install solmate/openzeppelin lib
-- forge install foundry-rs/forge-std transmissions11/solmate Openzeppelin/openzeppelin-contracts
+- forge install foundry-rs/forge-std Openzeppelin/openzeppelin-contracts
 
 
 ## You can use remixd cmd

@@ -5,6 +5,8 @@ forge-std/=lib/forge-std/src/
 halmos-cheatcodes/=lib/openzeppelin-contracts/lib/halmos-cheatcodes/src/
 openzeppelin-contracts/=lib/openzeppelin-contracts/
 
+permit2/=lib/permit2
+solmate/=lib/solmate
 
 @std/=lib/forge-std/src/
 @src/=src/

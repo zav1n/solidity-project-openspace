@@ -2,14 +2,17 @@
 pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
+import {IPermit2, IAllowanceTransfer, ISignatureTransfer } from "permit2/src/interfaces/IPermit2.sol";
 
 contract TokenBank {
     address public tokenBankAddr;
     address public admin;
+    IPermit2 public immutable permit2;
 
-    constructor() {
+    constructor(address _permit2) {
         tokenBankAddr = address(this);
         admin = msg.sender;
+        permit2 = IPermit2(_permit2);
     }
 
 
@@ -57,6 +60,50 @@ contract TokenBank {
         balances[_token][_from] += value;
         
         emit Deposit(_from, value);
+    }
+
+    // function depositWithPermit2(IERC20 token, uint160 amount) external {
+    //     // 使用 permit2 进行签名授权转账来进行存款
+    //     permit2.transferFrom(msg.sender, address(this), amount, address(token));
+    //     // require(token.transferFrom(msg.sender, address(this), amount), "Transfer failed");
+    //     balances[IERC20(token)][msg.sender] += amount;
+    // }
+
+    // function depositWithPermit2(
+    //     PermitTransferFrom memory permit,
+    //     SignatureTransferDetails calldata transferDetails,
+    //     address owner,
+    //     bytes calldata signature
+    // ) public {
+    //     permit2.permitTransferFrom();
+    // }
+
+    function depositWithPermit2(
+        IERC20 token,
+        uint256 amount,
+        uint256 nonce,
+        uint256 deadline,
+        bytes calldata signature
+    ) public {
+        balances[IERC20(token)][msg.sender] += amount;
+
+        permit2.permitTransferFrom(
+            ISignatureTransfer.PermitTransferFrom({
+                permitted: ISignatureTransfer.TokenPermissions({
+                    token: address(token),
+                    amount: amount
+                }),
+                nonce: nonce,
+                deadline: deadline
+            }),
+            // The transfer recipient and amount.
+            ISignatureTransfer.SignatureTransferDetails({
+                to: address(this),
+                requestedAmount: amount
+            }),
+            msg.sender,
+            signature
+        );
     }
 
 }

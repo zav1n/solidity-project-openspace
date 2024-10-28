@@ -1,0 +1,60 @@
+[⠊] Compiling...
+No files changed, compilation skipped
+Script ran successfully.
+
+== Return ==
+permit2: contract Permit2 0xa56f03C8B459a479Aea272CB7C1B454Fc3827BFb
+
+== Logs ==
+  Permit2 Deployed: 0xa56f03C8B459a479Aea272CB7C1B454Fc3827BFb
+
+## Setting up 1 EVM.
+
+==========================
+
+Chain 11155111
+
+Estimated gas price: 3.348654029 gwei
+
+Estimated total gas used for script: 2797229
+
+Estimated amount required: 0.009366952160885641 ETH
+
+==========================
+
+##### sepolia
+✅  [Success]Hash: 0x0486a230b14077f9d466871f57eb7ef433c1d36414f431114b7743b0e1339b6a
+Block: 6962282
+Paid: 0.00328121044892879 ETH (2025730 gas * 1.619766923 gwei)
+
+✅ Sequence #1 on sepolia | Total Paid: 0.00328121044892879 ETH (2025730 gas * avg 1.619766923 gwei)
+                                                                                
+
+==========================
+
+ONCHAIN EXECUTION COMPLETE & SUCCESSFUL.
+##
+Start verification for (1) contracts
+Start verifying contract `0xa56f03C8B459a479Aea272CB7C1B454Fc3827BFb` deployed on sepolia
+
+Submitting verification for [src/Permit2.sol:Permit2] 0xa56f03C8B459a479Aea272CB7C1B454Fc3827BFb.
+
+Submitting verification for [src/Permit2.sol:Permit2] 0xa56f03C8B459a479Aea272CB7C1B454Fc3827BFb.
+
+Submitting verification for [src/Permit2.sol:Permit2] 0xa56f03C8B459a479Aea272CB7C1B454Fc3827BFb.
+
+Submitting verification for [src/Permit2.sol:Permit2] 0xa56f03C8B459a479Aea272CB7C1B454Fc3827BFb.
+
+Submitting verification for [src/Permit2.sol:Permit2] 0xa56f03C8B459a479Aea272CB7C1B454Fc3827BFb.
+Submitted contract for verification:
+	Response: `OK`
+	GUID: `zlzrue494ntpwncwac8wxkqchdiin4tfz4yxn5yyirbhctr2yg`
+	URL: https://sepolia.etherscan.io/address/0xa56f03c8b459a479aea272cb7c1b454fc3827bfb
+Contract verification status:
+Response: `NOTOK`
+Details: `Pending in queue`
+Contract verification status:
+Response: `OK`
+Details: `Pass - Verified`
+Contract successfully verified
+All (1) contracts were verified!
