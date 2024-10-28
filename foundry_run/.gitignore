@@ -4,6 +4,7 @@ out/
 
 #remixd compile files
 artifacts/
+artifacts
 
 # Ignores development broadcast logs
 !/broadcast
