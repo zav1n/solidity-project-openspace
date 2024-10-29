@@ -1,6 +1,8 @@
 import { createPublicClient, http, formatUnits } from "viem";
 import { mainnet } from "viem/chains";
 import { parseAbiItem } from "viem";
+import { watchBlockNumber } from "viem/_types/actions/public/watchBlockNumber";
+import usdtAbi from "./usdtAbi";
 
 const rpc = process.env.ETH_RPC_URL;
 
@@ -10,7 +12,7 @@ export const publicClient = createPublicClient({
 });
 
 
-async function main() {
+async function getTransfer() {
   const filter = await publicClient.createEventFilter({
     address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
     event: parseAbiItem(
@@ -41,7 +43,43 @@ async function main() {
     }
   }
 
-  // console.log('logs', logs);
 }
 
-main().catch(console.error);
+// 监听区块高度
+const watchBlock = async () => {
+  const unwatch = publicClient.watchBlockNumber({
+    onBlockNumber: async (blockNumber) => {
+      const { hash } = await publicClient.getTransaction({
+        blockNumber: BigInt(blockNumber),
+        index: 0 // 这里假设 index 为 0，你可以根据实际情况调整
+      });
+      console.warn("transaction", `${blockNumber} ${hash}`);
+    }
+  });
+  console.warn("unwatch", unwatch);
+}
+
+// 监听交易
+const getLatestTransfer = async () => {
+  const unwatch = publicClient.watchContractEvent({
+    address: "0xdac17f958d2ee523a2206206994597c13d831ec7",
+    abi: usdtAbi,
+    eventName: "Transfer",
+    onLogs: (logs) => {
+      logs.forEach((log) => {
+        const { blockNumber, blockHash } = log;
+        const { from, to, value } = (log as any).args || {}; ;
+        console.log(
+          `在 ${blockNumber} 区块 ${blockHash}，${from} 转帐 ${value} ${to} `
+        );
+      });
+    }
+  });
+}
+
+// getTransfer().catch(console.error);
+
+
+// watchBlock();
+
+getLatestTransfer();

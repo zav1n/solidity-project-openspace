@@ -1,4 +1,4 @@
-export const erc721Abi = [
+export default [
   { inputs: [], stateMutability: "nonpayable", type: "constructor" },
   {
     inputs: [{ internalType: "address", name: "owner", type: "address" }],
@@ -418,3 +418,4 @@ export const erc721Abi = [
     type: "function"
   }
 ];
+

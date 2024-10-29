@@ -7,7 +7,7 @@ import {
 import { sepolia } from "viem/chains";
 import { privateKeyToAccount } from "viem/accounts";
 import dotenv from "dotenv";
-import { erc721Abi } from "./abi";
+import { erc721Abi } from "./erc721Abi";
 
 dotenv.config();
 
