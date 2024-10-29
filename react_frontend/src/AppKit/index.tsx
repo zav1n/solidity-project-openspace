@@ -9,6 +9,7 @@ import {
   SolflareWalletAdapter,
   PhantomWalletAdapter
 } from "@solana/wallet-adapter-wallets";
+import anvilNetwork from "./anvilNetwork";
 
 
 const queryClient = new QueryClient();
@@ -25,7 +26,11 @@ const metadata = {
 };
 
 // 3. Set the networks
-const networks: [AppKitNetwork, ...AppKitNetwork[]] = [sepolia, mainnet];
+const networks: [AppKitNetwork, ...AppKitNetwork[]] = [
+  anvilNetwork,
+  sepolia,
+  mainnet
+];
 
 const solanaWeb3JsAdapter = new SolanaAdapter({
   wallets: [new PhantomWalletAdapter(), new SolflareWalletAdapter()]

@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import AppRoutes from "../router/index";
 import AppKitProvider from "./AppKit/index";
 import HeaderWallet from "./pages/HeaderWallet";
-import "./App.css";
 
 const App = () => {
   return (
@@ -25,7 +24,7 @@ const App = () => {
             </li>
           </ul>
         </div>
-        <div style={{ width: "100%" }}>
+        <div style={{ width: "100%", paddingLeft: "10px" }}>
           <HeaderWallet />
           <div>
             <AppRoutes />

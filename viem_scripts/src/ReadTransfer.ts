@@ -1,7 +1,6 @@
 import { createPublicClient, http, formatUnits } from "viem";
 import { mainnet } from "viem/chains";
 import { parseAbiItem } from "viem";
-import { watchBlockNumber } from "viem/_types/actions/public/watchBlockNumber";
 import usdtAbi from "./usdtAbi";
 
 const rpc = process.env.ETH_RPC_URL;
@@ -83,3 +82,16 @@ const getLatestTransfer = async () => {
 // watchBlock();
 
 getLatestTransfer();
+
+// (function decodeAbi (type = "function") {
+//   let functions: Record<string, unknown> = {};
+//   usdtAbi.forEach(item => {
+//     if (item.type === type) {
+//       console.log(item);
+//       if (item.name) {
+//         functions[item.name] = function;
+//       }
+
+//     }
+//   })
+// })();
