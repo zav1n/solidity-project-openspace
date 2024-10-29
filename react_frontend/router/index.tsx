@@ -1,13 +1,13 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import Home from "../src/pages/page1";
-import About from "../src/pages/page";
+import DemoPage from "../src/pages/DemoPage";
+import Page from "../src/pages/Page";
 
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/about" element={<About />} />
+      <Route path="/" element={<Page />} />
+      <Route path="/demoPage" element={<DemoPage />} />
     </Routes>
   );
 };
