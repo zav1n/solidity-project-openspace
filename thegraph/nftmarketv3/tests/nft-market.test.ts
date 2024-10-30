@@ -6,20 +6,20 @@ import {
   beforeAll,
   afterAll
 } from "matchstick-as/assembly/index"
-import { Bytes, Address, BigInt } from "@graphprotocol/graph-ts"
-import { Cancel } from "../generated/schema"
-import { Cancel as CancelEvent } from "../generated/NFTMarketV2/NFTMarketV2"
-import { handleCancel } from "../src/nft-market-v-2"
-import { createCancelEvent } from "./nft-market-v-2-utils"
+import { Address } from "@graphprotocol/graph-ts"
+import { NFTCreated } from "../generated/schema"
+import { NFTCreated as NFTCreatedEvent } from "../generated/NFTMarket/NFTMarket"
+import { handleNFTCreated } from "../src/nft-market"
+import { createNFTCreatedEvent } from "./nft-market-utils"
 
 // Tests structure (matchstick-as >=0.5.0)
 // https://thegraph.com/docs/en/developer/matchstick/#tests-structure-0-5-0
 
 describe("Describe entity assertions", () => {
   beforeAll(() => {
-    let orderId = Bytes.fromI32(1234567890)
-    let newCancelEvent = createCancelEvent(orderId)
-    handleCancel(newCancelEvent)
+    let nftCA = Address.fromString("0x0000000000000000000000000000000000000001")
+    let newNFTCreatedEvent = createNFTCreatedEvent(nftCA)
+    handleNFTCreated(newNFTCreatedEvent)
   })
 
   afterAll(() => {
@@ -29,15 +29,15 @@ describe("Describe entity assertions", () => {
   // For more test scenarios, see:
   // https://thegraph.com/docs/en/developer/matchstick/#write-a-unit-test
 
-  test("Cancel created and stored", () => {
-    assert.entityCount("Cancel", 1)
+  test("NFTCreated created and stored", () => {
+    assert.entityCount("NFTCreated", 1)
 
     // 0xa16081f360e3847006db660bae1c6d1b2e17ec2a is the default address used in newMockEvent() function
     assert.fieldEquals(
-      "Cancel",
+      "NFTCreated",
       "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
-      "orderId",
-      "1234567890"
+      "nftCA",
+      "0x0000000000000000000000000000000000000001"
     )
 
     // More assert options:
