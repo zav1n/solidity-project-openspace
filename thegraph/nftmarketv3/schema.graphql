@@ -1,0 +1,64 @@
+type Cancel @entity(immutable: true) {
+  id: Bytes!
+  orderId: Bytes! # bytes32
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type EIP712DomainChanged @entity(immutable: true) {
+  id: Bytes!
+
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type List @entity(immutable: true) {
+  id: Bytes!
+  nft: Bytes! # address
+  tokenId: BigInt! # uint256
+  orderId: Bytes! # bytes32
+  seller: Bytes! # address
+  payToken: Bytes! # address
+  price: BigInt! # uint256
+  deadline: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type OwnershipTransferred @entity(immutable: true) {
+  id: Bytes!
+  previousOwner: Bytes! # address
+  newOwner: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type SetFeeTo @entity(immutable: true) {
+  id: Bytes!
+  to: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type SetWhiteListSigner @entity(immutable: true) {
+  id: Bytes!
+  signer: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Sold @entity(immutable: true) {
+  id: Bytes!
+  orderId: Bytes! # bytes32
+  buyer: Bytes! # address
+  fee: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}

@@ -1,3 +1,6 @@
+[profile.dotenv]
+path = ".env"
+
 [profile.default]
 src = "src"
 out = "out"
@@ -11,5 +14,7 @@ viaIR = true
   
 [rpc_endpoints]
   sepolia = "https://eth-sepolia.g.alchemy.com/v2/gI5vP9Z5AOwlAlql_jAXEWdEh9Z169iz"
+
+
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
