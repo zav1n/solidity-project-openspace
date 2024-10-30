@@ -6,7 +6,7 @@ import {
   SetFeeTo as SetFeeToEvent,
   SetWhiteListSigner as SetWhiteListSignerEvent,
   Sold as SoldEvent
-} from "../generated/NFTMarketV3/NFTMarketV3"
+} from "../generated/NFTMarketV2/NFTMarketV2"
 import {
   Cancel,
   EIP712DomainChanged,

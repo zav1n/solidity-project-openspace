@@ -8,7 +8,7 @@ import {
   SetFeeTo,
   SetWhiteListSigner,
   Sold
-} from "../generated/NFTMarketV3/NFTMarketV3"
+} from "../generated/NFTMarketV2/NFTMarketV2"
 
 export function createCancelEvent(orderId: Bytes): Cancel {
   let cancelEvent = changetype<Cancel>(newMockEvent())

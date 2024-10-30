@@ -8,9 +8,9 @@ import {
 } from "matchstick-as/assembly/index"
 import { Bytes, Address, BigInt } from "@graphprotocol/graph-ts"
 import { Cancel } from "../generated/schema"
-import { Cancel as CancelEvent } from "../generated/NFTMarketV3/NFTMarketV3"
-import { handleCancel } from "../src/nft-market-v-3"
-import { createCancelEvent } from "./nft-market-v-3-utils"
+import { Cancel as CancelEvent } from "../generated/NFTMarketV2/NFTMarketV2"
+import { handleCancel } from "../src/nft-market-v-2"
+import { createCancelEvent } from "./nft-market-v-2-utils"
 
 // Tests structure (matchstick-as >=0.5.0)
 // https://thegraph.com/docs/en/developer/matchstick/#tests-structure-0-5-0
