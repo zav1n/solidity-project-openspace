@@ -9,7 +9,7 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
 // forge create ./src/NFTMarket:NFTMarketV3.sol:NFTMarketV3 --account 8888 --rpc-url sepolia
-// forge verify-contract --etherscan-api-key ETHERSCAN_API_KEY 0x1d9B97181139F4350957394A9b97954B1B5e60Ba src/NFTMarket/NFTMarketV3.sol:NFTMarketV3  
+// forge verify-contract 0x1d9B97181139F4350957394A9b97954B1B5e60Ba  src/NFTMarket/NFTMarketV3.sol:NFTMarketV3 --rpc-url https://xxx
 contract NFTMarketV3 is Ownable(msg.sender), EIP712("OpenSpaceNFTMarket", "1") {
     address public constant ETH_FLAG = address(0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE);
     uint256 public constant feeBP = 30; // 30/10000 = 0.3%
