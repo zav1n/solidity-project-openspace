@@ -2,7 +2,9 @@
 src = "src"
 out = "out"
 libs = ["lib"]
-
+solc = "0.8.20"
+solc-version = "0.8.20"
+viaIR = true
 
 [etherscan]
   # arbitrum = { key = "${API_KEY_ARBISCAN}" }
@@ -27,6 +29,6 @@ libs = ["lib"]
   mainnet = "https://eth-mainnet.g.alchemy.com/v2/${API_KEY_ALCHEMY}"
   optimism = "https://optimism-mainnet.infura.io/v3/${API_KEY_INFURA}"
   polygon = "https://polygon-mainnet.infura.io/v3/${API_KEY_INFURA}"
-  sepolia = "https://eth-sepolia.g.alchemy.com/v2/gI5vP9Z5AOwlAlql_jAXEWdEh9Z169iz"
+  sepolia = "https://ethereum-sepolia.core.chainstack.com/d87609abaef5c0ae3d1900c5bec69336"
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options

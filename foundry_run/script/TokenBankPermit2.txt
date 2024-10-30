@@ -1,0 +1,55 @@
+[⠊] Compiling...
+No files changed, compilation skipped
+Enter keystore password:
+Script ran successfully.
+Gas used: 612329
+
+## Setting up 1 EVM.
+
+==========================
+
+Chain 11155111
+
+Estimated gas price: 1.391774961 gwei
+
+Estimated total gas used for script: 844509
+
+Estimated amount required: 0.001175366480539149 ETH
+
+==========================
+
+##### sepolia
+✅  [Success]Hash: 0x7269acc60238621cb9332a544ba03f8c9e65e2c5b481867805776e994de89023
+Contract Address: 0x99aCB29E68b883C12950eF6F9e45Ab448C435E41
+Block: 6969534
+Paid: 0.00048925010516394 ETH (649795 gas * 0.752929932 gwei)
+
+✅ Sequence #1 on sepolia | Total Paid: 0.00048925010516394 ETH (649795 gas * avg 0.752929932 gwei)
+                                                                                                                              
+
+==========================
+
+ONCHAIN EXECUTION COMPLETE & SUCCESSFUL.
+##
+Start verification for (1) contracts
+Start verifying contract `0x99aCB29E68b883C12950eF6F9e45Ab448C435E41` deployed on sepolia
+
+Submitting verification for [src/Permit2/TokenBankPermit2.sol:TokenBank] 0x99aCB29E68b883C12950eF6F9e45Ab448C435E41.
+
+Submitting verification for [src/Permit2/TokenBankPermit2.sol:TokenBank] 0x99aCB29E68b883C12950eF6F9e45Ab448C435E41.
+
+Submitting verification for [src/Permit2/TokenBankPermit2.sol:TokenBank] 0x99aCB29E68b883C12950eF6F9e45Ab448C435E41.
+
+Submitting verification for [src/Permit2/TokenBankPermit2.sol:TokenBank] 0x99aCB29E68b883C12950eF6F9e45Ab448C435E41.
+Submitted contract for verification:
+        Response: `OK`
+        GUID: `fu7f5tmuyvmka7upk6tdcyneksuvaa8myg9byjmyxntrgezupb`
+        URL: https://sepolia.etherscan.io/address/0x99acb29e68b883c12950ef6f9e45ab448c435e41
+Contract verification status:
+Response: `NOTOK`
+Details: `Pending in queue`
+Contract verification status:
+Response: `OK`
+Details: `Pass - Verified`
+Contract successfully verified
+All (1) contracts were verified!

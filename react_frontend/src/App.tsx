@@ -17,7 +17,7 @@ const App = () => {
         >
           <ul>
             <li>
-              <Link to="/">Page</Link>
+              <Link to="/">Permit2</Link>
             </li>
             <li>
               <Link to="/demoPage">DemoPage</Link>
