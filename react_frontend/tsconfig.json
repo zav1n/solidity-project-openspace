@@ -4,16 +4,16 @@
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
   ],
-  // "compilerOptions": {
-  //   "target": "ES2020",
-  //   "baseUrl": "./",
-  //   "paths": {
-  //     "@": ["./src/*"]
-  //   },
-  //   //解决prettier对于装饰器语法的警告
-  //   "experimentalDecorators": true,
-  //   // 解决 .jsx文件无法快速跳转的问题
-  //   "jsx": "preserve",
-  //   "moduleResolution": "node",
-  // },
+  "compilerOptions": {
+    "target": "ES2020",
+    "baseUrl": "./",
+    "paths": {
+      "@": ["./src/*"]
+    },
+    //解决prettier对于装饰器语法的警告
+    "experimentalDecorators": true,
+    // 解决 .jsx文件无法快速跳转的问题
+    "jsx": "preserve",
+    "moduleResolution": "node",
+  },
 }
