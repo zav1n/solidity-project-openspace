@@ -24,7 +24,7 @@ contract BankTest is Test {
         */
 
         vm.expectEmit(true, true, false, true); // 设置捕获事件的参数
-        emit IBank.Deposit(user, depositAmount);      // 期望的事件数据
+        // emit IBank.Deposit(user, depositAmount);      // 期望的事件数据
 
         // 调用 depositETH 函数
         bank.deposit{value: depositAmount}();

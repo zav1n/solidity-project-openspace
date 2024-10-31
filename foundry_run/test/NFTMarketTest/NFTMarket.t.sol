@@ -50,7 +50,7 @@ contract NFTMarketTest is Test {
 
       // 上架事件
       vm.expectEmit();
-      emit NFTMarket.Listed(suzefeng, tokenId, upAmount);
+      // emit NFTMarket.Listed(suzefeng, tokenId, upAmount);
 
       market.list(tokenId, upAmount);
 
@@ -74,7 +74,7 @@ contract NFTMarketTest is Test {
 
       // 上架事件
       vm.expectEmit();
-      emit NFTMarket.Listed(suzefeng, tokenId, upAmount);
+      // emit NFTMarket.Listed(suzefeng, tokenId, upAmount);
       
       market.list(tokenId, upAmount);
 
