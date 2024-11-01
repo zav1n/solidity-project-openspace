@@ -17,12 +17,12 @@ import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
  */
 contract RenftMarket is EIP712 {
   // 出租订单事件
-  event BorrowNFT(address indexed taker, address indexed maker, uint256 token_id, uint256 collateral);
+  event BorrowNFT(address indexed taker, address indexed maker, bytes32 orderHash, uint256 collateral);
   // 取消订单事件
-  event OrderCanceled(address indexed maker, uint256 token_id);
+  event OrderCanceled(address indexed maker, bytes32 orderHash);
 
-  mapping(uint256 => BorrowOrder) public orders; // 已租赁订单
-  mapping(uint256 => bool) public canceledOrders; // 已取消的挂单
+  mapping(bytes32 => BorrowOrder) public orders; // 已租赁订单
+  mapping(bytes32 => bool) public canceledOrders; // 已取消的挂单
 
   bytes32 public constant PERMIT_TYPEHASH = keccak256("RentoutOrder(address maker,address nft_ca,uint256 token_id,uint256 daily_rent,uint256 max_rental_duration,uint256 min_collateral,uint256 list_endtime)");
   constructor() EIP712("RenftMarket", "1") { }
@@ -36,31 +36,34 @@ contract RenftMarket is EIP712 {
     // 验证签名 _verify
     require(_verify(order, makerSignature), "Invalid signature");
 
+    bytes32 orderHash = getOrderHash(order);
     // 检查订单有效性
     require(block.timestamp <= order.list_endtime, "Order expired");
-    require(!canceledOrders[order.token_id], "Order is canceled");
+    require(!canceledOrders[orderHash], "Order is canceled");
     require(msg.value >= order.min_collateral, "Insufficient collateral");
 
     // 支付 ETH 给出租人
     uint256 totalPayment = order.daily_rent;
     require(msg.value >= totalPayment, "Insufficient payment for rent");
-    // 转账给出租人
-    payable(order.maker).transfer(totalPayment);
+
+    // ATTENTION： 只是租赁, 不需要支付, 需要有个结算
+    // payable(order.maker).transfer(totalPayment);
+
     // 进行 NFT 转移
     IERC721(order.nft_ca).transferFrom(order.maker, msg.sender, order.token_id);
 
     // 记录租赁信息
-    orders[order.token_id] = BorrowOrder({
+    orders[orderHash] = BorrowOrder({
         taker: msg.sender,
         collateral: msg.value,
         start_time: block.timestamp,
         rentinfo: order
     });
 
-    canceledOrders[order.token_id] = true;
+    canceledOrders[orderHash] = true;
     
     // 触发BorrowNFT事件
-    emit BorrowNFT(msg.sender, order.maker, order.token_id, msg.value);
+    emit BorrowNFT(msg.sender, order.maker, orderHash, msg.value);
 
   }
 
@@ -72,8 +75,9 @@ contract RenftMarket is EIP712 {
     // 验证签名
     require(_verify(order, makerSignature), "Invalid signature");
 
+    bytes32 orderHash = getOrderHash(order);
     // 获取租赁信息
-    BorrowOrder memory borrowOrder = orders[order.token_id];
+    BorrowOrder memory borrowOrder = orders[orderHash];
     require(borrowOrder.taker != address(0), "Order not found");
 
     // 计算租赁时长
@@ -91,13 +95,13 @@ contract RenftMarket is EIP712 {
     IERC721(order.nft_ca).transferFrom(borrowOrder.taker, borrowOrder.rentinfo.maker, borrowOrder.rentinfo.token_id);
 
     // 清除订单信息
-    delete orders[order.token_id];
+    delete orders[orderHash];
 
-    emit OrderCanceled(order.maker, order.token_id);
+    emit OrderCanceled(order.maker, orderHash);
   }
 
   // 计算订单哈希
-  function orderHash(RentoutOrder calldata order) public view returns (bytes32) {
+  function getOrderHash(RentoutOrder calldata order) public view returns (bytes32) {
     return _hashTypedDataV4(keccak256(
       abi.encode(
         PERMIT_TYPEHASH,
@@ -112,7 +116,7 @@ contract RenftMarket is EIP712 {
   }
 
   function _verify(RentoutOrder calldata order, bytes memory signature) internal view returns (bool) {
-    bytes32 hashStruct = orderHash(order);
+    bytes32 hashStruct = getOrderHash(order);
     bytes32 sig =  keccak256(abi.encodePacked("\x19\x01", getDomain(), hashStruct));
     return order.maker == ECDSA.recover(sig, signature);
   }

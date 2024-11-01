@@ -27,7 +27,7 @@ contract RenftMarketTest is Test {
     nft721.mint(alice, "abcd003");
 
     vm.prank(alice);
-    nft721.approve(address(nft721), 1);
+    nft721.approve(address(market), 1);
   }
 
   function test_borrow() public {
@@ -40,7 +40,7 @@ contract RenftMarketTest is Test {
       min_collateral: 0.01 ether,
       list_endtime: 1735574400 // 2024-12-31
     });
-    bytes32 hashStruct = market.orderHash(order);
+    bytes32 hashStruct = market.getOrderHash(order);
 
 
     bytes32 permitHash = keccak256(abi.encodePacked("\x19\x01", market.getDomain(), hashStruct));

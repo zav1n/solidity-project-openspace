@@ -8,5 +8,7 @@ contract Demo1 is Test {
     function setUp() public {
         
     }
-
+    function test_demo() public {
+        
+    }
 }
