@@ -1,0 +1,103 @@
+foundry_run % forge test ./test/RNT/StakePool.t.sol -vvvvv          
+[⠊] Compiling...
+[⠢] Compiling 2 files with Solc 0.8.20
+[⠆] Solc 0.8.20 finished in 11.57s
+Compiler run successful!
+
+Ran 2 tests for test/RNT/StakePool.t.sol:StakePoolTest
+[PASS] test_stake() (gas: 103625)
+Traces:
+  [2484321] StakePoolTest::setUp()
+    ├─ [0] VM::addr(<pk>) [staticcall]
+    │   └─ ← [Return] alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6]
+    ├─ [0] VM::label(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6], "alice")
+    │   └─ ← [Return] 
+    ├─ [903867] → new RNT@0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: StakePoolTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: StakePoolTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 1000000000000000000000000000 [1e27])
+    │   └─ ← [Return] 3935 bytes of code
+    ├─ [921615] → new esRNT@0x2e234DAe75C793f67A35089C9d99245E1C58470b
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: StakePoolTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   ├─ emit OwnershipTransferred(previousOwner: StakePoolTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], newOwner: StakePoolTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   └─ ← [Return] 4139 bytes of code
+    ├─ [437061] → new StakePool@0xF62849F9A0B5Bf2913b396098F7c7019b51A820a
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: StakePoolTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   └─ ← [Return] 1732 bytes of code
+    ├─ [24940] RNT::transfer(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6], 1000000000000000000000 [1e21])
+    │   ├─ emit Transfer(from: StakePoolTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], to: alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6], value: 1000000000000000000000 [1e21])
+    │   └─ ← [Return] true
+    └─ ← [Return] 
+
+  [103625] StakePoolTest::test_stake()
+    ├─ [0] VM::startPrank(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6])
+    │   └─ ← [Return] 
+    ├─ [24384] RNT::approve(StakePool: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], 1000000000000000000000 [1e21])
+    │   ├─ emit Approval(owner: alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6], spender: StakePool: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], value: 1000000000000000000000 [1e21])
+    │   └─ ← [Return] true
+    ├─ [60039] StakePool::stake(300000000000000000000 [3e20])
+    │   ├─ [30238] RNT::transferFrom(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6], StakePool: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], 300000000000000000000 [3e20])
+    │   │   ├─ emit Transfer(from: alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6], to: StakePool: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], value: 300000000000000000000 [3e20])
+    │   │   └─ ← [Return] true
+    │   └─ ← [Return] 
+    ├─ [639] StakePool::stakes(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6]) [staticcall]
+    │   └─ ← [Return] 300000000000000000000 [3e20], 0, 0
+    ├─ [0] VM::assertEq(300000000000000000000 [3e20], 300000000000000000000 [3e20]) [staticcall]
+    │   └─ ← [Return] 
+    ├─ [560] RNT::balanceOf(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6]) [staticcall]
+    │   └─ ← [Return] 700000000000000000000 [7e20]
+    ├─ [0] VM::assertEq(700000000000000000000 [7e20], 700000000000000000000 [7e20]) [staticcall]
+    │   └─ ← [Return] 
+    ├─ [0] VM::stopPrank()
+    │   └─ ← [Return] 
+    └─ ← [Return] 
+
+[PASS] test_unstake() (gas: 109269)
+Traces:
+  [2484321] StakePoolTest::setUp()
+    ├─ [0] VM::addr(<pk>) [staticcall]
+    │   └─ ← [Return] alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6]
+    ├─ [0] VM::label(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6], "alice")
+    │   └─ ← [Return] 
+    ├─ [903867] → new RNT@0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: StakePoolTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: StakePoolTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 1000000000000000000000000000 [1e27])
+    │   └─ ← [Return] 3935 bytes of code
+    ├─ [921615] → new esRNT@0x2e234DAe75C793f67A35089C9d99245E1C58470b
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: StakePoolTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   ├─ emit OwnershipTransferred(previousOwner: StakePoolTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], newOwner: StakePoolTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   └─ ← [Return] 4139 bytes of code
+    ├─ [437061] → new StakePool@0xF62849F9A0B5Bf2913b396098F7c7019b51A820a
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: StakePoolTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   └─ ← [Return] 1732 bytes of code
+    ├─ [24940] RNT::transfer(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6], 1000000000000000000000 [1e21])
+    │   ├─ emit Transfer(from: StakePoolTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], to: alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6], value: 1000000000000000000000 [1e21])
+    │   └─ ← [Return] true
+    └─ ← [Return] 
+
+  [109269] StakePoolTest::test_unstake()
+    ├─ [0] VM::startPrank(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6])
+    │   └─ ← [Return] 
+    ├─ [24384] RNT::approve(StakePool: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], 1000000000000000000000 [1e21])
+    │   ├─ emit Approval(owner: alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6], spender: StakePool: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], value: 1000000000000000000000 [1e21])
+    │   └─ ← [Return] true
+    ├─ [60039] StakePool::stake(300000000000000000000 [3e20])
+    │   ├─ [30238] RNT::transferFrom(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6], StakePool: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], 300000000000000000000 [3e20])
+    │   │   ├─ emit Transfer(from: alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6], to: StakePool: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], value: 300000000000000000000 [3e20])
+    │   │   └─ ← [Return] true
+    │   └─ ← [Return] 
+    ├─ [5041] StakePool::unstake(120000000000000000000 [1.2e20])
+    │   ├─ [3040] RNT::transfer(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6], 120000000000000000000 [1.2e20])
+    │   │   ├─ emit Transfer(from: StakePool: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], to: alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6], value: 120000000000000000000 [1.2e20])
+    │   │   └─ ← [Return] true
+    │   └─ ← [Return] 
+    ├─ [639] StakePool::stakes(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6]) [staticcall]
+    │   └─ ← [Return] 180000000000000000000 [1.8e20], 0, 0
+    ├─ [0] VM::assertEq(180000000000000000000 [1.8e20], 180000000000000000000 [1.8e20]) [staticcall]
+    │   └─ ← [Return] 
+    ├─ [560] RNT::balanceOf(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6]) [staticcall]
+    │   └─ ← [Return] 820000000000000000000 [8.2e20]
+    ├─ [0] VM::assertEq(820000000000000000000 [8.2e20], 820000000000000000000 [8.2e20]) [staticcall]
+    │   └─ ← [Return] 
+    ├─ [0] VM::stopPrank()
+    │   └─ ← [Return] 
+    └─ ← [Return] 

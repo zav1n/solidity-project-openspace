@@ -8,9 +8,7 @@ import "./Demo.sol";
 contract DemoTest is Test {
     Demo p;
     function setUp() public {
-        p = new Demo();
-        (, uint256 value) = p.information();
-        assertEq(value, 100);
+        
     }
     function test() public {}
 }

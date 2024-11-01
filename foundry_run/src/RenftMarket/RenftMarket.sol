@@ -117,8 +117,8 @@ contract RenftMarket is EIP712 {
 
   function _verify(RentoutOrder calldata order, bytes memory signature) internal view returns (bool) {
     bytes32 hashStruct = getOrderHash(order);
-    bytes32 sig =  keccak256(abi.encodePacked("\x19\x01", getDomain(), hashStruct));
-    return order.maker == ECDSA.recover(sig, signature);
+    bytes32 digest = keccak256(abi.encodePacked("\x19\x01", getDomain(), hashStruct));
+    return order.maker == ECDSA.recover(digest, signature);
   }
 
   function getDomain() public view returns (bytes32) {
