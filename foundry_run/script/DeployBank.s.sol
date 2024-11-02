@@ -10,7 +10,7 @@ import "../src/Bank/Bank.sol";
     forge script script/DeployBank.s.sol --broadcast --verify --account 8888
 
     验证合约
-    $ forge verify-contract 0x4E67Cc4f2bDF34ed0953ed712362fE6dD1c8f367  src/3_deploy/MyToken.sol:MyToken  --rpc-url https://1rpc.io/sepolia -e XSFRNUH7ZYKHRQSP9JRB6575N3HKW7F87V 
+    $ forge verify-contract 0x4E67Cc4f2bDF34ed0953ed712362fE6dD1c8f367  src/3_deploy/MyToken.sol:MyToken  --rpc-url https://1rpc.io/sepolia -e SFRNUH7ZYKHRQSP9JRB6575N3HKW7F87V 
  */
 
 

@@ -38,19 +38,20 @@ ol, ul {
 	list-style: none;
 }
 button {
-  border-radius: 8px;
+  color: #fff;
+  border-radius: 100px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
   /* font-size: 1em; */
   /* font-weight: 500; */
   font-family: inherit;
-  background-color: #fff;
+  background-color: #5A9CF8;
   cursor: pointer;
-  transition: border-color 0.25s;
-  border: 1px solid #eee;
+  transition: background-color 0.25s;
+  /* border: 1px solid #eee; */
 }
 button:hover {
-  border-color: #646cff;
+  background-color: #88B9F9;
 }
 button:focus,
 button:focus-visible {
@@ -68,4 +69,22 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+input {
+    outline-style: none;
+    border: 1px solid #c0c4cc;
+    border-radius: 5px;
+    padding: 0.48em 0.8em;
+    box-sizing: border-box;
+    font-family: "Microsoft soft";
+    &:focus {
+        border-color: #f07b00;
+        outline: 0;
+        -webkit-box-shadow: inset 0 1px 1px
+                rgba(0, 0, 0, 0.075),
+            #f07b00;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+            #f07b00;
+    }
 }
