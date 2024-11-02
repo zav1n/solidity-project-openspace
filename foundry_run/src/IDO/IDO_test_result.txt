@@ -1,0 +1,205 @@
+forge test ./test/IDO/IDO.t.sol -vvvvv
+[⠊] Compiling...
+No files changed, compilation skipped
+
+Ran 6 tests for test/IDO/IDO.t.sol:IDOTest
+[PASS] test_buy_success() (gas: 95776)
+Traces:
+  [1239985] IDOTest::setUp()
+    ├─ [431458] → new MyToken@0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: IDOTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 10000000000000000000000000000 [1e28])
+    │   └─ ← [Return] 1695 bytes of code
+    ├─ [664817] → new IDO@0x2e234DAe75C793f67A35089C9d99245E1C58470b
+    │   └─ ← [Return] 2435 bytes of code
+    ├─ [24349] MyToken::approve(IDO: [0x2e234DAe75C793f67A35089C9d99245E1C58470b], 10000000000000000000000000000 [1e28])
+    │   ├─ emit Approval(owner: IDOTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], spender: IDO: [0x2e234DAe75C793f67A35089C9d99245E1C58470b], value: 10000000000000000000000000000 [1e28])
+    │   └─ ← [Return] true
+    ├─ [0] VM::addr(<pk>) [staticcall]
+    │   └─ ← [Return] alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6]
+    ├─ [0] VM::label(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6], "alice")
+    │   └─ ← [Return] 
+    └─ ← [Return] 
+
+  [95776] IDOTest::test_buy_success()
+    ├─ [26898] IDO::startSale()
+    │   └─ ← [Return] 
+    ├─ [0] VM::deal(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6], 1000000000000000000 [1e18])
+    │   └─ ← [Return] 
+    ├─ [0] VM::prank(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6])
+    │   └─ ← [Return] 
+    ├─ [49308] IDO::buy{value: 1000000000000000000}()
+    │   └─ ← [Return] 
+    ├─ [412] IDO::balances(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6]) [staticcall]
+    │   └─ ← [Return] 1000000000000000000 [1e18]
+    ├─ [0] VM::assertEq(1000000000000000000 [1e18], 1000000000000000000 [1e18]) [staticcall]
+    │   └─ ← [Return] 
+    └─ ← [Return] 
+
+[PASS] test_claimToken_success() (gas: 120222)
+Traces:
+  [1239985] IDOTest::setUp()
+    ├─ [431458] → new MyToken@0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: IDOTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 10000000000000000000000000000 [1e28])
+    │   └─ ← [Return] 1695 bytes of code
+    ├─ [664817] → new IDO@0x2e234DAe75C793f67A35089C9d99245E1C58470b
+    │   └─ ← [Return] 2435 bytes of code
+    ├─ [24349] MyToken::approve(IDO: [0x2e234DAe75C793f67A35089C9d99245E1C58470b], 10000000000000000000000000000 [1e28])
+    │   ├─ emit Approval(owner: IDOTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], spender: IDO: [0x2e234DAe75C793f67A35089C9d99245E1C58470b], value: 10000000000000000000000000000 [1e28])
+    │   └─ ← [Return] true
+    ├─ [0] VM::addr(<pk>) [staticcall]
+    │   └─ ← [Return] alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6]
+    ├─ [0] VM::label(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6], "alice")
+    │   └─ ← [Return] 
+    └─ ← [Return] 
+
+  [140122] IDOTest::test_claimToken_success()
+    ├─ [26898] IDO::startSale()
+    │   └─ ← [Return] 
+    ├─ [0] VM::deal(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6], 2222000000000000000000 [2.222e21])
+    │   └─ ← [Return] 
+    ├─ [0] VM::prank(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6])
+    │   └─ ← [Return] 
+    ├─ [49308] IDO::buy{value: 2222000000000000000000}()
+    │   └─ ← [Return] 
+    ├─ [0] VM::warp(172801 [1.728e5])
+    │   └─ ← [Return] 
+    ├─ [2712] IDO::endSale()
+    │   └─ ← [Return] 
+    ├─ [0] VM::prank(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6])
+    │   └─ ← [Return] 
+    ├─ [41317] IDO::claimToken()
+    │   ├─ [35044] MyToken::transferFrom(IDOTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6], 2222000000000000000000 [2.222e21])
+    │   │   ├─ emit Transfer(from: IDOTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], to: alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6], value: 2222000000000000000000 [2.222e21])
+    │   │   └─ ← [Return] true
+    │   └─ ← [Return] 
+    └─ ← [Return] 
+
+[PASS] test_endSale() (gas: 12794)
+Traces:
+  [1239985] IDOTest::setUp()
+    ├─ [431458] → new MyToken@0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: IDOTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 10000000000000000000000000000 [1e28])
+    │   └─ ← [Return] 1695 bytes of code
+    ├─ [664817] → new IDO@0x2e234DAe75C793f67A35089C9d99245E1C58470b
+    │   └─ ← [Return] 2435 bytes of code
+    ├─ [24349] MyToken::approve(IDO: [0x2e234DAe75C793f67A35089C9d99245E1C58470b], 10000000000000000000000000000 [1e28])
+    │   ├─ emit Approval(owner: IDOTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], spender: IDO: [0x2e234DAe75C793f67A35089C9d99245E1C58470b], value: 10000000000000000000000000000 [1e28])
+    │   └─ ← [Return] true
+    ├─ [0] VM::addr(<pk>) [staticcall]
+    │   └─ ← [Return] alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6]
+    ├─ [0] VM::label(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6], "alice")
+    │   └─ ← [Return] 
+    └─ ← [Return] 
+
+  [12794] IDOTest::test_endSale()
+    ├─ [0] VM::expectRevert(custom error 0xf28dceb3:  sale hasn't ended yet)
+    │   └─ ← [Return] 
+    ├─ [4579] IDO::endSale()
+    │   └─ ← [Revert] revert: sale hasn't ended yet
+    └─ ← [Return] 
+
+[PASS] test_refund_success() (gas: 91621)
+Traces:
+  [1239985] IDOTest::setUp()
+    ├─ [431458] → new MyToken@0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: IDOTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 10000000000000000000000000000 [1e28])
+    │   └─ ← [Return] 1695 bytes of code
+    ├─ [664817] → new IDO@0x2e234DAe75C793f67A35089C9d99245E1C58470b
+    │   └─ ← [Return] 2435 bytes of code
+    ├─ [24349] MyToken::approve(IDO: [0x2e234DAe75C793f67A35089C9d99245E1C58470b], 10000000000000000000000000000 [1e28])
+    │   ├─ emit Approval(owner: IDOTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], spender: IDO: [0x2e234DAe75C793f67A35089C9d99245E1C58470b], value: 10000000000000000000000000000 [1e28])
+    │   └─ ← [Return] true
+    ├─ [0] VM::addr(<pk>) [staticcall]
+    │   └─ ← [Return] alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6]
+    ├─ [0] VM::label(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6], "alice")
+    │   └─ ← [Return] 
+    └─ ← [Return] 
+
+  [111521] IDOTest::test_refund_success()
+    ├─ [26898] IDO::startSale()
+    │   └─ ← [Return] 
+    ├─ [0] VM::deal(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6], 10000000000000000000000 [1e22])
+    │   └─ ← [Return] 
+    ├─ [0] VM::prank(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6])
+    │   └─ ← [Return] 
+    ├─ [49308] IDO::buy{value: 100000000000000000000}()
+    │   └─ ← [Return] 
+    ├─ [0] VM::warp(172801 [1.728e5])
+    │   └─ ← [Return] 
+    ├─ [2712] IDO::endSale()
+    │   └─ ← [Return] 
+    ├─ [4053] IDO::settlement()
+    │   ├─ emit RefundEnabled(: true)
+    │   └─ ← [Return] 
+    ├─ [0] VM::prank(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6])
+    │   └─ ← [Return] 
+    ├─ [7832] IDO::refund()
+    │   ├─ [0] alice::fallback{value: 100000000000000000000}()
+    │   │   └─ ← [Stop] 
+    │   └─ ← [Return] 
+    └─ ← [Return] 
+
+[PASS] test_settlement_success() (gas: 102631)
+Traces:
+  [1239985] IDOTest::setUp()
+    ├─ [431458] → new MyToken@0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: IDOTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 10000000000000000000000000000 [1e28])
+    │   └─ ← [Return] 1695 bytes of code
+    ├─ [664817] → new IDO@0x2e234DAe75C793f67A35089C9d99245E1C58470b
+    │   └─ ← [Return] 2435 bytes of code
+    ├─ [24349] MyToken::approve(IDO: [0x2e234DAe75C793f67A35089C9d99245E1C58470b], 10000000000000000000000000000 [1e28])
+    │   ├─ emit Approval(owner: IDOTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], spender: IDO: [0x2e234DAe75C793f67A35089C9d99245E1C58470b], value: 10000000000000000000000000000 [1e28])
+    │   └─ ← [Return] true
+    ├─ [0] VM::addr(<pk>) [staticcall]
+    │   └─ ← [Return] alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6]
+    ├─ [0] VM::label(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6], "alice")
+    │   └─ ← [Return] 
+    └─ ← [Return] 
+
+  [102631] IDOTest::test_settlement_success()
+    ├─ [26898] IDO::startSale()
+    │   └─ ← [Return] 
+    ├─ [0] VM::deal(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6], 1000000000000000000000 [1e21])
+    │   └─ ← [Return] 
+    ├─ [0] VM::prank(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6])
+    │   └─ ← [Return] 
+    ├─ [49308] IDO::buy{value: 1000000000000000000000}()
+    │   └─ ← [Return] 
+    ├─ [0] VM::warp(172801 [1.728e5])
+    │   └─ ← [Return] 
+    ├─ [2712] IDO::endSale()
+    │   └─ ← [Return] 
+    ├─ [4053] IDO::settlement()
+    │   ├─ emit RefundEnabled(: true)
+    │   └─ ← [Return] 
+    └─ ← [Return] 
+
+[PASS] test_startSale() (gas: 36329)
+Traces:
+  [1239985] IDOTest::setUp()
+    ├─ [431458] → new MyToken@0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: IDOTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 10000000000000000000000000000 [1e28])
+    │   └─ ← [Return] 1695 bytes of code
+    ├─ [664817] → new IDO@0x2e234DAe75C793f67A35089C9d99245E1C58470b
+    │   └─ ← [Return] 2435 bytes of code
+    ├─ [24349] MyToken::approve(IDO: [0x2e234DAe75C793f67A35089C9d99245E1C58470b], 10000000000000000000000000000 [1e28])
+    │   ├─ emit Approval(owner: IDOTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], spender: IDO: [0x2e234DAe75C793f67A35089C9d99245E1C58470b], value: 10000000000000000000000000000 [1e28])
+    │   └─ ← [Return] true
+    ├─ [0] VM::addr(<pk>) [staticcall]
+    │   └─ ← [Return] alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6]
+    ├─ [0] VM::label(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6], "alice")
+    │   └─ ← [Return] 
+    └─ ← [Return] 
+
+  [36329] IDOTest::test_startSale()
+    ├─ [26898] IDO::startSale()
+    │   └─ ← [Return] 
+    ├─ [402] IDO::isSaleActive() [staticcall]
+    │   └─ ← [Return] true
+    ├─ [0] VM::assertTrue(true) [staticcall]
+    │   └─ ← [Return] 
+    └─ ← [Return] 
+
+Suite result: ok. 6 passed; 0 failed; 0 skipped; finished in 1.80ms (999.33µs CPU time)
+
+Ran 1 test suite in 1.59s (1.80ms CPU time): 6 tests passed, 0 failed, 0 skipped (6 total tests)
