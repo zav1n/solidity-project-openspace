@@ -1,5 +1,5 @@
 // import React from "react";
-import { walletClient, account } from "../AppKit/walletClient";
+import { walletClient } from "../AppKit/walletClient";
 
 const domain = {
   name: "Permit2",
