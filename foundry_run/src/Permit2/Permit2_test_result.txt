@@ -1,41 +1,37 @@
-Ran 1 test for test/Permit2/TokenBankPermit2.t.sol:TokenBankPermit2
-[PASS] test_depositWithPermit2() (gas: 114874)
+test/Permit2/TokenBankPermit2.t.sol:TokenBankTest
+[PASS] testDeposit() (gas: 91092)
 Traces:
-  [2717412] TokenBankPermit2::setUp()
-    ├─ [573642] → new DecertERC20@0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f
-    │   └─ ← [Return] 2304 bytes of code
-    ├─ [1407940] → new Permit2@0x2e234DAe75C793f67A35089C9d99245E1C58470b
-    │   └─ ← [Return] 7031 bytes of code
-    ├─ [489376] → new TokenBank@0xF62849F9A0B5Bf2913b396098F7c7019b51A820a
-    │   └─ ← [Return] 2222 bytes of code
-    ├─ [0] VM::addr(<pk>) [staticcall]
-    │   └─ ← [Return] 0x328809Bc894f92807417D2dAD6b7C998c1aFdac6
-    ├─ [25087] DecertERC20::transfer(0x328809Bc894f92807417D2dAD6b7C998c1aFdac6, 10000000000000000000000 [1e22])
-    │   ├─ emit Transfer(from: TokenBankPermit2: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], to: 0x328809Bc894f92807417D2dAD6b7C998c1aFdac6, value: 10000000000000000000000 [1e22])
-    │   └─ ← [Return] true
-    ├─ [0] VM::prank(0x328809Bc894f92807417D2dAD6b7C998c1aFdac6)
+  [119130] TokenBankTest::testDeposit()
+    ├─ [325] Permit2::DOMAIN_SEPARATOR() [staticcall]
+    │   └─ ← [Return] 0x94c1dec87927751697bfc9ebf6fc4ca506bed30308b518f0e9d6c5f74bbafdb8
+    ├─ [0] VM::sign("<pk>", 0x2727d2e958da9fa13dd05fd5d661b97f2c03a40eaf0b01116a4a6ede2f55faf1) [staticcall]
+    │   └─ ← [Return] 27, 0x07247c203e8deac3a3512864f9d379bb0efb42bc1a06fe844c9a3f7d50f6d76a, 0x73f4c0b4c43a877ee8c4870f44012acfe03665549676a546308d3661f6285b6f
+    ├─ [0] VM::prank(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6])
     │   └─ ← [Return] 
-    ├─ [24335] DecertERC20::approve(Permit2: [0x2e234DAe75C793f67A35089C9d99245E1C58470b], 115792089237316195423570985008687907853269984665640564039457584007913129639935 [1.157e77])
-    │   ├─ emit Approval(owner: 0x328809Bc894f92807417D2dAD6b7C998c1aFdac6, spender: Permit2: [0x2e234DAe75C793f67A35089C9d99245E1C58470b], value: 115792089237316195423570985008687907853269984665640564039457584007913129639935 [1.157e77])
-    │   └─ ← [Return] true
-    └─ ← [Return] 
-
-  [114874] TokenBankPermit2::test_depositWithPermit2()
-    ├─ [328] Permit2::DOMAIN_SEPARATOR() [staticcall]
-    │   └─ ← [Return] 0x9e108c40e2cc4d5799d394487650278cd9d2a3d48d966fd78cc85f19ed7c3a1b
-    ├─ [0] VM::sign("<pk>", 0xae97dc3fe9be788cb3fd72b8c6eee93da6a792351e60f993a683791a292cca31) [staticcall]
-    │   └─ ← [Return] 27, 0xa67fd985abf4cc27b91de315ea462b1f69bb13da03caa2ae37f34c0258ef01bc, 0x6592bb559ce98e9af85faa8d92ebf9fad35f338fbe61ffaff6d8b406299c7535
-    ├─ [0] VM::prank(0x328809Bc894f92807417D2dAD6b7C998c1aFdac6)
-    │   └─ ← [Return] 
-    ├─ [92363] TokenBank::depositWithPermit2(DecertERC20: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f], 1000000000000000000000 [1e21], 105751812045317891446661581755722269785077830219588259156323460611563665354554 [1.057e77], 1, 0xa67fd985abf4cc27b91de315ea462b1f69bb13da03caa2ae37f34c0258ef01bc6592bb559ce98e9af85faa8d92ebf9fad35f338fbe61ffaff6d8b406299c75351b)
-    │   ├─ [68534] Permit2::permitTransferFrom(PermitTransferFrom({ permitted: TokenPermissions({ token: 0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f, amount: 1000000000000000000000 [1e21] }), nonce: 105751812045317891446661581755722269785077830219588259156323460611563665354554 [1.057e77], deadline: 1 }), SignatureTransferDetails({ to: 0xF62849F9A0B5Bf2913b396098F7c7019b51A820a, requestedAmount: 1000000000000000000000 [1e21] }), 0x328809Bc894f92807417D2dAD6b7C998c1aFdac6, 0xa67fd985abf4cc27b91de315ea462b1f69bb13da03caa2ae37f34c0258ef01bc6592bb559ce98e9af85faa8d92ebf9fad35f338fbe61ffaff6d8b406299c75351b)
-    │   │   ├─ [3000] PRECOMPILES::ecrecover(0xae97dc3fe9be788cb3fd72b8c6eee93da6a792351e60f993a683791a292cca31, 27, 75309823724788341281232773826855734842885265003922413240154594617322346840508, 45942850313054663179782473173250100125427109437733540917418557805283774330165) [staticcall]
+    ├─ [90981] TokenBank::depositWithPermit2(MockERC20: [0x2e234DAe75C793f67A35089C9d99245E1C58470b], 100, PermitTransferFrom({ permitted: TokenPermissions({ token: 0x2e234DAe75C793f67A35089C9d99245E1C58470b, amount: 100 }), nonce: 1730536188 [1.73e9], deadline: 1730539788 [1.73e9] }), 0x07247c203e8deac3a3512864f9d379bb0efb42bc1a06fe844c9a3f7d50f6d76a73f4c0b4c43a877ee8c4870f44012acfe03665549676a546308d3661f6285b6f1b)
+    │   ├─ [2583] MockERC20::balanceOf(TokenBank: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f]) [staticcall]
+    │   │   └─ ← [Return] 0
+    │   ├─ [60534] Permit2::permitTransferFrom(PermitTransferFrom({ permitted: TokenPermissions({ token: 0x2e234DAe75C793f67A35089C9d99245E1C58470b, amount: 100 }), nonce: 1730536188 [1.73e9], deadline: 1730539788 [1.73e9] }), SignatureTransferDetails({ to: 0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f, requestedAmount: 100 }), alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6], 0x07247c203e8deac3a3512864f9d379bb0efb42bc1a06fe844c9a3f7d50f6d76a73f4c0b4c43a877ee8c4870f44012acfe03665549676a546308d3661f6285b6f1b)
+    │   │   ├─ [3000] PRECOMPILES::ecrecover(0x2727d2e958da9fa13dd05fd5d661b97f2c03a40eaf0b01116a4a6ede2f55faf1, 27, 3230653120267925303846218005420622799789707400956724166370430434163434116970, 52448418279635831031089560277930355662905022583822053617816474788017971157871) [staticcall]
     │   │   │   └─ ← [Return] 0x000000000000000000000000328809bc894f92807417d2dad6b7c998c1afdac6
-    │   │   ├─ [35272] DecertERC20::transferFrom(0x328809Bc894f92807417D2dAD6b7C998c1aFdac6, TokenBank: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], 1000000000000000000000 [1e21])
-    │   │   │   ├─ emit Transfer(from: 0x328809Bc894f92807417D2dAD6b7C998c1aFdac6, to: TokenBank: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], value: 1000000000000000000000 [1e21])
+    │   │   ├─ [30011] MockERC20::transferFrom(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6], TokenBank: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f], 100)
+    │   │   │   ├─ emit Transfer(from: alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6], to: TokenBank: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f], value: 100)
     │   │   │   └─ ← [Return] true
     │   │   └─ ← [Return] 
+    │   ├─ [583] MockERC20::balanceOf(TokenBank: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f]) [staticcall]
+    │   │   └─ ← [Return] 100
+    │   └─ ← [Return] 
+    ├─ [567] TokenBank::balances(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6], MockERC20: [0x2e234DAe75C793f67A35089C9d99245E1C58470b]) [staticcall]
+    │   └─ ← [Return] 100
+    ├─ [0] VM::assertEq(100, 100) [staticcall]
+    │   └─ ← [Return] 
+    ├─ [0] VM::prank(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6])
+    │   └─ ← [Return] 
+    ├─ [4297] TokenBank::withdraw(MockERC20: [0x2e234DAe75C793f67A35089C9d99245E1C58470b], 100)
+    │   ├─ [3102] MockERC20::transfer(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6], 100)
+    │   │   ├─ emit Transfer(from: TokenBank: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f], to: alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6], value: 100)
+    │   │   └─ ← [Return] true
     │   └─ ← [Return] 
     └─ ← [Return] 
 
-Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 6.29ms (1.23ms CPU time)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 4.99s (1.31s CPU time)
