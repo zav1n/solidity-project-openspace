@@ -1,6 +1,28 @@
-## foundry test file
-test NFTMarketplace.sol: test/Signature/NFTMarketplace.t.sol
-test TokenBank.sol: test/Signature/TokenBankPermit.t.sol
+使用 EIP2612 标准（可基于 Openzepplin 库）编写一个自己名称的 Token 合约。
+1. TokenBank 添加一个函数 permitDeposit 以支持离线签名授权（permit）进行存款。
+2. NTFMarket 合约，添加功能 permitBuy() 实现只有离线授权的白名单地址才可以购买 NFT （用自己的名称发行 NFT，再上架） 。白名单具体实现逻辑为：项目方给白名单地址签名，白名单用户拿到签名信息后，传给 permitBuy() 函数，在permitBuy()中判断时候是经过许可的白名单用户，如果是，才可以进行后续购买，否则 revert 。
+
+![image](https://github.com/user-attachments/assets/4b808184-60ec-461f-8264-69a21088083e)
+
+
+### file
+TokenBank.sol
+
+test/Signature/TokenBankPermit.t.sol
+
+NFTMarketplace.sol: 
+
+test/Signature/NFTMarketplace.t.sol
+
+
+
+
+
+
+
+
+
+
 
 EIP 712 和 EIP2612 的区别是什么
 EIP-712 和 EIP-2612 是两个不同的以太坊提案（EIP），它们有不同的目的，但可以协同工作。让我们分别解释它们的定义和区别。
