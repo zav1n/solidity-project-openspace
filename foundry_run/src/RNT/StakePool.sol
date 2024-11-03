@@ -61,7 +61,7 @@ contract StakePool is Ownable {
     require(esrentToken.balanceOf(msg.sender) >= amount, "Insufficient esRNT");
 
     // 获取esRNT锁仓数量
-    (,uint256 totalLockedAmount) = getUserlocks(msg.sender);
+    (,uint256 totalLockedAmount) = esrentToken.getUserlocks(msg.sender);
     require(totalLockedAmount >= amount, "Total locked esRNT is less than requested");
 
     uint256 burnAmount = (amount * 10) / 100; // 假设 10% 将被燃烧
@@ -71,7 +71,7 @@ contract StakePool is Ownable {
     rntToken.transfer(msg.sender, redeemAmount); // 转回 RNT
   }
 
-  function updateReward(address account) internal view {
+  function updateReward(address account) internal {
     StakeInfo storage stakeInfo = stakes[account];
     if(stakeInfo.lastUpdateTime > 0) {
       uint256 holdingTime = block.timestamp - stakeInfo.lastUpdateTime;
