@@ -51,4 +51,8 @@ contract RenftMarketTest is Test {
     vm.prank(bob);
     market.borrow{ value: 0.1 ether }(order, signature);
   }
+
+  function cancelOrder() public {
+
+  }
 }
