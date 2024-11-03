@@ -44,7 +44,7 @@ contract esRNT is ERC20, Ownable {
 
   }
 
-  function getUserlocks(address user) public view returns(lockInfo[] memory) {
+  function getUserlocks(address user) public view returns(lockInfo[] memory, uint256) {
     // ATTENTION: 不建议在这里遍历找用户的锁仓信息
     uint256 count;
     for (uint256 i = 0; i < locks.length; i++) {
@@ -52,18 +52,16 @@ contract esRNT is ERC20, Ownable {
         count++;
       }
     }
-    lockInfo[] memory userLocks = new lockInfo[](count);
+    lockInfo[] memory userLockList = new lockInfo[](count);
     uint256 index = 0;
+    uint256 locksAmount = 0;
     for (uint256 i = 0; i < locks.length; i++) {
       if(locks[i].user == user) {
-        userLocks[index] = locks[i];
+        userLockList[index] = locks[i];
         index++;
+        locksAmount += locks[i].amount;
       }
     }
-    return userLocks;
-  }
-
-  function getBylockId(uint256 locks_id)  public view returns(lockInfo memory) {
-    return locks[locks_id];
+    return(userLockList, locksAmount);
   }
 }

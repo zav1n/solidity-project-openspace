@@ -12,4 +12,13 @@ contract Demo {
       count ++;
       return count;
     }
+
+    function day(uint256 lastUpdateTime,uint256 amount) public returns(uint256) {
+      uint256 rate = (lastUpdateTime - block.timestamp) * amount / 30 days;
+      // if(rate >= 1 ) {
+      //   // 超过30天还是按照 1 : 1 兑换
+      //   rate = 1;
+      // }
+      return rate;
+    }
 }

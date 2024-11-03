@@ -6,9 +6,11 @@ import "./Demo.sol";
 
 
 contract DemoTest is Test {
-    Demo p;
+    Demo demo;
     function setUp() public {
-        
+        demo = new Demo();
     }
-    function test() public {}
+    function test() public {
+        demo.day(block.timestamp + 18 days, 1 ether);
+    }
 }
