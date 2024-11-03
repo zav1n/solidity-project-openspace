@@ -1,5 +1,5 @@
 ## Setp 1: install lib
-- forge install foundry-rs/forge-std Openzeppelin/openzeppelin-contracts transmissions11/solmate
+- forge install foundry-rs/forge-std Openzeppelin/openzeppelin-contracts transmissions11/solmate OpenZeppelin/openzeppelin-contracts-upgradeable
 
 
 ## You can use remixd cmd
