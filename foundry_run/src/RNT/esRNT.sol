@@ -1,19 +1,21 @@
 // SPDX-License-Identifier: MIT 
 pragma solidity ^0.8.20;
+
+import "forge-std/Test.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract esRNT is ERC20, Ownable {
   struct lockInfo{
-    address user;
     uint256 amount;
-    uint256 lockTime;
+    uint256 collectionTime; // 领取时间
   }
-  lockInfo[] public locks;
+  
+  mapping(address => lockInfo) public userLocks;
 
   IERC20 rntToken;
   
-  event Minted(address, uint256, uint256);
+  event Minted(address, uint256, lockInfo);
   constructor(IERC20 _rntToken) ERC20("esRNT", "esRNT") Ownable(msg.sender) {
     rntToken = _rntToken;
     _transferOwnership(msg.sender);
@@ -21,47 +23,19 @@ contract esRNT is ERC20, Ownable {
 
   function mint(address to, uint256 amount) public onlyOwner {
     _mint(to, amount);
-    locks.push(lockInfo({
-      user: to,
-      amount: amount,
-      lockTime: block.timestamp
-    }));
-    uint256 lockId = locks.length - 1;
-    emit Minted(to, amount, lockId);
+    lockInfo storage userLock = userLocks[to];
+    userLock.amount += amount;
+    userLock.collectionTime = block.timestamp;
+    emit Minted(to, amount, userLock);
   }
 
-  function burn(uint256 lockId) public {
-    require(lockId < locks.length - 1, "non-existent lockId");
-    lockInfo memory lock = locks[lockId];
-    require(lock.user == msg.sender, "only lock owner can burn");
-    uint256 unlockAmount = (lock.amount*(block.timestamp - lock.lockTime))/ 30 days;
-    uint256 burnAmount = lock.amount - unlockAmount;
-    
-    _burn(msg.sender, lock.amount); // 池子需要减去一开始mint的总数
-    rntToken.transfer(address(0), burnAmount); // 销毁esRNT
-
-    rntToken.transfer(msg.sender, unlockAmount); // 转回RNT
-
+  function burn(address user, uint256 amount) public {
+    lockInfo storage userinfo = userLocks[user];
+    userinfo.collectionTime = block.timestamp;  // 更新领取时间
+    _burn(user, amount);
   }
 
-  function getUserlocks(address user) public view returns(lockInfo[] memory, uint256) {
-    // ATTENTION: 不建议在这里遍历找用户的锁仓信息
-    uint256 count;
-    for (uint256 i = 0; i < locks.length; i++) {
-      if(locks[i].user == user) {
-        count++;
-      }
-    }
-    lockInfo[] memory userLockList = new lockInfo[](count);
-    uint256 index = 0;
-    uint256 locksAmount = 0;
-    for (uint256 i = 0; i < locks.length; i++) {
-      if(locks[i].user == user) {
-        userLockList[index] = locks[i];
-        index++;
-        locksAmount += locks[i].amount;
-      }
-    }
-    return(userLockList, locksAmount);
+  function getUserlocks(address user) public view returns(lockInfo memory) {
+    return userLocks[user];
   }
 }

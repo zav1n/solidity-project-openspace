@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT 
 pragma solidity ^0.8.20;
-  
+
+import "forge-std/Test.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@src/RNT/esRNT.sol";
@@ -12,7 +13,7 @@ contract StakePool is Ownable {
   // 用户质押信息
   mapping(address => StakeInfo) public stakes; 
   // 每个 RNT 每天的奖励
-  uint256 public constant REWARD_RATE = 1 ether; 
+  uint256 public constant REWARD_RATE = 1; 
   // esRNT 的锁定期
   // uint256 public constant REDEEM_TIME = 30 days; 
 
@@ -52,32 +53,27 @@ contract StakePool is Ownable {
     updateReward(msg.sender);
     uint256 reward = stakes[msg.sender].unclaimed;
     stakes[msg.sender].unclaimed = 0;
-    esrentToken.transfer(msg.sender, reward);
+    esrentToken.mint(msg.sender, reward);
   }
 
   // 兑换 esRNT 为 RNT
-  function redeemEsRNT(uint256 amount) external {
-    require(amount > 0, "Amount must be greater than zero");
-    require(esrentToken.balanceOf(msg.sender) >= amount, "Insufficient esRNT");
+  function redeemEsRNT() external {
+    (uint256 amount, uint256 collectionTime) = esrentToken.userLocks(msg.sender);
+    require(amount > 0, "not enough token can be collection");
 
-    // 获取esRNT锁仓数量
-    (,uint256 totalLockedAmount) = esrentToken.getUserlocks(msg.sender);
-    require(totalLockedAmount >= amount, "Total locked esRNT is less than requested");
+    esrentToken.burn(msg.sender, amount); // 销毁 esRNT
+    rntToken.transfer(msg.sender, amount); // 转回 RNT
 
-    uint256 burnAmount = (amount * 10) / 100; // 假设 10% 将被燃烧
-    uint256 redeemAmount = amount - burnAmount;
-
-    esrentToken.burn(amount); // 销毁 esRNT
-    rntToken.transfer(msg.sender, redeemAmount); // 转回 RNT
   }
 
   function updateReward(address account) internal {
     StakeInfo storage stakeInfo = stakes[account];
     if(stakeInfo.lastUpdateTime > 0) {
-      uint256 holdingTime = block.timestamp - stakeInfo.lastUpdateTime;
-      stakeInfo.unclaimed += (holdingTime * stakeInfo.staked * REWARD_RATE) / 1 days;
+      // TODO 存在浮点数的问题, 需要加上相关计算库
+      uint256 holdingTime = (block.timestamp - stakeInfo.lastUpdateTime) / 1 days; // 换成天
+      stakeInfo.unclaimed += stakeInfo.staked * REWARD_RATE / 100 * holdingTime;
     }
     stakeInfo.lastUpdateTime = block.timestamp;
+
   }
-  
 }
