@@ -6,6 +6,8 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@src/RNT/esRNT.sol";
 
+import "@openzeppelin/contracts/utils/math/Math.sol";
+
 
 contract StakePool is Ownable {
   IERC20 public rntToken;
@@ -61,16 +63,17 @@ contract StakePool is Ownable {
     (uint256 amount, uint256 collectionTime) = esrentToken.userLocks(msg.sender);
     require(amount > 0, "not enough token can be collection");
 
+    uint256 unlockAmount = (block.timestamp - collectionTime) * amount / 30 days ;
+
     esrentToken.burn(msg.sender, amount); // 销毁 esRNT
-    rntToken.transfer(msg.sender, amount); // 转回 RNT
+    rntToken.transfer(msg.sender, unlockAmount); // 转回 RNT
 
   }
 
   function updateReward(address account) internal {
     StakeInfo storage stakeInfo = stakes[account];
     if(stakeInfo.lastUpdateTime > 0) {
-      // TODO 存在浮点数的问题, 需要加上相关计算库
-      uint256 holdingTime = (block.timestamp - stakeInfo.lastUpdateTime) / 1 days; // 换成天
+      uint256 holdingTime = Math.ceilDiv((block.timestamp - stakeInfo.lastUpdateTime), 1 days);
       stakeInfo.unclaimed += stakeInfo.staked * REWARD_RATE / 100 * holdingTime;
     }
     stakeInfo.lastUpdateTime = block.timestamp;

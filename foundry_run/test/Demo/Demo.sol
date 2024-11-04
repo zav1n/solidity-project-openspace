@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.20;
-
+import "@openzeppelin/contracts/utils/math/Math.sol";
 contract Demo {
+  using Math for uint256;
     uint256 count;
     uint256 private pk;
 
@@ -13,12 +14,8 @@ contract Demo {
       return count;
     }
 
-    function day(uint256 lastUpdateTime,uint256 amount) public returns(uint256) {
-      uint256 rate = (lastUpdateTime - block.timestamp) * amount / 30 days;
-      // if(rate >= 1 ) {
-      //   // 超过30天还是按照 1 : 1 兑换
-      //   rate = 1;
-      // }
-      return rate;
+    function day() public returns(uint256) {
+
+      return 1;
     }
 }

@@ -31,6 +31,7 @@ contract esRNT is ERC20, Ownable {
 
   function burn(address user, uint256 amount) public {
     lockInfo storage userinfo = userLocks[user];
+    uint256 unlockAmount = (block.timestamp - userinfo.collectionTime) * amount / 30 days ;
     userinfo.collectionTime = block.timestamp;  // 更新领取时间
     _burn(user, amount);
   }

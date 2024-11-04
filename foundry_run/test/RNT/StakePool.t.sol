@@ -86,10 +86,10 @@ contract StakePoolTest is Test {
       (uint256 staked,,) = stakePool.stakes(alice);
       assertEq(staked, 100 ether);
 
-      uint256 afterTime = block.timestamp + 28 days;
-      vm.warp(afterTime);
+      vm.warp(block.timestamp + 30 days);
       stakePool.claim();
 
+      vm.warp(block.timestamp + 19 days);
       stakePool.redeemEsRNT();
 
       

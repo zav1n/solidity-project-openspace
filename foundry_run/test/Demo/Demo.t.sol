@@ -11,6 +11,6 @@ contract DemoTest is Test {
         demo = new Demo();
     }
     function test() public {
-        demo.day(block.timestamp + 18 days, 1 ether);
+        demo.day();
     }
 }
