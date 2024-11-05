@@ -29,7 +29,7 @@ contract PrivateLock {
 前端实现查看: https://github.com/zav1n/solidity-project-openspace/blob/v1.2.0/react_frontend/src/pages/Eth_getStorageAt.tsx
 
 
-### 使用Solidity内联汇编修改合约Owner地址
+### 题目2: 使用Solidity内联汇编修改合约Owner地址
 
 重新修改 MyWallet 合约的 transferOwernship 和 auth 逻辑，使用内联汇编方式来 set和get owner 地址。
 ```solidity
