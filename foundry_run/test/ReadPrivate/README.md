@@ -23,7 +23,8 @@ contract PrivateLock {
 }
 ```
 
-![image](https://github.com/user-attachments/assets/7d210bad-97b1-4fdc-ade6-a18d8c331e63)
+![image](https://github.com/user-attachments/assets/87974cdb-8c76-4f2f-b9dc-748a5fd817ce)
+
 
 
 
