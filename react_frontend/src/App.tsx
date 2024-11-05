@@ -20,7 +20,7 @@ const App = () => {
               <Link to="/">DepositWithPermit2</Link>
             </li>
             <li>
-              <Link to="/demoPage">DemoPage</Link>
+              <Link to="/Eth_getStorageAt">Eth_getStorageAt</Link>
             </li>
           </ul>
         </div>
