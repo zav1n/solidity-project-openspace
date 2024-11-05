@@ -21,7 +21,8 @@ contract PrivateLock {
 }
 ```
 
-![image](https://github.com/user-attachments/assets/77b0d915-53b8-4ca3-8c3b-13fe3534f83c)
+![image](https://github.com/user-attachments/assets/7d210bad-97b1-4fdc-ade6-a18d8c331e63)
+
 
 
 代码实现请查看: PrivateLock.t.sol
