@@ -1,5 +1,5 @@
 pragma solidity ^0.8.20;
-contract esRNT {
+contract PrivateLock {
     struct LockInfo{
         address user;
         uint64 startTime; 
