@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { publicClient } from "../AppKit/publicClient";
+import { publicClient } from "../AppKit/walletClient";
 import {
   toHex,
   keccak256,

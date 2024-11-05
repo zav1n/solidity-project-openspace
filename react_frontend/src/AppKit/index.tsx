@@ -9,7 +9,7 @@ import {
   SolflareWalletAdapter,
   PhantomWalletAdapter
 } from "@solana/wallet-adapter-wallets";
-import anvilNetwork from "./anvilNetwork";
+import { anvilNetwork } from "./walletClient";
 
 
 const queryClient = new QueryClient();
