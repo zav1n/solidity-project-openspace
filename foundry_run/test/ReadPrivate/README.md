@@ -1,6 +1,8 @@
 题目: 使用你熟悉的语言利用 eth_getStorageAt RPC API 从链上读取 _locks 数组中的所有元素值，或者从另一个合约中设法读取esRNT中私有数组 _locks 元素数据，并打印出如下内容：
 locks[0]: user:…… ,startTime:……,amount:……
 
+> 需要把 PrivateLock 合约部署在本地(anvil)或者测试网, 否则无法运行或者测试!
+
 资料: https://learnblockchain.cn/books/geth/part7/storage.html
 
 ```solidity
