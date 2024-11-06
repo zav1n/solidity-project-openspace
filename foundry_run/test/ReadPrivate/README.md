@@ -1,7 +1,10 @@
 题目: 使用你熟悉的语言利用 eth_getStorageAt RPC API 从链上读取 _locks 数组中的所有元素值，或者从另一个合约中设法读取esRNT中私有数组 _locks 元素数据，并打印出如下内容：
 locks[0]: user:…… ,startTime:……,amount:……
 
-参考
+> 需要把 PrivateLock 合约部署在本地(anvil)或者测试网, 否则无法运行或者测试!
+
+资料: https://learnblockchain.cn/books/geth/part7/storage.html
+
 ```solidity
 pragma solidity ^0.8.20;
 contract PrivateLock {
@@ -20,10 +23,18 @@ contract PrivateLock {
 }
 ```
 
+![image](https://github.com/user-attachments/assets/87974cdb-8c76-4f2f-b9dc-748a5fd817ce)
+
+<img width="602" alt="image" src="https://github.com/user-attachments/assets/6c784ce6-fef6-47dc-815d-8ee4d42b0192">
 
 
 
-### 使用Solidity内联汇编修改合约Owner地址
+代码实现请查看: PrivateLock.t.sol
+
+前端实现查看: https://github.com/zav1n/solidity-project-openspace/blob/v1.2.0/react_frontend/src/pages/Eth_getStorageAt.tsx
+
+
+### 题目2: 使用Solidity内联汇编修改合约Owner地址
 
 重新修改 MyWallet 合约的 transferOwernship 和 auth 逻辑，使用内联汇编方式来 set和get owner 地址。
 ```solidity
