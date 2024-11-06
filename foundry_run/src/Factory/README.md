@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/2d59aa7f-c0d3-4bbe-bf44-920b53b7a395)![image](https://github.com/user-attachments/assets/89727192-9c2e-49d2-becb-d2ad9f8c668f)### 题目: 实现⼀个可升级的工厂合约，工厂合约有两个方法：
+### 题目: 实现⼀个可升级的工厂合约，工厂合约有两个方法：
 
 1. deployInscription(string symbol, uint totalSupply, uint perMint) ，该方法用来创建 ERC20 token，（模拟铭文的 deploy）， symbol 表示 Token 的名称，totalSupply 表示可发行的数量，perMint 用来控制每次发行的数量，用于控制mintInscription函数每次发行的数量
 2. mintInscription(address tokenAddr) 用来发行 ERC20 token，每次调用一次，发行perMint指定的数量。
@@ -17,7 +17,7 @@
 透明代理模式旨在区分管理员和普通用户。它通过使用两个不同的地址来工作：一个用于管理员（可以升级合约），另一个用于普通用户（可以与合约的函数交互）。代理合约包括了区分管理员调用和普通用户调用的逻辑，防止在常规使用过程中意外执行管理功能。
 
 #### UUPS 代理 (universal upgradeable proxy standard) ERC-1822
-![image](https://github.com/user-attachments/assets/84f376e9-bd82-4fd0-a055-764dc68c42eb)
+<img width="100px" src="https://github.com/user-attachments/assets/84f376e9-bd82-4fd0-a055-764dc68c42eb">
 
 UUPS（通用可升级代理标准）代理是一种更简化和更节省 gas 的方法。在这种模式中，升级功能嵌入在逻辑合约本身中。这种设计减少了对额外'管理员'合约的需求，简化了结构。但是，它也要求逻辑合约在设计时考虑到可升级性，在其中嵌入必要的升级功能.
 
