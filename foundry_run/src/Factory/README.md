@@ -7,7 +7,6 @@
 - 第⼆版本，deployInscription 加入一个价格参数 price  deployInscription(string symbol, uint totalSupply, uint perMint, uint price) , price 表示发行每个 token 需要支付的费用，并且 第⼆版本使用最小代理的方式以更节约 gas 的方式来创建 ERC20 token，需要同时修改 mintInscription 的实现以便收取每次发行的费用。
 
 
-
 <img width="30%" src="https://github.com/user-attachments/assets/b929d628-b155-4f21-ba9b-ce4c0f8434cf">
 
 
