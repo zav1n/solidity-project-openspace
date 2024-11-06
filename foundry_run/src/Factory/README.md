@@ -15,6 +15,7 @@
 ### 升级方式
 
 #### 透明代理 (Transparent Prox) ERC-1967
+[TransparentProxy.sol](https://github.com/zav1n/solidity-project-openspace/blob/v1.2.0/foundry_run/src/Proxy/TransparentProxy.sol)
 <img width="70%" src="https://github.com/user-attachments/assets/d0f10246-4964-44e6-b9ea-13e8a9f91457">
 
 透明代理模式旨在区分管理员和普通用户。它通过使用两个不同的地址来工作：一个用于管理员（可以升级合约），另一个用于普通用户（可以与合约的函数交互）。代理合约包括了区分管理员调用和普通用户调用的逻辑，防止在常规使用过程中意外执行管理功能。
