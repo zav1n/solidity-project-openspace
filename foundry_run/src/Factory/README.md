@@ -16,20 +16,20 @@
 
 #### 透明代理 (Transparent Prox) ERC-1967
 
-[TransparentProxy.sol](https://github.com/zav1n/solidity-project-openspace/blob/v1.2.0/foundry_run/src/Proxy/TransparentProxy.sol)
-
 <img width="70%" src="https://github.com/user-attachments/assets/d0f10246-4964-44e6-b9ea-13e8a9f91457">
 
 透明代理模式旨在区分管理员和普通用户。它通过使用两个不同的地址来工作：一个用于管理员（可以升级合约），另一个用于普通用户（可以与合约的函数交互）。代理合约包括了区分管理员调用和普通用户调用的逻辑，防止在常规使用过程中意外执行管理功能。
 
+TransparentProxy Demo: [TransparentProxy.sol](https://github.com/zav1n/solidity-project-openspace/blob/v1.2.0/foundry_run/src/Proxy/TransparentProxy.sol)
+
 
 #### UUPS 代理 (universal upgradeable proxy standard) ERC-1822
-
-[UUPSProxy.sol](https://github.com/zav1n/solidity-project-openspace/blob/v1.2.0/foundry_run/src/Proxy/UUPSProxy.sol)
 
 <img width="70%" src="https://github.com/user-attachments/assets/84f376e9-bd82-4fd0-a055-764dc68c42eb">
 
 UUPS（通用可升级代理标准）代理是一种更简化和更节省 gas 的方法。在这种模式中，升级功能嵌入在逻辑合约本身中。这种设计减少了对额外'管理员'合约的需求，简化了结构。但是，它也要求逻辑合约在设计时考虑到可升级性，在其中嵌入必要的升级功能.
+
+UUPSProxy Demo: [UUPSProxy.sol](https://github.com/zav1n/solidity-project-openspace/blob/v1.2.0/foundry_run/src/Proxy/UUPSProxy.sol)
 
 #### 钻石代理 EIP-2535 Diamonds（钻石）
 <img width="70%" src="https://github.com/user-attachments/assets/64c1afff-26c1-439e-8b73-c14c37b33296">
