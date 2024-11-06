@@ -18,7 +18,7 @@ contract NFTMarketplace is IERC721Receiver, EIP712 {
 
     mapping(address => bool) public whitelist;
     // bytes32 private immutable _domainSeparator;
-    bytes32 private immutable PERMIT_TYPEHASH;
+    bytes32 private immutable PERMIT_BUY_HASH;
     mapping(address => uint256) public nonces;
 
     struct Listing {
@@ -53,8 +53,8 @@ contract NFTMarketplace is IERC721Receiver, EIP712 {
         //         address(this)
         //     )
         // );
-        PERMIT_TYPEHASH = keccak256(
-            abi.encodePacked("Permit(address buyer,address market,uint256 tokenId,uint256 deadline)")
+        PERMIT_BUY_HASH = keccak256(
+            abi.encodePacked("PermitBuy(address buyer,address market,uint256 tokenId,uint256 deadline)")
         );
     }
 
@@ -167,7 +167,7 @@ contract NFTMarketplace is IERC721Receiver, EIP712 {
         bytes32 r,
         bytes32 s
     ) internal view returns (bool) {
-        bytes32 structHash = getPermitTypeHash(
+        bytes32 structHash = getPermitBuyHash(
             msg.sender,
             address(this),
             tokenId,
@@ -181,7 +181,7 @@ contract NFTMarketplace is IERC721Receiver, EIP712 {
     }
 
 
-    function getPermitTypeHash(
+    function getPermitBuyHash(
         address buyer,
         address market,
         uint256 tokenId,
@@ -190,7 +190,7 @@ contract NFTMarketplace is IERC721Receiver, EIP712 {
     ) public view returns (bytes32) {
         bytes32 structHash = keccak256(
             abi.encode(
-                PERMIT_TYPEHASH,
+                PERMIT_BUY_HASH,
                 buyer,
                 market,
                 tokenId,

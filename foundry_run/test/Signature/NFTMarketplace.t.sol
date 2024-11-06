@@ -113,7 +113,7 @@ contract TokenBankNFTMarketTest is Test {
         require(isWhite, "Not on the whitelist");
         
         bytes32 doamin = nftMarket.getDomain();
-        bytes32 structHash = nftMarket.getPermitTypeHash(
+        bytes32 structHash = nftMarket.getPermitBuyHash(
             buyer,
             address(nftMarket),
             tokenId,
