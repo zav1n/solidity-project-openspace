@@ -5,6 +5,7 @@ path = ".env"
 src = "src"
 out = "out"
 libs = ["lib"]
+ast = true
 
 
 viaIR = true
