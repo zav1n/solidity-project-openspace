@@ -25,6 +25,7 @@ contract PrivateLock {
 
 ![image](https://github.com/user-attachments/assets/87974cdb-8c76-4f2f-b9dc-748a5fd817ce)
 
+<img width="602" alt="image" src="https://github.com/user-attachments/assets/6c784ce6-fef6-47dc-815d-8ee4d42b0192">
 
 
 
