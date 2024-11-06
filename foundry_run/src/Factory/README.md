@@ -1,4 +1,4 @@
- ### 题目: 实现⼀个可升级的工厂合约，工厂合约有两个方法：
+  ### 题目: 实现⼀个可升级的工厂合约，工厂合约有两个方法：
 
 1. deployInscription(string symbol, uint totalSupply, uint perMint) ，该方法用来创建 ERC20 token，（模拟铭文的 deploy）， symbol 表示 Token 的名称，totalSupply 表示可发行的数量，perMint 用来控制每次发行的数量，用于控制mintInscription函数每次发行的数量
 2. mintInscription(address tokenAddr) 用来发行 ERC20 token，每次调用一次，发行perMint指定的数量。
