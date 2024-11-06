@@ -1,0 +1,245 @@
+Ran 4 tests for test/Signature/NFTMarketplaceV2.t.sol:TokenBankNFTMarketTest
+[PASS] test_initialize() (gas: 29387)
+Traces:
+  [3141422] TokenBankNFTMarketTest::setUp()
+    ├─ [0] VM::addr(<pk>) [staticcall]
+    │   └─ ← [Return] 0x7c8999dC9a822c1f0Df42023113EDB4FDd543266
+    ├─ [879105] → new TokenPermit@0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: TokenBankNFTMarketTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: TokenBankNFTMarketTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 10000000000000000000000000000 [1e28])
+    │   └─ ← [Return] 3807 bytes of code
+    ├─ [798340] → new DecertERC721@0x2e234DAe75C793f67A35089C9d99245E1C58470b
+    │   └─ ← [Return] 3758 bytes of code
+    ├─ [1094126] → new NFTMarketplaceV2@0xF62849F9A0B5Bf2913b396098F7c7019b51A820a
+    │   └─ ← [Return] 5456 bytes of code
+    ├─ [118663] → new ERC1967Proxy@0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9
+    │   ├─ emit Upgraded(implementation: NFTMarketplaceV2: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a])
+    │   ├─ [67031] NFTMarketplaceV2::initialize(TokenPermit: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f], DecertERC721: [0x2e234DAe75C793f67A35089C9d99245E1C58470b], 0x7c8999dC9a822c1f0Df42023113EDB4FDd543266) [delegatecall]
+    │   │   └─ ← [Return] 
+    │   └─ ← [Return] 134 bytes of code
+    └─ ← [Return] 
+
+  [29387] TokenBankNFTMarketTest::test_initialize()
+    ├─ [7199] ERC1967Proxy::owner() [staticcall]
+    │   ├─ [2389] NFTMarketplaceV2::owner() [delegatecall]
+    │   │   └─ ← [Return] 0x7c8999dC9a822c1f0Df42023113EDB4FDd543266
+    │   └─ ← [Return] 0x7c8999dC9a822c1f0Df42023113EDB4FDd543266
+    ├─ [0] VM::assertEq(0x7c8999dC9a822c1f0Df42023113EDB4FDd543266, 0x7c8999dC9a822c1f0Df42023113EDB4FDd543266) [staticcall]
+    │   └─ ← [Return] 
+    ├─ [2633] ERC1967Proxy::paymentToken() [staticcall]
+    │   ├─ [2323] NFTMarketplaceV2::paymentToken() [delegatecall]
+    │   │   └─ ← [Return] TokenPermit: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f]
+    │   └─ ← [Return] TokenPermit: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f]
+    ├─ [0] VM::assertEq(TokenPermit: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f], TokenPermit: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f]) [staticcall]
+    │   └─ ← [Return] 
+    ├─ [2809] ERC1967Proxy::nft721() [staticcall]
+    │   ├─ [2499] NFTMarketplaceV2::nft721() [delegatecall]
+    │   │   └─ ← [Return] DecertERC721: [0x2e234DAe75C793f67A35089C9d99245E1C58470b]
+    │   └─ ← [Return] DecertERC721: [0x2e234DAe75C793f67A35089C9d99245E1C58470b]
+    ├─ [0] VM::assertEq(DecertERC721: [0x2e234DAe75C793f67A35089C9d99245E1C58470b], DecertERC721: [0x2e234DAe75C793f67A35089C9d99245E1C58470b]) [staticcall]
+    │   └─ ← [Return] 
+    └─ ← [Return] 
+
+[PASS] test_mint() (gas: 103089)
+Traces:
+  [3141422] TokenBankNFTMarketTest::setUp()
+    ├─ [0] VM::addr(<pk>) [staticcall]
+    │   └─ ← [Return] 0x7c8999dC9a822c1f0Df42023113EDB4FDd543266
+    ├─ [879105] → new TokenPermit@0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: TokenBankNFTMarketTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: TokenBankNFTMarketTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 10000000000000000000000000000 [1e28])
+    │   └─ ← [Return] 3807 bytes of code
+    ├─ [798340] → new DecertERC721@0x2e234DAe75C793f67A35089C9d99245E1C58470b
+    │   └─ ← [Return] 3758 bytes of code
+    ├─ [1094126] → new NFTMarketplaceV2@0xF62849F9A0B5Bf2913b396098F7c7019b51A820a
+    │   └─ ← [Return] 5456 bytes of code
+    ├─ [118663] → new ERC1967Proxy@0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9
+    │   ├─ emit Upgraded(implementation: NFTMarketplaceV2: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a])
+    │   ├─ [67031] NFTMarketplaceV2::initialize(TokenPermit: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f], DecertERC721: [0x2e234DAe75C793f67A35089C9d99245E1C58470b], 0x7c8999dC9a822c1f0Df42023113EDB4FDd543266) [delegatecall]
+    │   │   └─ ← [Return] 
+    │   └─ ← [Return] 134 bytes of code
+    └─ ← [Return] 
+
+  [103089] TokenBankNFTMarketTest::test_mint()
+    ├─ [93277] DecertERC721::mint(0x5B38Da6a701c568545dCfcB03FcB875f56beddC4, "abcd")
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: 0x5B38Da6a701c568545dCfcB03FcB875f56beddC4, tokenId: 1)
+    │   ├─ emit MetadataUpdate(_tokenId: 1)
+    │   └─ ← [Return] 1
+    ├─ [1559] DecertERC721::tokenURI(1) [staticcall]
+    │   └─ ← [Return] "abcd"
+    └─ ← [Return] 
+
+[PASS] test_permitBuy_success() (gas: 319722)
+Traces:
+  [3141422] TokenBankNFTMarketTest::setUp()
+    ├─ [0] VM::addr(<pk>) [staticcall]
+    │   └─ ← [Return] 0x7c8999dC9a822c1f0Df42023113EDB4FDd543266
+    ├─ [879105] → new TokenPermit@0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: TokenBankNFTMarketTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: TokenBankNFTMarketTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 10000000000000000000000000000 [1e28])
+    │   └─ ← [Return] 3807 bytes of code
+    ├─ [798340] → new DecertERC721@0x2e234DAe75C793f67A35089C9d99245E1C58470b
+    │   └─ ← [Return] 3758 bytes of code
+    ├─ [1094126] → new NFTMarketplaceV2@0xF62849F9A0B5Bf2913b396098F7c7019b51A820a
+    │   └─ ← [Return] 5456 bytes of code
+    ├─ [118663] → new ERC1967Proxy@0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9
+    │   ├─ emit Upgraded(implementation: NFTMarketplaceV2: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a])
+    │   ├─ [67031] NFTMarketplaceV2::initialize(TokenPermit: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f], DecertERC721: [0x2e234DAe75C793f67A35089C9d99245E1C58470b], 0x7c8999dC9a822c1f0Df42023113EDB4FDd543266) [delegatecall]
+    │   │   └─ ← [Return] 
+    │   └─ ← [Return] 134 bytes of code
+    └─ ← [Return] 
+
+  [399322] TokenBankNFTMarketTest::test_permitBuy_success()
+    ├─ [29775] TokenPermit::transfer(0x5B38Da6a701c568545dCfcB03FcB875f56beddC4, 99999000000000000000000 [9.999e22])
+    │   ├─ emit Transfer(from: TokenBankNFTMarketTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], to: 0x5B38Da6a701c568545dCfcB03FcB875f56beddC4, value: 99999000000000000000000 [9.999e22])
+    │   └─ ← [Return] true
+    ├─ [0] VM::addr(<pk>) [staticcall]
+    │   └─ ← [Return] 0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e
+    ├─ [93277] DecertERC721::mint(0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e, "abcd001")
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: 0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e, tokenId: 1)
+    │   ├─ emit MetadataUpdate(_tokenId: 1)
+    │   └─ ← [Return] 1
+    ├─ [0] VM::prank(0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e)
+    │   └─ ← [Return] 
+    ├─ [24525] DecertERC721::setApprovalForAll(ERC1967Proxy: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], true)
+    │   ├─ emit ApprovalForAll(owner: 0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e, operator: ERC1967Proxy: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], approved: true)
+    │   └─ ← [Stop] 
+    ├─ [5566] ERC1967Proxy::getDomain() [staticcall]
+    │   ├─ [756] NFTMarketplaceV2::getDomain() [delegatecall]
+    │   │   └─ ← [Return] 0xcf3a803dc48dd6014704fac1a28f8e7bae1c73a0b024161a3a35bb9dfbe2a28c
+    │   └─ ← [Return] 0xcf3a803dc48dd6014704fac1a28f8e7bae1c73a0b024161a3a35bb9dfbe2a28c
+    ├─ [0] VM::sign("<pk>", 0xb88f6bc1982dd3e3f7db802a23d012fe34ab7b769e30fd4ce5add8d99b396740) [staticcall]
+    │   └─ ← [Return] 27, 0x59f2a2626d01550483540c9764c78051fd6e4c8fb0e5cd5e9ca769347d715c12, 0x297ecc65f9efe9fc6dadf7e40064a0867ed3b9b9107cd1f28267411bb78f2306
+    ├─ [0] VM::prank(0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e)
+    │   └─ ← [Return] 
+    ├─ [85057] ERC1967Proxy::permitList(1, 1000000000000000000 [1e18], 0x59f2a2626d01550483540c9764c78051fd6e4c8fb0e5cd5e9ca769347d715c12297ecc65f9efe9fc6dadf7e40064a0867ed3b9b9107cd1f28267411bb78f23061b)
+    │   ├─ [84714] NFTMarketplaceV2::permitList(1, 1000000000000000000 [1e18], 0x59f2a2626d01550483540c9764c78051fd6e4c8fb0e5cd5e9ca769347d715c12297ecc65f9efe9fc6dadf7e40064a0867ed3b9b9107cd1f28267411bb78f23061b) [delegatecall]
+    │   │   ├─ [3000] PRECOMPILES::ecrecover(0xb88f6bc1982dd3e3f7db802a23d012fe34ab7b769e30fd4ce5add8d99b396740, 27, 40684541250049618811155666133466931218202282439636734435886094797943193295890, 18768860227606812529915008293635682512581888924284852655485309740735362179846) [staticcall]
+    │   │   │   └─ ← [Return] 0x0000000000000000000000001d96f2f6bef1202e4ce1ff6dad0c2cb002861d3e
+    │   │   ├─ [552] DecertERC721::ownerOf(1) [staticcall]
+    │   │   │   └─ ← [Return] 0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e
+    │   │   ├─ [29907] DecertERC721::safeTransferFrom(0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e, ERC1967Proxy: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 1)
+    │   │   │   ├─ emit Transfer(from: 0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e, to: ERC1967Proxy: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], tokenId: 1)
+    │   │   │   ├─ [797] ERC1967Proxy::onERC721Received(ERC1967Proxy: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e, 1, 0x)
+    │   │   │   │   ├─ [463] NFTMarketplaceV2::onERC721Received(ERC1967Proxy: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e, 1, 0x) [delegatecall]
+    │   │   │   │   │   └─ ← [Return] 0x150b7a02
+    │   │   │   │   └─ ← [Return] 0x150b7a02
+    │   │   │   └─ ← [Stop] 
+    │   │   ├─ emit Listed(seller: 0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e, tokenId: 1, price: 1000000000000000000 [1e18])
+    │   │   └─ ← [Return] 
+    │   └─ ← [Return] 
+    ├─ [1071] ERC1967Proxy::listings(1) [staticcall]
+    │   ├─ [755] NFTMarketplaceV2::listings(1) [delegatecall]
+    │   │   └─ ← [Return] 1000000000000000000 [1e18], 0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e
+    │   └─ ← [Return] 1000000000000000000 [1e18], 0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e
+    ├─ [0] VM::assertEq(0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e, 0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e) [staticcall]
+    │   └─ ← [Return] 
+    ├─ [0] VM::assertEq(1000000000000000000 [1e18], 1000000000000000000 [1e18]) [staticcall]
+    │   └─ ← [Return] 
+    ├─ [2788] ERC1967Proxy::nonces(0x5B38Da6a701c568545dCfcB03FcB875f56beddC4) [staticcall]
+    │   ├─ [2475] NFTMarketplaceV2::nonces(0x5B38Da6a701c568545dCfcB03FcB875f56beddC4) [delegatecall]
+    │   │   └─ ← [Return] 0
+    │   └─ ← [Return] 0
+    ├─ [0] VM::prank(0x7c8999dC9a822c1f0Df42023113EDB4FDd543266)
+    │   └─ ← [Return] 
+    ├─ [1066] ERC1967Proxy::getDomain() [staticcall]
+    │   ├─ [756] NFTMarketplaceV2::getDomain() [delegatecall]
+    │   │   └─ ← [Return] 0xcf3a803dc48dd6014704fac1a28f8e7bae1c73a0b024161a3a35bb9dfbe2a28c
+    │   └─ ← [Return] 0xcf3a803dc48dd6014704fac1a28f8e7bae1c73a0b024161a3a35bb9dfbe2a28c
+    ├─ [1796] ERC1967Proxy::getPermitBuyHash(0x5B38Da6a701c568545dCfcB03FcB875f56beddC4, ERC1967Proxy: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 1, 0, 86401 [8.64e4]) [staticcall]
+    │   ├─ [1462] NFTMarketplaceV2::getPermitBuyHash(0x5B38Da6a701c568545dCfcB03FcB875f56beddC4, ERC1967Proxy: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 1, 0, 86401 [8.64e4]) [delegatecall]
+    │   │   └─ ← [Return] 0x726570634c9f6f2a92e996c0d99fa6e8af671f64af54d9f613a8ed6e29febd76
+    │   └─ ← [Return] 0x726570634c9f6f2a92e996c0d99fa6e8af671f64af54d9f613a8ed6e29febd76
+    ├─ [0] VM::sign("<pk>", 0x4401d9432d855ed73dd388e11f43e18f1b8c9e947e081f7c63a44da675f44b62) [staticcall]
+    │   └─ ← [Return] 27, 0xc88bce34901fa40948e0bc78e899fe083acce809720c89ae5ff6e50f0715cb00, 0x7bedff27afefa1a1e8fcc71bb7313895f31f2bcf8f1ca9aab708421f230ce780
+    ├─ [0] VM::startPrank(0x5B38Da6a701c568545dCfcB03FcB875f56beddC4)
+    │   └─ ← [Return] 
+    ├─ [24377] TokenPermit::approve(ERC1967Proxy: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 99999000000000000000000 [9.999e22])
+    │   ├─ emit Approval(owner: 0x5B38Da6a701c568545dCfcB03FcB875f56beddC4, spender: ERC1967Proxy: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], value: 99999000000000000000000 [9.999e22])
+    │   └─ ← [Return] true
+    ├─ [89061] ERC1967Proxy::permitBuy(1, 0, 86401 [8.64e4], 27, 0xc88bce34901fa40948e0bc78e899fe083acce809720c89ae5ff6e50f0715cb00, 0x7bedff27afefa1a1e8fcc71bb7313895f31f2bcf8f1ca9aab708421f230ce780)
+    │   ├─ [88724] NFTMarketplaceV2::permitBuy(1, 0, 86401 [8.64e4], 27, 0xc88bce34901fa40948e0bc78e899fe083acce809720c89ae5ff6e50f0715cb00, 0x7bedff27afefa1a1e8fcc71bb7313895f31f2bcf8f1ca9aab708421f230ce780) [delegatecall]
+    │   │   ├─ [3000] PRECOMPILES::ecrecover(0x4401d9432d855ed73dd388e11f43e18f1b8c9e947e081f7c63a44da675f44b62, 27, 90709584635500124901161999913753864382667187060205513971330967999159792421632, 56054984145378824141319650641380554998728700971616106633804033090173035931520) [staticcall]
+    │   │   │   └─ ← [Return] 0x0000000000000000000000007c8999dc9a822c1f0df42023113edb4fdd543266
+    │   │   ├─ [585] TokenPermit::balanceOf(0x5B38Da6a701c568545dCfcB03FcB875f56beddC4) [staticcall]
+    │   │   │   └─ ← [Return] 99999000000000000000000 [9.999e22]
+    │   │   ├─ [25445] TokenPermit::transferFrom(0x5B38Da6a701c568545dCfcB03FcB875f56beddC4, 0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e, 1000000000000000000 [1e18])
+    │   │   │   ├─ emit Transfer(from: 0x5B38Da6a701c568545dCfcB03FcB875f56beddC4, to: 0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e, value: 1000000000000000000 [1e18])
+    │   │   │   └─ ← [Return] true
+    │   │   ├─ [28588] DecertERC721::safeTransferFrom(ERC1967Proxy: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 0x5B38Da6a701c568545dCfcB03FcB875f56beddC4, 1)
+    │   │   │   ├─ emit Transfer(from: ERC1967Proxy: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], to: 0x5B38Da6a701c568545dCfcB03FcB875f56beddC4, tokenId: 1)
+    │   │   │   └─ ← [Stop] 
+    │   │   ├─ emit Purchased(buyer: 0x5B38Da6a701c568545dCfcB03FcB875f56beddC4, tokenId: 1, price: 1000000000000000000 [1e18])
+    │   │   └─ ← [Return] 
+    │   └─ ← [Return] 
+    ├─ [0] VM::stopPrank()
+    │   └─ ← [Return] 
+    └─ ← [Return] 
+
+[PASS] test_permitList_success() (gas: 209078)
+Traces:
+  [3141422] TokenBankNFTMarketTest::setUp()
+    ├─ [0] VM::addr(<pk>) [staticcall]
+    │   └─ ← [Return] 0x7c8999dC9a822c1f0Df42023113EDB4FDd543266
+    ├─ [879105] → new TokenPermit@0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: TokenBankNFTMarketTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: TokenBankNFTMarketTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 10000000000000000000000000000 [1e28])
+    │   └─ ← [Return] 3807 bytes of code
+    ├─ [798340] → new DecertERC721@0x2e234DAe75C793f67A35089C9d99245E1C58470b
+    │   └─ ← [Return] 3758 bytes of code
+    ├─ [1094126] → new NFTMarketplaceV2@0xF62849F9A0B5Bf2913b396098F7c7019b51A820a
+    │   └─ ← [Return] 5456 bytes of code
+    ├─ [118663] → new ERC1967Proxy@0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9
+    │   ├─ emit Upgraded(implementation: NFTMarketplaceV2: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a])
+    │   ├─ [67031] NFTMarketplaceV2::initialize(TokenPermit: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f], DecertERC721: [0x2e234DAe75C793f67A35089C9d99245E1C58470b], 0x7c8999dC9a822c1f0Df42023113EDB4FDd543266) [delegatecall]
+    │   │   └─ ← [Return] 
+    │   └─ ← [Return] 134 bytes of code
+    └─ ← [Return] 
+
+  [228978] TokenBankNFTMarketTest::test_permitList_success()
+    ├─ [0] VM::addr(<pk>) [staticcall]
+    │   └─ ← [Return] 0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e
+    ├─ [93277] DecertERC721::mint(0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e, "abcd001")
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: 0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e, tokenId: 1)
+    │   ├─ emit MetadataUpdate(_tokenId: 1)
+    │   └─ ← [Return] 1
+    ├─ [0] VM::prank(0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e)
+    │   └─ ← [Return] 
+    ├─ [24525] DecertERC721::setApprovalForAll(ERC1967Proxy: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], true)
+    │   ├─ emit ApprovalForAll(owner: 0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e, operator: ERC1967Proxy: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], approved: true)
+    │   └─ ← [Stop] 
+    ├─ [5566] ERC1967Proxy::getDomain() [staticcall]
+    │   ├─ [756] NFTMarketplaceV2::getDomain() [delegatecall]
+    │   │   └─ ← [Return] 0xcf3a803dc48dd6014704fac1a28f8e7bae1c73a0b024161a3a35bb9dfbe2a28c
+    │   └─ ← [Return] 0xcf3a803dc48dd6014704fac1a28f8e7bae1c73a0b024161a3a35bb9dfbe2a28c
+    ├─ [0] VM::sign("<pk>", 0xb88f6bc1982dd3e3f7db802a23d012fe34ab7b769e30fd4ce5add8d99b396740) [staticcall]
+    │   └─ ← [Return] 27, 0x59f2a2626d01550483540c9764c78051fd6e4c8fb0e5cd5e9ca769347d715c12, 0x297ecc65f9efe9fc6dadf7e40064a0867ed3b9b9107cd1f28267411bb78f2306
+    ├─ [0] VM::prank(0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e)
+    │   └─ ← [Return] 
+    ├─ [85057] ERC1967Proxy::permitList(1, 1000000000000000000 [1e18], 0x59f2a2626d01550483540c9764c78051fd6e4c8fb0e5cd5e9ca769347d715c12297ecc65f9efe9fc6dadf7e40064a0867ed3b9b9107cd1f28267411bb78f23061b)
+    │   ├─ [84714] NFTMarketplaceV2::permitList(1, 1000000000000000000 [1e18], 0x59f2a2626d01550483540c9764c78051fd6e4c8fb0e5cd5e9ca769347d715c12297ecc65f9efe9fc6dadf7e40064a0867ed3b9b9107cd1f28267411bb78f23061b) [delegatecall]
+    │   │   ├─ [3000] PRECOMPILES::ecrecover(0xb88f6bc1982dd3e3f7db802a23d012fe34ab7b769e30fd4ce5add8d99b396740, 27, 40684541250049618811155666133466931218202282439636734435886094797943193295890, 18768860227606812529915008293635682512581888924284852655485309740735362179846) [staticcall]
+    │   │   │   └─ ← [Return] 0x0000000000000000000000001d96f2f6bef1202e4ce1ff6dad0c2cb002861d3e
+    │   │   ├─ [552] DecertERC721::ownerOf(1) [staticcall]
+    │   │   │   └─ ← [Return] 0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e
+    │   │   ├─ [29907] DecertERC721::safeTransferFrom(0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e, ERC1967Proxy: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 1)
+    │   │   │   ├─ emit Transfer(from: 0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e, to: ERC1967Proxy: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], tokenId: 1)
+    │   │   │   ├─ [797] ERC1967Proxy::onERC721Received(ERC1967Proxy: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e, 1, 0x)
+    │   │   │   │   ├─ [463] NFTMarketplaceV2::onERC721Received(ERC1967Proxy: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e, 1, 0x) [delegatecall]
+    │   │   │   │   │   └─ ← [Return] 0x150b7a02
+    │   │   │   │   └─ ← [Return] 0x150b7a02
+    │   │   │   └─ ← [Stop] 
+    │   │   ├─ emit Listed(seller: 0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e, tokenId: 1, price: 1000000000000000000 [1e18])
+    │   │   └─ ← [Return] 
+    │   └─ ← [Return] 
+    ├─ [1071] ERC1967Proxy::listings(1) [staticcall]
+    │   ├─ [755] NFTMarketplaceV2::listings(1) [delegatecall]
+    │   │   └─ ← [Return] 1000000000000000000 [1e18], 0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e
+    │   └─ ← [Return] 1000000000000000000 [1e18], 0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e
+    ├─ [0] VM::assertEq(0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e, 0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e) [staticcall]
+    │   └─ ← [Return] 
+    ├─ [0] VM::assertEq(1000000000000000000 [1e18], 1000000000000000000 [1e18]) [staticcall]
+    │   └─ ← [Return] 
+    └─ ← [Return] 1
+
+Suite result: ok. 4 passed; 0 failed; 0 skipped; finished in 9.72ms (7.68ms CPU time)

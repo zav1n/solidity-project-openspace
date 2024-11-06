@@ -9,12 +9,12 @@ import "./TokenPermitERC20.sol";
 
 
 
-contract NFTMarketplaceV2 is IERC721Receiver, EIP712 {
+contract NFTMarketplaceV2 is IERC721Receiver, EIP712("testNFT", "1") {
     using ECDSA for bytes32;
 
     TokenPermit public paymentToken;
     ERC721 public nft721;
-    address owner;
+    address public owner;
 
     mapping(address => bool) public whitelist;
     bytes32 private immutable PERMIT_BUY_HASH = keccak256(
@@ -39,16 +39,15 @@ contract NFTMarketplaceV2 is IERC721Receiver, EIP712 {
     // Event for purchase
     event Purchased(address indexed buyer, uint256 indexed tokenId, uint256 price);
 
-    constructor(
-        address _tokenAddress,
-        address _nft721, 
-        string memory name
-    ) EIP712 (name, "1") {
-        nft721 = ERC721(_nft721);
-        paymentToken = TokenPermit(_tokenAddress);
-        owner = msg.sender;
+    function initialize(
+      address _tokenAddress,
+      address _nft721,
+      address _owner
+    ) public {
+      paymentToken = TokenPermit(_tokenAddress);
+      nft721 = ERC721(_nft721);
+      owner = _owner;
     }
-
     // must to be signature and use permitList
     function _list(uint256 tokenId, uint256 price) internal {
         require(nft721.ownerOf(tokenId) == msg.sender, "You are not the owner");

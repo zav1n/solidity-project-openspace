@@ -1,0 +1,124 @@
+
+
+Script ran successfully.
+Gas used: 3047014
+
+== Return ==
+0: address 0xEe23C210209D06BDD5c6C7200A5Bd06A97CF2ED6
+
+## Setting up 1 EVM.
+
+==========================
+
+Chain 11155111
+
+Estimated gas price: 14.085177481 gwei
+
+Estimated total gas used for script: 4406803
+
+Estimated amount required: 0.062070602378803243 ETH
+
+==========================
+
+##### sepolia
+✅  [Success]Hash: 0x2e2fb9fde279501e93b41c0a0b9716b095ebe297de9b7bf35ce9b99b5734ac8b
+Contract Address: 0x516Bed8c9D758faFeD6fa11b271734F3606e8269
+Block: 7024606
+Paid: 0.009667938637328472 ETH (1253214 gas * 7.714515348 gwei)
+
+
+##### sepolia
+✅  [Success]Hash: 0x704df489ec33f956bef5edd65f424031d0715f65ea3af5c184f10e56c22738ed
+Contract Address: 0xe40f1d371675F97e411A782c75F55ca6C17ca710
+Block: 7024606
+Paid: 0.007901137188783468 ETH (1024191 gas * 7.714515348 gwei)
+
+
+##### sepolia
+✅  [Success]Hash: 0x941f6584c4d0c1404ee053e3549e44f002d5d19cc8c7ca537d60c216078aa3aa
+Contract Address: 0xA985136A8853dd8B16fA9d27542c82B7c32Ba441
+Block: 7024606
+Paid: 0.007146973882878336 ETH (926432 gas * 7.714515348 gwei)
+
+
+##### sepolia
+✅  [Success]Hash: 0x1bb876446b9dadde552d578bf7f1afcc8a63de78160864996e152e6f0e1024d9
+Contract Address: 0xEe23C210209D06BDD5c6C7200A5Bd06A97CF2ED6
+Block: 7024606
+Paid: 0.001444149558630252 ETH (187199 gas * 7.714515348 gwei)
+
+✅ Sequence #1 on sepolia | Total Paid: 0.026160199267620528 ETH (3391036 gas * avg 7.714515348 gwei)
+                                                                                                                                                            
+
+==========================
+
+ONCHAIN EXECUTION COMPLETE & SUCCESSFUL.
+##
+Start verification for (4) contracts
+Start verifying contract `0xe40f1d371675F97e411A782c75F55ca6C17ca710` deployed on sepolia
+
+Submitting verification for [src/Signature/TokenPermitERC20.sol:TokenPermit] 0xe40f1d371675F97e411A782c75F55ca6C17ca710.
+
+Submitting verification for [src/Signature/TokenPermitERC20.sol:TokenPermit] 0xe40f1d371675F97e411A782c75F55ca6C17ca710.
+
+Submitting verification for [src/Signature/TokenPermitERC20.sol:TokenPermit] 0xe40f1d371675F97e411A782c75F55ca6C17ca710.
+
+Submitting verification for [src/Signature/TokenPermitERC20.sol:TokenPermit] 0xe40f1d371675F97e411A782c75F55ca6C17ca710.
+
+Submitting verification for [src/Signature/TokenPermitERC20.sol:TokenPermit] 0xe40f1d371675F97e411A782c75F55ca6C17ca710.
+
+Submitting verification for [src/Signature/TokenPermitERC20.sol:TokenPermit] 0xe40f1d371675F97e411A782c75F55ca6C17ca710.
+Submitted contract for verification:
+        Response: `OK`
+        GUID: `ddkfwpft977jicnbanval77dfkqiublqe4ykjy291rsdkcfrrq`
+        URL: https://sepolia.etherscan.io/address/0xe40f1d371675f97e411a782c75f55ca6c17ca710
+Contract verification status:
+Response: `NOTOK`
+Details: `Pending in queue`
+Contract verification status:
+Response: `OK`
+Details: `Pass - Verified`
+Contract successfully verified
+Start verifying contract `0xA985136A8853dd8B16fA9d27542c82B7c32Ba441` deployed on sepolia
+
+Submitting verification for [src/DecertERC721.sol:DecertERC721] 0xA985136A8853dd8B16fA9d27542c82B7c32Ba441.
+Submitted contract for verification:
+        Response: `OK`
+        GUID: `bcnru6x8bcrxrzkhvfdctckmakeusu5yrd1z3n9tebxqj41ih4`
+        URL: https://sepolia.etherscan.io/address/0xa985136a8853dd8b16fa9d27542c82b7c32ba441
+Contract verification status:
+Response: `NOTOK`
+Details: `Pending in queue`
+Contract verification status:
+Response: `OK`
+Details: `Pass - Verified`
+Contract successfully verified
+Start verifying contract `0x516Bed8c9D758faFeD6fa11b271734F3606e8269` deployed on sepolia
+
+Submitting verification for [src/Signature/NFTMarketplaceV2.sol:NFTMarketplaceV2] 0x516Bed8c9D758faFeD6fa11b271734F3606e8269.
+Submitted contract for verification:
+        Response: `OK`
+        GUID: `grefpyrbgar3f77s6mzmfh6jnsfv46kvbpmfucf2hsya2bkqjr`
+        URL: https://sepolia.etherscan.io/address/0x516bed8c9d758fafed6fa11b271734f3606e8269
+Contract verification status:
+Response: `NOTOK`
+Details: `Pending in queue`
+Contract verification status:
+Response: `OK`
+Details: `Pass - Verified`
+Contract successfully verified
+Start verifying contract `0xEe23C210209D06BDD5c6C7200A5Bd06A97CF2ED6` deployed on sepolia
+
+Submitting verification for [lib/openzeppelin-contracts/contracts/proxy/ERC1967/ERC1967Proxy.sol:ERC1967Proxy] 0xEe23C210209D06BDD5c6C7200A5Bd06A97CF2ED6.
+Submitted contract for verification:
+        Response: `OK`
+        GUID: `yekvpyjjsvimybfvssjtywxx5eaxicxqmc86bfspmbkjjmumj6`
+        URL: https://sepolia.etherscan.io/address/0xee23c210209d06bdd5c6c7200a5bd06a97cf2ed6
+Contract verification status:
+Response: `NOTOK`
+Details: `Pending in queue`
+Contract verification status:
+Response: `OK`
+Details: `Pass - Verified`
+Contract successfully verified
+All (4) contracts were verified!

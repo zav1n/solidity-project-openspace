@@ -4,12 +4,14 @@ import "forge-std/Test.sol";
 import "@src/Signature/TokenPermitERC20.sol";
 import "@src/Signature/NFTMarketplaceV2.sol";
 import { DecertERC721 } from "@src/DecertERC721.sol";
+import "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 
 
 contract TokenBankNFTMarketTest is Test {
     TokenPermit token;
     NFTMarketplaceV2 nftMarket;
     DecertERC721 nft721;
+    ERC1967Proxy proxy;
     address deployer;
     uint256 private ownerPrivateKey;
     address alice = address(0x5B38Da6a701c568545dCfcB03FcB875f56beddC4);
@@ -18,16 +20,24 @@ contract TokenBankNFTMarketTest is Test {
     function setUp() public {
         ownerPrivateKey = uint256(keccak256(abi.encodePacked("owner")));
         deployer = vm.addr(ownerPrivateKey);
+        
 
-        vm.startPrank(deployer);
-            token = new TokenPermit("test", "TTT", (10 ** 10) * 10 ** 18);
-            nft721 = new DecertERC721("SeafoodMarket", "SFM");
-            nftMarket = new NFTMarketplaceV2(address(token), address(nft721), "testNFT");
-        vm.stopPrank();
-
-
+        token = new TokenPermit("test", "TTT", (10 ** 10) * 10 ** 18);
+        nft721 = new DecertERC721("SeafoodMarket", "SFM");
+        NFTMarketplaceV2 impl = new NFTMarketplaceV2();
+        
+        proxy = new ERC1967Proxy(
+          address(impl),
+          abi.encodeCall(impl.initialize, (address(token), address(nft721), deployer))
+        );
+        nftMarket = NFTMarketplaceV2(address(proxy));
     }
 
+    function test_initialize() public {
+        assertEq(nftMarket.owner(), deployer);
+        assertEq(address(nftMarket.paymentToken()), address(token));
+        assertEq(address(nftMarket.nft721()), address(nft721));
+    }
     function test_mint() public {
         uint256 tokenId = nft721.mint(alice, "abcd");
         nft721.tokenURI(tokenId); // 查找是否有此tokenId
@@ -65,7 +75,6 @@ contract TokenBankNFTMarketTest is Test {
 
     function test_permitBuy_success() public {
 
-        vm.prank(deployer);
         token.transfer(alice, 99999 ether);
 
         // bob(user) successfully listed, then proceed with the operation
