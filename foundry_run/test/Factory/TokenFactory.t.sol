@@ -53,14 +53,14 @@ contract TokenFactoryTest is Test {
     }
 
     // 测试 ERC1967Proxy 升级: 如果使用的是1967Proxy
-    // function test_Upgradeability() public {
-    //     Upgrades.upgradeProxy(
-    //         address(proxy),
-    //         "TokenFactory.sol",
-    //         "",
-    //         owner.addr
-    //     );
-    // }
+    function test_Upgradeability() public {
+      Upgrades.upgradeProxy(
+        address(proxy),
+        "TokenFactoryV2.sol",
+        "",
+        owner.addr
+      );
+    }
     function test_deployInscription() public {
       vm.prank(owner.addr);
       address tokenAddr1 = tokenFactory.deployInscription(name, symbol, totalSupply, perMint);

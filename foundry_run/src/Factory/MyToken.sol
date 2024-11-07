@@ -12,7 +12,7 @@ contract MyToken is
     ERC20Upgradeable,
     OwnableUpgradeable,
     ERC20PermitUpgradeable {
-        
+
     /**
      * initializes the token
      * @param initialOwner the initial owner
