@@ -39,6 +39,7 @@ contract TokenFactory is Initializable, OwnableUpgradeable, UUPSUpgradeable {
       require(bytes(symbol).length > 0, "Symbol cannot be empty");
       require(totalSupply > 0, "Total supply must be greater than zero");
       require(perMint > 0, "Per mint must be greater than zero");
+      require(address(myToken) != address(0), "token is zero address, execute initialize");
 
       // 使用 Clones 库创建最小代理合约实例
       address newToken = Clones.clone(address(myToken));
