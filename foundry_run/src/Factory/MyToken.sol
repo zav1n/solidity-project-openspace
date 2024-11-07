@@ -12,32 +12,26 @@ contract MyToken is
     ERC20Upgradeable,
     OwnableUpgradeable,
     ERC20PermitUpgradeable {
-    uint public totalSupplyToken;
-    uint public perMint;
-
+        
     /**
      * initializes the token
      * @param initialOwner the initial owner
+     * @param _name Token名称
      * @param _symbol symbol 表示 Token 的名称
-     * @param _totalSupply totalSupply 表示可发行的数量
-     * @param _perMint perMint 用来控制每次发行的数量
      *
      */
     function initialize(
         address initialOwner,
-        string memory _symbol,
-        uint _totalSupply,
-        uint _perMint
+        string memory _name,
+        string memory _symbol
     ) public initializer {
-        __ERC20_init("ERC20Token", _symbol);
+        __ERC20_init(_name, _symbol);
         __Ownable_init(initialOwner);
-        __ERC20Permit_init("ERC20Token");
-        perMint = _perMint;
-        totalSupplyToken = _totalSupply;
+        __ERC20Permit_init(_name);
     }
 
 
-    function mint(address to) public {
+    function mint(address to, uint perMint, uint totalSupplyToken) public {
         uint currentSupply = totalSupply(); // 获取当前代币供应量
         // 确保铸造后总供应量不超过最大供应量
         require(
