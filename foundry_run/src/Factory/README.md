@@ -65,4 +65,8 @@ Beacon 代理模式引入了一个中央的“信标（Beacon）”合约，所�
 
 [用 OpenZeppelin 和 Foundry 创建和部署可升级的 ERC20 代币](https://foresightnews.pro/article/detail/52568)
 
+[可升级的ERC20](https://learnblockchain.cn/article/7328)
+
 [可升级的工厂合约](https://learnblockchain.cn/article/8878)
+
+
