@@ -11,9 +11,9 @@
 <img width="50%" src="https://github.com/user-attachments/assets/15e5c93d-1215-46a7-8a51-62b6526b2958">
 
 解决办法: 
-- 先检查 - 再修改 - 最后交互（checks-effect-interaction）
-- 重⼊锁控制
-- 引⼊的新操作码，引⼊了⼀个新存储空间（瞬时存储），读写更便宜, 对该存储的修改仅在⼀个交易内有效
+    - 先检查 - 再修改 - 最后交互（checks-effect-interaction）
+    - 重⼊锁控制
+    - 引⼊的新操作码，引⼊了⼀个新存储空间（瞬时存储），读写更便宜, 对该存储的修改仅在⼀个交易内有效
 
 
 - Dos 拒绝服务
