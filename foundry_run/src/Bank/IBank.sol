@@ -13,7 +13,7 @@ interface IBank {
     function deposit() external payable;
     function withdraw() external;
 
-    function getBalance(address) external returns(uint256);
+    function balanceOf(address) external returns(uint256);
 
     function getTop() external view returns(Account[] memory);
 }

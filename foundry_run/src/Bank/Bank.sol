@@ -22,7 +22,7 @@ contract Bank is IBank {
         require(msg.value > 0, "amount can't zero");
         balances[msg.sender] += msg.value;
         emit Deposit(msg.sender, msg.value);
-        depositTopThree(msg.sender);
+        _depositTopThree(msg.sender);
     }
 
     // 提款
@@ -47,7 +47,7 @@ contract Bank is IBank {
     }
 
     // 记录充值前3名
-    function depositTopThree(address depositor) internal {
+    function _depositTopThree(address depositor) internal {
         bool exists = false;
         for(uint256 i = 0; i < topList.length; i++) {
             if(topList[i] == depositor) {
@@ -73,11 +73,6 @@ contract Bank is IBank {
         if(topList.length > 3) {
             topList.pop();
         }
-    }
-
-    // 获取地址余额
-    function getBalance(address addr) external view override returns(uint256) {
-        return balances[addr];
     }
 
     // 获取前3位的地址和余额

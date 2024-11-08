@@ -8,7 +8,7 @@
 
 ## You can use remixd cmd
 use local file to run remix in the web
-- sudo remixd -s /Users/zaven/code/management_foundry/foundry_run/src --remix-ide https://remix.ethereum.org
+- sudo remixd -s /Users/zaven/code/solidity-project-openspace/foundry_run/src --remix-ide https://remix.ethereum.org
 
 
 
