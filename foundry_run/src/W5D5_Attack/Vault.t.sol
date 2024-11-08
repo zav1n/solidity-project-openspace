@@ -24,6 +24,17 @@ contract VaultExploiter is Test {
 
     }
 
+    /**
+
+      要利用这个 Vault 合约并提取其中的所有资金，可以利用合约的 delegatecall 设计，
+      因为 Vault 合约会将传入的调用委托给 VaultLogic 合约，
+      这样调用者可以通过 delegatecall 来更改 Vault 合约的 owner 状态变量。
+
+      使用恶意 password 调用 VaultLogic.changeOwner 函数，并更改 Vault 的 owner。
+      调用 Vault.openWithdraw() 来启用提款权限。
+      调用 Vault.withdraw() 提取所有资金。
+    
+     */
     function testExploit() public {
       vm.deal(palyer, 1 ether);
       vm.startPrank(palyer);
