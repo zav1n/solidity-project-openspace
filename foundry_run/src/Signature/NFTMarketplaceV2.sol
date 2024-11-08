@@ -7,9 +7,10 @@ import "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "./TokenPermitERC20.sol";
 
-
-
-contract NFTMarketplaceV2 is IERC721Receiver, EIP712("testNFT", "1") {
+contract NFTMarketplaceV2 is 
+  IERC721Receiver,
+  EIP712("testNFT", "1")
+{
     using ECDSA for bytes32;
 
     TokenPermit public paymentToken;
@@ -21,7 +22,7 @@ contract NFTMarketplaceV2 is IERC721Receiver, EIP712("testNFT", "1") {
       abi.encodePacked("PermitBuy(address buyer,address market,uint256 tokenId,uint256 deadline)")
     );
     bytes32 private immutable PERMIT_LIST_HASH = keccak256(
-      abi.encodePacked("PermitList(uint256 tokenId, uint256 price)")
+      abi.encodePacked("PermitList(address seller,uint256 tokenId,uint256 price)")
     );
     mapping(address => uint256) public nonces;
 
@@ -39,6 +40,10 @@ contract NFTMarketplaceV2 is IERC721Receiver, EIP712("testNFT", "1") {
     // Event for purchase
     event Purchased(address indexed buyer, uint256 indexed tokenId, uint256 price);
 
+    modifier onlyOwner {
+      require(msg.sender == owner, "only owner can be execute");
+      _;
+    }
     function initialize(
       address _tokenAddress,
       address _nft721,
@@ -48,55 +53,57 @@ contract NFTMarketplaceV2 is IERC721Receiver, EIP712("testNFT", "1") {
       nft721 = ERC721(_nft721);
       owner = _owner;
     }
+
     // must to be signature and use permitList
-    function _list(uint256 tokenId, uint256 price) internal {
-        require(nft721.ownerOf(tokenId) == msg.sender, "You are not the owner");
+    function _list(address seller, uint256 tokenId, uint256 price) internal {
+        require(nft721.ownerOf(tokenId) == seller, "You are not the owner");
         require(price > 0, "Price must be greater than zero");
 
         // Transfer the NFT to the market contract (it will hold the NFT until it's sold)
-        nft721.safeTransferFrom(msg.sender, address(this), tokenId);
+        nft721.safeTransferFrom(seller, address(this), tokenId);
 
         // Create listing
         listings[tokenId] = Listing({
             price: price,
-            seller: msg.sender
+            seller: seller
         });
 
-        emit Listed(msg.sender, tokenId, price);
+        emit Listed(seller, tokenId, price);
     }
 
-    function permitList(uint256 tokenId, uint256 price, bytes memory signature) external {
+    function permitList(address seller, uint256 tokenId, uint256 price, bytes memory signature) public {
       bytes32 struchHash = keccak256(
         abi.encode(
           PERMIT_LIST_HASH,
+          seller,
           tokenId,
           price
         )
       );
       bytes32 sign = keccak256(abi.encodePacked("\x19\x01", getDomain(), struchHash));
-      require(msg.sender == ECDSA.recover(sign, signature), "list signature invalid");
-      _list(tokenId, price);
+      require(seller == ECDSA.recover(sign, signature), "list signature invalid");
+      _list(seller, tokenId, price);
     }
 
     // Buy the NFT by transferring the required token amount
     function buyNFT(address buyer,uint256 tokenId) public {
-        Listing memory listing = listings[tokenId];
-        require(listing.price > 0, "NFT is not listed");
-        require(buyer != listing.seller, "don't buy youself nft");
-        require(paymentToken.balanceOf(buyer) > listing.price, "not enought amount");
-        
-        // Transfer the required payment tokens from the buyer to the seller
-        // paymentToken.transferWithCallback(msg.sender, listing.price);
-        paymentToken.transferFrom(buyer, listing.seller, listing.price);
-        
+      Listing memory listing = listings[tokenId];
+      require(listing.price > 0, "NFT is not listed");
+      require(buyer != listing.seller, "don't buy youself nft");
+      require(paymentToken.balanceOf(buyer) > listing.price, "not enought amount");
+      
+      // Transfer the required payment tokens from the buyer to the seller
+      // paymentToken.transferWithCallback(msg.sender, listing.price);
+      paymentToken.transferFrom(buyer, listing.seller, listing.price);
+      
 
-        // Transfer the NFT to the buyer
-        nft721.safeTransferFrom(address(this), buyer, tokenId);
+      // Transfer the NFT to the buyer
+      nft721.safeTransferFrom(address(this), buyer, tokenId);
 
-        // Remove the listing
-        delete listings[tokenId];
+      // Remove the listing
+      delete listings[tokenId];
 
-        emit Purchased(buyer, tokenId, listing.price);
+      emit Purchased(buyer, tokenId, listing.price);
     }
 
     function permitBuy(
@@ -121,6 +128,12 @@ contract NFTMarketplaceV2 is IERC721Receiver, EIP712("testNFT", "1") {
       // increase buyer nonce, Prevent reuse
       nonces[msg.sender]++;
 
+      buyNFT(msg.sender, tokenId);
+    }
+
+    function permitListAndBuy(address seller, uint256 tokenId, uint256 price, bytes memory signature) public {
+      // require(!listings[tokenId], "already list");
+      permitList(seller, tokenId, price, signature);
       buyNFT(msg.sender, tokenId);
     }
 
