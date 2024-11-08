@@ -85,3 +85,8 @@ contract bank {
 ```
 
 解答: 合约有可能销毁或者挖矿节点可以换掉地址
+
+
+参考资料:
+
+(防止重入攻击的 4 种方法)[https://learnblockchain.cn/article/4118]
