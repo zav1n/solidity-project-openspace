@@ -57,7 +57,7 @@ function enter() public {
 
 3. 第三题
 
-```
+```solidity
 pragma solidity^0.8.0;
 contract bank {
   uint256 public totalDeposits;
