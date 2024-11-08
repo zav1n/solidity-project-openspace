@@ -37,9 +37,16 @@ function withdraw() public {
 }
 ```
 
-解答:
+解答: 这是一个重入攻击, msg.sender可能是合约, 会调到fallback或者receive, 里面可以再调用到deposits
+解决办法一:
+先判断deposits[msg.sender]是否有钱再转
 
-2. 第二题
+解决办法二:
+lock = 1
+_;
+lock = 0
+
+2. 第二题 
 
 ```solidity
 function enter() public {
@@ -53,7 +60,7 @@ function enter() public {
 }
 ```
 
-解答: 
+解答: 遍历问题
 
 3. 第三题
 
@@ -77,4 +84,4 @@ contract bank {
 
 ```
 
-解答: 
+解答: 合约有可能销毁或者挖矿节点可以换掉地址
