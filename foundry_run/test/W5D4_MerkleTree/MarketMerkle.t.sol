@@ -1,83 +1,104 @@
 pragma solidity ^0.8.0;
 
 import "forge-std/Test.sol";
-import { MarketMerkle, Multicall } from "@src/W5D4_MerkleTree/MarketMerkle.sol";
+import { MarketMerkle } from "@src/W5D4_MerkleTree/MarketMerkle.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Permit.sol";
-import "@src/Signature/TokenPermitERC20.sol";
+import "@src/W5D4_MerkleTree/PermitERC20.sol";
+
+import "@src/DecertERC721.sol";
+import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
 contract ValidMerkleTest is Test {
     MarketMerkle market;
     TokenPermit token;
-    Multicall multicall;
+    DecertERC721 nft721;
+
+    uint nftTokenId;
+    uint256 nftPrice = 1 ether;
+
     // 从merklet.ts文件获取的root
-    bytes32 merkleRoot = bytes32(0xeeefd63003e0e702cb41cd0043015a6e26ddb38073cc6ffeb0ba3e808ba8c097);
-    Account alice = makeAccount("alice");
-    address suzefeng = address(0x1234567890000000000000000000000987654321);
+    bytes32 merkleRoot = bytes32(0xcab8ba485d057231b1e8c65c05bcfe592c8f9bc592a8b6502d994c65c1ad58be);
+    uint256 alicePrivateKey = 0xABCDEF;
+    address alice = vm.addr(alicePrivateKey);
+    address seller = makeAddr("seller");
 
     function setUp() public {
         token = new TokenPermit("MTK", "MTK", 1_000_000_000 ether);
-        market = new MarketMerkle(token, merkleRoot);
-        multicall = new Multicall();
+        nft721 = new DecertERC721("SeafoodMarket", "SFM");
+        market = new MarketMerkle(address(token), address(nft721), merkleRoot);
 
-        token.transfer(alice.addr, 200000 ether);
+        token.transfer(alice, 2000 ether);
+        nftTokenId = nft721.mint(seller, "nft001abc");
+
+        vm.startPrank(seller);
+            nft721.setApprovalForAll(address(market), true);
+            market.list(nftTokenId, nftPrice);
+        vm.stopPrank();
     }
 
-    function test_verifyWhitelist() public {
+    function test_verifyMerklet() public {
         bytes32[] memory proof = new bytes32[](2);
-        proof[0] = bytes32(0x999bf57501565dbd2fdcea36efa2b9aef8340a8901e3459f4a4c926275d36cdb);
-        proof[1] = bytes32(0x4726e4102af77216b09ccd94f40daa10531c87c4d60bba7f3b3faf5ff9f19b3c);
-        bool result = market.verifyWhitelist(address(0x5B38Da6a701c568545dCfcB03FcB875f56beddC4), proof);
+        proof[0] = bytes32(0x00314e565e0574cb412563df634608d76f5c59d9f817e85966100ec1d48005c0);
+        proof[1] = bytes32(0x7e0eefeb2d8740528b8f598997a219669f0842302d3c573e9bb7262be3387e63);
+        bytes32 leaf = keccak256(abi.encodePacked(alice));
+        bool result =  MerkleProof.verify(proof, merkleRoot, leaf);
         assertTrue(result);
     }
 
     function test_multicall() public {
         bytes32[] memory proof = new bytes32[](2);
-        proof[0] = bytes32(0x999bf57501565dbd2fdcea36efa2b9aef8340a8901e3459f4a4c926275d36cdb);
-        proof[1] = bytes32(0x4726e4102af77216b09ccd94f40daa10531c87c4d60bba7f3b3faf5ff9f19b3c);
+        proof[0] = bytes32(0x00314e565e0574cb412563df634608d76f5c59d9f817e85966100ec1d48005c0);
+        proof[1] = bytes32(0x7e0eefeb2d8740528b8f598997a219669f0842302d3c573e9bb7262be3387e63);
 
-        uint256 nftTokenId = 1;
-        uint256 nftPrice = 10 ether;
         uint256 deadline = block.timestamp + 1 days;
-        uint256 nonce = token.nonces(alice.addr);
+        uint256 nonce = token.nonces(alice);
 
         bytes32 domainSeparator = token.getDomainSeparator();
         bytes32 hashStruct = keccak256(abi.encode(
             token.getPermitTypehash(),
-            alice.addr,
+            alice,
             address(market),
             nftPrice / 2,
             nonce,
             deadline
           ));
         bytes32 permitHash = keccak256(abi.encodePacked("\x19\x01", domainSeparator, hashStruct));
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(alice.key, permitHash);
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(alicePrivateKey, permitHash);
 
         // 验证permit前面是否正确并且成功
         // console.log("start valid signature");
-        // market.permitPrePay(alice.addr, address(market), nftPrice / 2, deadline, v, r, s);
+        // market.permitPrePay(alice, address(market), nftPrice / 2, deadline, v, r, s);
         // console.log("pass valid");
 
         // Prepare multicall data
-        bytes memory permitCallData = abi.encodeWithSignature(
-            "permitPrePay(address,address,uint256,uint256,uint8,bytes32,bytes32)",
-            alice.addr, address(market), nftPrice / 2 , deadline, v, r, s);
+        bytes memory permitCallData = abi.encodeWithSelector(
+            market.permitPrePay.selector,
+            alice,
+            address(market),
+            nftPrice / 2 ,
+            deadline,
+            v,
+            r,
+            s
+        );
 
-        bytes memory claimNFTCallData = abi.encodeWithSignature(
-            "claimNFT(uint256,uint256,bytes32[])",
-            nftTokenId, nftPrice, proof
+        bytes memory claimNFTCallData = abi.encodeWithSelector(
+            market.claimNFT.selector,
+            nftTokenId,
+            nftPrice,
+            proof
         );
 
         // Execute multicall
-        vm.prank(alice.addr);
-        multicall.execute(
-            address(market),
+        vm.prank(alice);
+        market.multicall(
             permitCallData,
             claimNFTCallData
         );
 
         // // Assertions
-        // assertEq(market.ownerOf(nftTokenId), alice.addr, "NFT not claimed correctly");
-        // assertEq(token.balanceOf(alice.addr), 100 * 10**18, "Incorrect token balance after purchase");
+        // assertEq(market.ownerOf(nftTokenId), alice, "NFT not claimed correctly");
+        // assertEq(token.balanceOf(alice), 100 * 10**18, "Incorrect token balance after purchase");
     }
 
     // 验证不可重入漏洞

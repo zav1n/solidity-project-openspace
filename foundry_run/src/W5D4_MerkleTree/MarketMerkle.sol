@@ -2,21 +2,49 @@
 pragma solidity ^0.8.0;
 
 import {Script, console2} from "forge-std/Script.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 
-contract MarketMerkle is ERC721 {
+contract MarketMerkle is IERC721Receiver {
     IERC20 public token;
+    IERC721 nft721;
+
     bytes32 public merkleRoot;
+
+    mapping(uint256 => Listing) public listings;
     mapping(address => bool) public hasClaimed;
 
-    constructor(IERC20 _token, bytes32 _merkleRoot) ERC721("AirdropNFT", "ADNFT") {
-        token = _token;
-        merkleRoot = _merkleRoot;
+    struct Listing {
+      address seller;
+      uint256 price;
     }
 
+    event NFTListed(uint256 indexed tokenId, address indexed seller, uint256 price);
+    // event NFTPurchased(uint256 indexed tokenId, address indexed buyer, uint256 price);
+
+    constructor(address _token, address _nft721, bytes32 _merkleRoot) {
+        token = IERC20(_token);
+        nft721 = IERC721(_nft721);
+        merkleRoot = _merkleRoot;
+    }
+    function list(uint256 tokenId, uint256 price ) public {
+
+        require(price > 0, "This NFT is not for sale.");
+
+        require(nft721.ownerOf(tokenId) == msg.sender,"Not the owner");
+
+        require(
+          nft721.isApprovedForAll(msg.sender, address(this)) || 
+          nft721.getApproved(tokenId) == address(this), 
+          "NFT not approved"
+        );
+
+        listings[tokenId] = Listing({seller: msg.sender,price: price});
+        emit NFTListed(tokenId, msg.sender, price);
+    }
     function permitPrePay(
         address owner,
         address spender,
@@ -26,17 +54,6 @@ contract MarketMerkle is ERC721 {
         bytes32 r,
         bytes32 s
     ) external {
-        console2.log("-----------------------------------------------------------------------");
-        console2.log("-----------------------------------------------------------------------");
-        console2.log("-----------------------------------------------------------------------");
-        console2.log("-----------------------------------------------------------------------");
-        console2.log(owner);
-        console2.log(spender);
-        console2.log(value);
-        console2.log(deadline);
-        console2.log(v);
-        console2.logBytes32(r);
-        console2.logBytes32(s);
         ERC20Permit(address(token)).permit(owner, spender, value, deadline, v, r, s);
     }
 
@@ -46,43 +63,37 @@ contract MarketMerkle is ERC721 {
         bytes32[] calldata proof
     ) external {
         require(!hasClaimed[msg.sender], "Already claimed");
-        require(verifyWhitelist(msg.sender, proof), "Invalid proof");
+        require(_verifyWhitelist(msg.sender, proof), "Invalid proof");
 
         uint256 discountedPrice = price / 2;
         require(token.transferFrom(msg.sender, address(this), discountedPrice), "Token transfer failed");
         
-        _safeMint(msg.sender, tokenId);
         hasClaimed[msg.sender] = true;
     }
 
-    // 应该是私有函数内部调用,
-    function verifyWhitelist(address account, bytes32[] memory proof) public view returns (bool) {
-        bytes32 leaf = keccak256(abi.encodePacked(account));
-        return MerkleProof.verify(proof, merkleRoot, leaf);
-    }
-}
-
-/**
-    !注意
-    1. 使用delegatecall时, 状态变量的位置必须保持一致
-        不同点在于运行的上下文，B call C，上下文为C；而B delegatecall C，上下文为B。
-        目前delegatecall最大的应用是代理合约和EIP-2535 Diamonds（钻石）。
- */
-contract Multicall {
-    IERC20 public token;
-    bytes32 public merkleRoot;
-    mapping(address => bool) public hasClaimed;
-    constructor() {}
-
-    function execute(
-        address target,
+    function multicall(
         bytes memory permitCallData,
         bytes memory claimNFTCallData
     ) external {
-        (bool permitSuccess, ) = target.delegatecall(permitCallData);
+        (bool permitSuccess, ) = address(this).delegatecall(permitCallData);
         require(permitSuccess, "Permit failed");
 
-        (bool claimSuccess, ) = target.delegatecall(claimNFTCallData);
+        (bool claimSuccess, ) = address(this).delegatecall(claimNFTCallData);
         require(claimSuccess, "ClaimNFT failed");
+    }
+
+    function _verifyWhitelist(address account, bytes32[] memory proof) internal view returns (bool) {
+        bytes32 leaf = keccak256(abi.encodePacked(account));
+        return MerkleProof.verify(proof, merkleRoot, leaf);
+    }
+
+    function onERC721Received(
+        address operator,
+        address from,
+        uint256 tokenId,
+        bytes calldata data
+    ) external override returns (bytes4) {
+        // This contract accepts all ERC721 tokens
+        return this.onERC721Received.selector;
     }
 }
