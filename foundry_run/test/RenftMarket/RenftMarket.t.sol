@@ -30,7 +30,7 @@ contract RenftMarketTest is Test {
     nft721.approve(address(market), 1);
   }
 
-  function test_borrow() public {
+  function test_order() public returns(RenftMarket.RentoutOrder memory, bytes memory, bytes32){
     RenftMarket.RentoutOrder memory order = RenftMarket.RentoutOrder({
       maker: alice,
       nft_ca: address(nft721),
@@ -42,17 +42,45 @@ contract RenftMarketTest is Test {
     });
     bytes32 hashStruct = market.getOrderHash(order);
 
-
     bytes32 permitHash = keccak256(abi.encodePacked("\x19\x01", market.getDomain(), hashStruct));
     (uint8 v, bytes32 r, bytes32 s) = vm.sign(alicePk, permitHash);
     bytes memory signature = bytes.concat(r, s, bytes1(v));
-    // bytes memory signature = abi.encodePacked(r, s, v)
-    
-    vm.prank(bob);
-    market.borrow{ value: 0.1 ether }(order, signature);
+    return(order, signature, hashStruct);
   }
 
+  function test_borrow() public {
+    // 一开始NFT是alice的
+    assertEq(nft721.ownerOf(1), alice);
+
+    (RenftMarket.RentoutOrder memory order, bytes memory signature, bytes32 orderHash) = test_order();
+
+    vm.expectEmit(true, true, true, true);
+    emit RenftMarket.BorrowNFT(bob, order.maker, orderHash, 0.1 ether);
+
+    // bob租alice的tokenId = 1 的nft
+    vm.prank(bob);
+    market.borrow{ value: 0.1 ether }(order, signature);
+
+
+    // 检查nft是否成功租(转)给bob
+    assertEq(nft721.ownerOf(1), bob);
+  }
+
+  
   function cancelOrder() public {
+    (RenftMarket.RentoutOrder memory rentoutOrder, bytes memory signature, bytes32 orderHash) = test_order();
+
+    // 30天后
+    vm.warp(block.timestamp + 30 days);
+    // skip(30 days);
+
+    vm.expectEmit(true, true, true, true);
+    emit RenftMarket.OrderCanceled(rentoutOrder.maker, orderHash);
+
+
+    vm.prank(bob);
+    market.cancelOrder(rentoutOrder, signature);
+
 
   }
 }
