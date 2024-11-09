@@ -1,5 +1,5 @@
-/ SPDX-License-Identifier: MIT
-pragma solidity 0.8.25;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
 // 编写一个 Bank 存款合约，实现功能：
 // 1.可以通过 Metamask 等钱包直接给 Bank 合约地址存款
