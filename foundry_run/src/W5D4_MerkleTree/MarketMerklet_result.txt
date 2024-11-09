@@ -1,0 +1,111 @@
+[PASS] test_multicall() (gas: 119883)
+Logs:
+  0x47C043311DB033833aCbE820187743432CfFDB71
+
+Traces:
+  [2717174] ValidMerkleTest::setUp()
+    ├─ [0] console::log(0x47C043311DB033833aCbE820187743432CfFDB71) [staticcall]
+    │   └─ ← [Stop] 
+    ├─ [964490] → new TokenPermit@0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: ValidMerkleTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: ValidMerkleTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 1000000000000000000000000000 [1e27])
+    │   └─ ← [Return] 4234 bytes of code
+    ├─ [801739] → new DecertERC721@0x2e234DAe75C793f67A35089C9d99245E1C58470b
+    │   └─ ← [Return] 3775 bytes of code
+    ├─ [571650] → new MarketMerkle@0xF62849F9A0B5Bf2913b396098F7c7019b51A820a
+    │   └─ ← [Return] 2522 bytes of code
+    ├─ [24984] TokenPermit::transfer(0x47C043311DB033833aCbE820187743432CfFDB71, 2000000000000000000000 [2e21])
+    │   ├─ emit Transfer(from: ValidMerkleTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], to: 0x47C043311DB033833aCbE820187743432CfFDB71, value: 2000000000000000000000 [2e21])
+    │   └─ ← [Return] true
+    ├─ [93334] DecertERC721::mint(seller: [0xDFa97bfe5d2b2E8169b194eAA78Fbb793346B174], "nft001abc")
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: seller: [0xDFa97bfe5d2b2E8169b194eAA78Fbb793346B174], tokenId: 1)
+    │   ├─ emit MetadataUpdate(_tokenId: 1)
+    │   └─ ← [Return] 1
+    ├─ [0] VM::startPrank(seller: [0xDFa97bfe5d2b2E8169b194eAA78Fbb793346B174])
+    │   └─ ← [Return] 
+    ├─ [24553] DecertERC721::setApprovalForAll(MarketMerkle: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], true)
+    │   ├─ emit ApprovalForAll(owner: seller: [0xDFa97bfe5d2b2E8169b194eAA78Fbb793346B174], operator: MarketMerkle: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], approved: true)
+    │   └─ ← [Return] 
+    ├─ [49048] MarketMerkle::list(1, 1000000000000000000 [1e18])
+    │   ├─ [575] DecertERC721::ownerOf(1) [staticcall]
+    │   │   └─ ← [Return] seller: [0xDFa97bfe5d2b2E8169b194eAA78Fbb793346B174]
+    │   ├─ [866] DecertERC721::isApprovedForAll(seller: [0xDFa97bfe5d2b2E8169b194eAA78Fbb793346B174], MarketMerkle: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a]) [staticcall]
+    │   │   └─ ← [Return] true
+    │   ├─ emit NFTListed(tokenId: 1, seller: seller: [0xDFa97bfe5d2b2E8169b194eAA78Fbb793346B174], price: 1000000000000000000 [1e18])
+    │   └─ ← [Return] 
+    ├─ [0] VM::stopPrank()
+    │   └─ ← [Return] 
+    └─ ← [Return] 
+
+  [139783] ValidMerkleTest::test_multicall()
+    ├─ [2648] TokenPermit::nonces(0x47C043311DB033833aCbE820187743432CfFDB71) [staticcall]
+    │   └─ ← [Return] 0
+    ├─ [664] TokenPermit::getDomainSeparator() [staticcall]
+    │   └─ ← [Return] 0x2ec2ae25a104c8278eaab0a87431cc426d21c02f18fbbffdf09b42b98a4fb077
+    ├─ [259] TokenPermit::getPermitTypehash() [staticcall]
+    │   └─ ← [Return] 0x6e71edae12b1b97f4d1f60370fef10105fa2faae0126114a169c64845d6126c9
+    ├─ [0] VM::sign("<pk>", 0x81f3dd961e034f3dac66ebe19f89a9549be934f808084963f18b47a17b7205a2) [staticcall]
+    │   └─ ← [Return] 28, 0x2ea4e3adc9b6154c06b01aa0b7f4eca9aa70a75dbabbb90ffe3c797470e3bae6, 0x1f1b9b425b77c5891cfb5263af4eec0da80251ed6fde7d299543eedac310907a
+    ├─ [0] VM::prank(0x47C043311DB033833aCbE820187743432CfFDB71)
+    │   └─ ← [Return] 
+    ├─ [110150] MarketMerkle::multicall(0x25f6994200000000000000000000000047c043311db033833acbe820187743432cffdb71000000000000000000000000f62849f9a0b5bf2913b396098f7c7019b51a820a00000000000000000000000000000000000000000000000006f05b59d3b200000000000000000000000000000000000000000000000000000000000000015181000000000000000000000000000000000000000000000000000000000000001c2ea4e3adc9b6154c06b01aa0b7f4eca9aa70a75dbabbb90ffe3c797470e3bae61f1b9b425b77c5891cfb5263af4eec0da80251ed6fde7d299543eedac310907a, 0xcb34dcae00000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000de0b6b3a76400000000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000000200314e565e0574cb412563df634608d76f5c59d9f817e85966100ec1d48005c07e0eefeb2d8740528b8f598997a219669f0842302d3c573e9bb7262be3387e63)
+    │   ├─ [51962] MarketMerkle::permitPrePay(0x47C043311DB033833aCbE820187743432CfFDB71, MarketMerkle: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], 500000000000000000 [5e17], 86401 [8.64e4], 28, 0x2ea4e3adc9b6154c06b01aa0b7f4eca9aa70a75dbabbb90ffe3c797470e3bae6, 0x1f1b9b425b77c5891cfb5263af4eec0da80251ed6fde7d299543eedac310907a) [delegatecall]
+    │   │   ├─ [48974] TokenPermit::permit(0x47C043311DB033833aCbE820187743432CfFDB71, MarketMerkle: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], 500000000000000000 [5e17], 86401 [8.64e4], 28, 0x2ea4e3adc9b6154c06b01aa0b7f4eca9aa70a75dbabbb90ffe3c797470e3bae6, 0x1f1b9b425b77c5891cfb5263af4eec0da80251ed6fde7d299543eedac310907a)
+    │   │   │   ├─ [3000] PRECOMPILES::ecrecover(0x81f3dd961e034f3dac66ebe19f89a9549be934f808084963f18b47a17b7205a2, 28, 21097725335188079075925762040745910577503613651308404912587481658379691342566, 14070474736503196715688373323558824280455055551165729572843725989310150774906) [staticcall]
+    │   │   │   │   └─ ← [Return] 0x00000000000000000000000047c043311db033833acbe820187743432cffdb71
+    │   │   │   ├─ emit Approval(owner: 0x47C043311DB033833aCbE820187743432CfFDB71, spender: MarketMerkle: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], value: 500000000000000000 [5e17])
+    │   │   │   └─ ← [Return] 
+    │   │   └─ ← [Return] 
+    │   ├─ [56696] MarketMerkle::claimNFT(1, 1000000000000000000 [1e18], [0x00314e565e0574cb412563df634608d76f5c59d9f817e85966100ec1d48005c0, 0x7e0eefeb2d8740528b8f598997a219669f0842302d3c573e9bb7262be3387e63]) [delegatecall]
+    │   │   ├─ [30238] TokenPermit::transferFrom(0x47C043311DB033833aCbE820187743432CfFDB71, MarketMerkle: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], 500000000000000000 [5e17])
+    │   │   │   ├─ emit Transfer(from: 0x47C043311DB033833aCbE820187743432CfFDB71, to: MarketMerkle: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], value: 500000000000000000 [5e17])
+    │   │   │   └─ ← [Return] true
+    │   │   └─ ← [Return] 
+    │   └─ ← [Return] 
+    └─ ← [Return] 
+
+[PASS] test_verifyMerklet() (gas: 8292)
+Logs:
+  0x47C043311DB033833aCbE820187743432CfFDB71
+
+Traces:
+  [2717174] ValidMerkleTest::setUp()
+    ├─ [0] console::log(0x47C043311DB033833aCbE820187743432CfFDB71) [staticcall]
+    │   └─ ← [Stop] 
+    ├─ [964490] → new TokenPermit@0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: ValidMerkleTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: ValidMerkleTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 1000000000000000000000000000 [1e27])
+    │   └─ ← [Return] 4234 bytes of code
+    ├─ [801739] → new DecertERC721@0x2e234DAe75C793f67A35089C9d99245E1C58470b
+    │   └─ ← [Return] 3775 bytes of code
+    ├─ [571650] → new MarketMerkle@0xF62849F9A0B5Bf2913b396098F7c7019b51A820a
+    │   └─ ← [Return] 2522 bytes of code
+    ├─ [24984] TokenPermit::transfer(0x47C043311DB033833aCbE820187743432CfFDB71, 2000000000000000000000 [2e21])
+    │   ├─ emit Transfer(from: ValidMerkleTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], to: 0x47C043311DB033833aCbE820187743432CfFDB71, value: 2000000000000000000000 [2e21])
+    │   └─ ← [Return] true
+    ├─ [93334] DecertERC721::mint(seller: [0xDFa97bfe5d2b2E8169b194eAA78Fbb793346B174], "nft001abc")
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: seller: [0xDFa97bfe5d2b2E8169b194eAA78Fbb793346B174], tokenId: 1)
+    │   ├─ emit MetadataUpdate(_tokenId: 1)
+    │   └─ ← [Return] 1
+    ├─ [0] VM::startPrank(seller: [0xDFa97bfe5d2b2E8169b194eAA78Fbb793346B174])
+    │   └─ ← [Return] 
+    ├─ [24553] DecertERC721::setApprovalForAll(MarketMerkle: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], true)
+    │   ├─ emit ApprovalForAll(owner: seller: [0xDFa97bfe5d2b2E8169b194eAA78Fbb793346B174], operator: MarketMerkle: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], approved: true)
+    │   └─ ← [Return] 
+    ├─ [49048] MarketMerkle::list(1, 1000000000000000000 [1e18])
+    │   ├─ [575] DecertERC721::ownerOf(1) [staticcall]
+    │   │   └─ ← [Return] seller: [0xDFa97bfe5d2b2E8169b194eAA78Fbb793346B174]
+    │   ├─ [866] DecertERC721::isApprovedForAll(seller: [0xDFa97bfe5d2b2E8169b194eAA78Fbb793346B174], MarketMerkle: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a]) [staticcall]
+    │   │   └─ ← [Return] true
+    │   ├─ emit NFTListed(tokenId: 1, seller: seller: [0xDFa97bfe5d2b2E8169b194eAA78Fbb793346B174], price: 1000000000000000000 [1e18])
+    │   └─ ← [Return] 
+    ├─ [0] VM::stopPrank()
+    │   └─ ← [Return] 
+    └─ ← [Return] 
+
+  [8292] ValidMerkleTest::test_verifyMerklet()
+    ├─ [0] VM::assertTrue(true) [staticcall]
+    │   └─ ← [Return] 
+    └─ ← [Return] 
+
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 2.89ms (1.03ms CPU time)
