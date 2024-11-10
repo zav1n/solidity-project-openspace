@@ -71,17 +71,24 @@ contract ValidMerkleTest is Test {
         // console.log("pass valid");
 
         // Prepare multicall data
-        bytes memory permitCallData = abi.encodeWithSelector(
-            market.permitPrePay.selector,
-            alice,
-            address(market),
-            nftPrice / 2 ,
-            deadline,
-            v,
-            r,
-            s
+        // bytes memory permitCallData = abi.encodeWithSelector(
+        //     market.permitPrePay.selector,
+        //     alice,
+        //     address(market),
+        //     nftPrice / 2 ,
+        //     deadline,
+        //     v,
+        //     r,
+        //     s
+        // );
+
+        // 使用encodeWithSignature
+        bytes memory permitCallData = abi.encodeWithSignature(
+            "permitPrePay(address,address,uint256,uint256,uint8,bytes32,bytes32)", 
+            alice, address(market), nftPrice / 2 , deadline, v, r, s
         );
 
+        // 使用encodeWithSelector
         bytes memory claimNFTCallData = abi.encodeWithSelector(
             market.claimNFT.selector,
             nftTokenId,
