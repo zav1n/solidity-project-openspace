@@ -49,6 +49,7 @@
 ### 合约⾃动化执⾏
 
 <img width="60%" src="https://github.com/user-attachments/assets/080b79f8-ff6e-45fc-ba37-ef94e5a84bdf">
+
 1. 如何实现周期任务/定时任务/条件任务？
 2. 编写后端程序，常驻后端执行
 3. 主要问题：单点故障、热钱包泄漏
