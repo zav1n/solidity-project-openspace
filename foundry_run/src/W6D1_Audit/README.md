@@ -1,3 +1,9 @@
+基于第三方服务实现合约自动化调用:
+先实现一个 Bank 合约， 用户可以通过 deposit() 存款， 然后使用 ChainLink Automation 、Gelato 或 OpenZepplin Defender Action 实现一个自动化任务， 自动化任务实现：当 Bank 合约的存款超过 x (可自定义数量)时， 转移一半的存款到指定的地址（如 Owner）。
+
+
+
+
 
 <img width="100%" src="https://github.com/user-attachments/assets/23bb1f74-56d0-4033-a020-0f1c6013d024">
 
@@ -39,3 +45,36 @@
   - OpenZepplin Defender  Monitor: https://defender.openzeppelin.com/v2/#/monitor
   - TenderlyAlerting：https://tenderly.co/alerting
   - Forta （Detection Bots）: https://app.forta.network/bots
+ 
+### 合约⾃动化执⾏
+
+<img width="60%" src="https://github.com/user-attachments/assets/080b79f8-ff6e-45fc-ba37-ef94e5a84bdf">
+1. 如何实现周期任务/定时任务/条件任务？
+2. 编写后端程序，常驻后端执行
+3. 主要问题：单点故障、热钱包泄漏
+
+### Chainlink Automation
+- 可靠和去中心化的自动化平台
+- 根据时间或条件自动执行合约函数
+- 若按条件，需编写 Upkeep 合约
+  - checkUpKeep()
+  - performUpKeep()
+- Gelato Func.ons
+  - 按时间执⾏,⽆需代码（automated-transaction）
+  - 按链上条件执⾏（Solidity Functions）， checker 合约
+  - 按链下条件执⾏（Typescript Functions）
+- OpenZepplin Defender Action
+  - 通过web3.js / ethers.js 来定制执⾏
+  - Relay:⽣成独⽴的账户
+  - AutoTask
+  - https://www.openzeppelin.com/defender
+ 
+### 事故分析
+- https://phalcon.blocksec.com/explorer
+  - https://www.youtube.com/watch?v=eXeirKUy1XA
+  - https://www.youtube.com/watch?v=uiqCrhIU0To
+- FoundryTransaction ReplayTrace/Debugger
+  - Cast run
+- Tenderly Debugger
+
+  
