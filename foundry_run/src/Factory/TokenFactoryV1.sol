@@ -14,9 +14,9 @@ contract TokenFactoryV1 is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     address[] public deployedTokens;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
-    constructor() {
-      _disableInitializers();
-    }
+    // constructor() {
+    //   _disableInitializers();
+    // }
 
     function initialize(address initialOwner) public initializer {
       __Ownable_init(initialOwner);
@@ -44,7 +44,7 @@ contract TokenFactoryV1 is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     ) public {
       myToken = new ERC20Token();
       myToken.initialize(msg.sender, symbol, totalSupply, perMint);
-      console.log("deployInscription newToken: ", address(myToken));
+      // console.log("deployInscription newToken: ", address(myToken));
 
       deployedTokens.push(address(myToken));
     }
