@@ -2,12 +2,16 @@
 import { Route, Routes } from "react-router-dom";
 import Eth_getStorageAt from "../src/pages/Eth_getStorageAt";
 import DepositWithPermit2 from "../src/pages/TokenBank/DepositWithPermit2";
+import Flashboot from "../src/pages/flashboot";
+import Keystore from "../src/pages/Keystore";
 
 const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<DepositWithPermit2 />} />
       <Route path="/Eth_getStorageAt" element={<Eth_getStorageAt />} />
+      <Route path="/Flashboot" element={<Flashboot />} />
+      <Route path="/Keystore" element={<Keystore />} />
     </Routes>
   );
 };

@@ -22,6 +22,12 @@ const App = () => {
             <li>
               <Link to="/Eth_getStorageAt">Eth_getStorageAt</Link>
             </li>
+            <li>
+              <Link to="/Flashboot">Flashboot</Link>
+            </li>
+            <li>
+              <Link to="/Keystore">Keystore</Link>
+            </li>
           </ul>
         </div>
         <div style={{ width: "100%", paddingLeft: "10px" }}>

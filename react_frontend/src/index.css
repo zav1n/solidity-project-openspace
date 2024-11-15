@@ -36,6 +36,10 @@ h1 {
 }
 ol, ul {
 	list-style: none;
+  padding: 0 10px;
+  li{
+    margin: 6px 0px;
+  }
 }
 button {
   color: #fff;
