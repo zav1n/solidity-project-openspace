@@ -78,12 +78,18 @@ const execute = async () => {
       }
     ];
 
+    // Helper function to convert BigNumbers to string
+    const bigNumberToString = (key: unknown, value: unknown) =>
+      typeof value === "bigint" ? value.toString() : value;
+
+    console.log(
+      "Bundle transactions:",
+      JSON.stringify(bundleTransactions, bigNumberToString, 2)
+    );
+
     // 发送捆绑
     const signedBundle = await flashbotsProvider.signBundle(bundleTransactions);
-    const response = await flashbotsProvider.sendRawBundle(
-      signedBundle,
-      0
-    );
+    const response = await flashbotsProvider.sendRawBundle(signedBundle, 0);
     if ("error" in response) {
       console.error("Error sending bundle:", response.error.message);
       return;
@@ -97,7 +103,6 @@ const execute = async () => {
       0
     );
     console.log("Bundle stats:", stats);
-
   } catch (error) {
     console.error("Error executing the transaction:", error);
   }
