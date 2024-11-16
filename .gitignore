@@ -4,3 +4,6 @@
 
 foundry_run/broadcast/*
 foundry_run/src/.states/*
+
+script_run/node_modules/
+script_run/.env

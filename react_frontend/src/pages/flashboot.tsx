@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { providers, ethers } from "ethers";
 import { FlashbotsBundleProvider } from "@flashbots/ethers-provider-bundle";
-import { ks66cd } from "../../utils/keystore";
+import { signer2 } from "../../utils/keystore";
 
 export default function FlashBoot() {
   const [pwd, setPwd] = useState("");
@@ -12,7 +12,7 @@ export default function FlashBoot() {
     try {
       // 获取私钥
       const w = await ethers.Wallet.fromEncryptedJson(
-        JSON.stringify(ks66cd),
+        JSON.stringify(signer2),
         pwd
       );
 
