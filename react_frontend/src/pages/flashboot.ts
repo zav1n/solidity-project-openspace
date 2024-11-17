@@ -21,11 +21,11 @@ const execute = async () => {
     // 获取私钥
     const w2 = await ethers.Wallet.fromEncryptedJson(
       JSON.stringify(signer2),
-      "Aa123456@"
+      "INPUT_PASSWORD"
     );
     const w3 = await ethers.Wallet.fromEncryptedJson(
       JSON.stringify(signer3),
-      "Aa123456@"
+      "INPUT_PASSWORD"
     );
 
     PRIVATE_KEY_OWNER = w2.privateKey;
