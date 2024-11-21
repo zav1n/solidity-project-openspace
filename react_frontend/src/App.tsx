@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import AppRoutes from "../router/index";
+import AppRoutes, { menu } from "../router/index";
 import AppKitProvider from "./AppKit/index";
 import HeaderWallet from "./pages/HeaderWallet";
 
@@ -16,18 +16,15 @@ const App = () => {
           }}
         >
           <ul>
-            <li>
-              <Link to="/">DepositWithPermit2</Link>
-            </li>
-            <li>
-              <Link to="/Eth_getStorageAt">Eth_getStorageAt</Link>
-            </li>
-            <li>
-              <Link to="/Flashboot">Flashboot</Link>
-            </li>
-            <li>
-              <Link to="/Keystore">Keystore</Link>
-            </li>
+            {menu.map((Component, index) => {
+              return (
+                <li key={index}>
+                  <Link to={index === 0 ? "/" : `/${Component.name}`}>
+                    {Component.name}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </div>
         <div style={{ width: "100%", paddingLeft: "10px" }}>

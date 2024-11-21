@@ -6,14 +6,14 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   server: {
     port: 8866,
-    proxy: {
-      "/relay": {
-        target: "https://relay-sepolia.flashbots.net",
-        changeOrigin: true,
-        secure: true,
-        rewrite: (path) => path.replace(/^\/relay/, "")
-      }
-    }
+    // proxy: {
+    //   "/relay": {
+    //     target: "https://relay-sepolia.flashbots.net",
+    //     changeOrigin: true,
+    //     secure: true,
+    //     rewrite: (path) => path.replace(/^\/relay/, "")
+    //   }
+    // }
   },
   plugins: [react()]
   // resolve: {
