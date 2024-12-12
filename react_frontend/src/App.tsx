@@ -18,7 +18,7 @@ const App = () => {
           <ul>
             {menu.map((Component, index) => {
               return (
-                <li key={index}>
+                <li key={Component.name}>
                   <Link to={index === 0 ? "/" : `/${Component.name}`}>
                     {Component.name}
                   </Link>
