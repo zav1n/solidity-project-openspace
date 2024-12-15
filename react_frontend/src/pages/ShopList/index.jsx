@@ -1,6 +1,8 @@
 import React from "react";
 import LifeCycle from "./LifeCycle";
 import Context from "./Context"
+import ExampleError from "./ErrorBoundary";
+import CallBackRef from "./CallBackRef";
 
 class SearchBar extends React.Component {
   constructor(props) {
@@ -156,7 +158,9 @@ class ShopList extends React.Component {
           handleCheckStock={this.handleCheckStock}
         />
         <List filterText={filterText} isStock={isStock} data={data} />
-        <Context ></Context>
+        {/* <Context ></Context> */}
+        {/* <ExampleError></ExampleError> */}
+        <CallBackRef></CallBackRef>
       </>
     );
   }
