@@ -1,5 +1,6 @@
 import React from "react";
 import LifeCycle from "./LifeCycle";
+import Context from "./Context"
 
 class SearchBar extends React.Component {
   constructor(props) {
@@ -47,9 +48,9 @@ class List extends React.Component {
       }
         if (item.category !== lastcategory) {
           lastcategory = item.category;
-          listRow.push(<ProductCategory category={item.category} />);
+          listRow.push(<ProductCategory key={item.category} category={item.category} />);
         }
-        listRow.push(<ProductRow {...item} />);
+        listRow.push(<ProductRow key={item.name} {...item} />);
     });
     return (
       <>
@@ -135,7 +136,6 @@ class ShopList extends React.Component {
   };
 
   handleCheckStock = (isStock) => {
-    console.warn(isStock);
     this.setState({
       isStock
     });
@@ -156,6 +156,7 @@ class ShopList extends React.Component {
           handleCheckStock={this.handleCheckStock}
         />
         <List filterText={filterText} isStock={isStock} data={data} />
+        <Context ></Context>
       </>
     );
   }

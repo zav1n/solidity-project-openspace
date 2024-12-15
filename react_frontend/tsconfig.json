@@ -15,5 +15,8 @@
     // 解决 .jsx文件无法快速跳转的问题
     "jsx": "preserve",
     "moduleResolution": "node",
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true
   },
 }
