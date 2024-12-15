@@ -3,6 +3,7 @@ import LifeCycle from "./LifeCycle";
 import Context from "./Context"
 import ExampleError from "./ErrorBoundary";
 import CallBackRef from "./CallBackRef";
+import { App as ForwardRef } from "./ForwardRef";
 
 class SearchBar extends React.Component {
   constructor(props) {
@@ -160,7 +161,8 @@ class ShopList extends React.Component {
         <List filterText={filterText} isStock={isStock} data={data} />
         {/* <Context ></Context> */}
         {/* <ExampleError></ExampleError> */}
-        <CallBackRef></CallBackRef>
+        {/* <CallBackRef></CallBackRef> */}
+        <ForwardRef></ForwardRef>
       </>
     );
   }
