@@ -5,7 +5,7 @@ import ExampleError from "./ErrorBoundary";
 import CallBackRef from "./CallBackRef";
 import { App as ForwardRef } from "./ForwardRef";
 import { App as FnforwardRef } from "./FnforwardRef";
-
+import { App as PubSub } from "./PubSub";
 class SearchBar extends React.Component {
   constructor(props) {
     super(props)
@@ -164,7 +164,8 @@ class ShopList extends React.Component {
         {/* <ExampleError></ExampleError> */}
         {/* <CallBackRef></CallBackRef> */}
         {/* <ForwardRef></ForwardRef> */}
-        <FnforwardRef></FnforwardRef>
+        {/* <FnforwardRef></FnforwardRef> */}
+        <PubSub></PubSub>
       </>
     );
   }

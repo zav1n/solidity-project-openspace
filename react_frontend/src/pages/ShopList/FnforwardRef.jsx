@@ -1,4 +1,4 @@
-import { Component, forwardRef, createRef } from "react";
+import { Component, forwardRef, createRef, Fragment } from "react";
 
 function LogProps(Component) {
   class LogPropsComponent extends Component {
@@ -44,7 +44,11 @@ class App extends Component {
     console.log("this.childRef", this.childRef);
   }
   render(){
-    return <Child ref={this.childRef}></Child>
+    return (
+      <Fragment>
+        <Child ref={this.childRef}></Child>
+      </Fragment>
+    );
   }
 }
 
