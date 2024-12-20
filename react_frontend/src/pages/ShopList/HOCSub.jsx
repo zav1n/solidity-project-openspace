@@ -1,8 +1,14 @@
 import { Component } from "react";
 
+
+/**
+ * 不要试图在HOC中修改组件原型
+ * 保证是一个纯函数: 职责要单一
+ * render函数不建议返回一个组件
+ */
 function withSubscript(WarpperComp, selectData) {
 
-  class App extends Component {
+  return class extends Component {
     constructor(props) {
       super(props);
   
@@ -31,6 +37,4 @@ function withSubscript(WarpperComp, selectData) {
       return <WarpperComp data={this.state.data} {...props}></WarpperComp>
     }
   }
-
-  return App;
 }
