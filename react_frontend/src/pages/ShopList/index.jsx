@@ -169,7 +169,7 @@ class ShopList extends React.Component {
         {/* <FnforwardRef></FnforwardRef> */}
         {/* <PubSub></PubSub> */}
         {/* <PubSubV2></PubSubV2> */}
-        <BlobPost></BlobPost>
+        {/* <BlobPost></BlobPost> */}
       </>
     );
   }
