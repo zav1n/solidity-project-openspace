@@ -15,10 +15,13 @@ export default defineConfig({
     //   }
     // }
   },
-  plugins: [react()]
+  plugins: [react()],
   // resolve: {
   //   alias: {
   //     "@": path.resolve(__dirname, "src")
   //   }
   // }
+  optimizeDeps: {
+    include: ['hoist-non-react-statics'], // 强制优化这个依赖
+  },
 });

@@ -83,5 +83,5 @@ class App extends Component {
   }
 }
 
-export { App };
+export { App, dataSource };
 

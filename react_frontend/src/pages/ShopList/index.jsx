@@ -8,6 +8,7 @@ import { App as FnforwardRef } from "./FnforwardRef";
 import { App as PubSub } from "./PubSub";
 import { App as PubSubV2 } from "./PubSubV2";
 import { App as BlobPost } from "./BlobPost";
+import { TestHOC, TestRef } from "./HOCSub";
 class SearchBar extends React.Component {
   constructor(props) {
     super(props)
@@ -170,6 +171,8 @@ class ShopList extends React.Component {
         {/* <PubSub></PubSub> */}
         {/* <PubSubV2></PubSubV2> */}
         {/* <BlobPost></BlobPost> */}
+        {/* <TestHOC></TestHOC> */}
+        {/* <TestRef></TestRef> */}
       </>
     );
   }
