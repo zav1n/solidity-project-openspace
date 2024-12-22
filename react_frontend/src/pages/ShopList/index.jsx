@@ -9,6 +9,7 @@ import { App as PubSub } from "./PubSub";
 import { App as PubSubV2 } from "./PubSubV2";
 import { App as BlobPost } from "./BlobPost";
 import { TestHOC, TestRef } from "./HOCSub";
+import { App as CreatePortal, Dialog } from "./CreatePortal";
 class SearchBar extends React.Component {
   constructor(props) {
     super(props)
@@ -173,6 +174,8 @@ class ShopList extends React.Component {
         {/* <BlobPost></BlobPost> */}
         {/* <TestHOC></TestHOC> */}
         {/* <TestRef></TestRef> */}
+        {/* <CreatePortal></CreatePortal> */}
+        <Dialog></Dialog>
       </>
     );
   }
