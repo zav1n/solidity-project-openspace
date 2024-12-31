@@ -8,3 +8,7 @@ foundry_run/src/.states/*
 script_run/node_modules/
 script_run/.env
 react_frontend/.env
+
+react-route/node_modules/*
+react-route/package.json
+react-route/pnpm-lock.yaml
