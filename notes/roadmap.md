@@ -15,7 +15,7 @@
 ## Web3+ETH 安全学习路线
 - https://github.com/tpiliposian/not-awesome-web3-security-roadmap
 
-   
+    
 ## Web3+Solana 学习路线
 First 6 months Learn:
 - 油管博主讲解solana的一个[视频](https://www.youtube.com/watch?v=h8ds-Q7wRrk)
