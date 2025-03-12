@@ -12,3 +12,4 @@ react_frontend/.env
 react-route/node_modules/*
 react-route/package.json
 react-route/pnpm-lock.yaml
+review/D2/node_modules
