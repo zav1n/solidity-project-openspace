@@ -1,0 +1,33 @@
+{
+  "name": "openspace-nft",
+  "version": "1.0.0",
+  "description": "OpenSpace NFT Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "hardhat test",
+    "compile": "hardhat compile",
+    "deploy": "hardhat run scripts/deploy.js --network localhost",
+    "node": "hardhat node"
+  },
+  "keywords": [
+    "nft",
+    "ethereum",
+    "solidity"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^3.0.8",
+    "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "@nomiclabs/hardhat-waffle": "^2.0.6",
+    "@openzeppelin/contracts": "^4.9.3",
+    "chai": "^5.2.0",
+    "ethereum-waffle": "^4.0.10",
+    "ethers": "^6.13.5",
+    "hardhat": "^2.22.19",
+    "hardhat-secure-accounts": "^1.0.5"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7"
+  }
+}

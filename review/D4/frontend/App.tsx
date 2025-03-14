@@ -7,6 +7,8 @@ import { injected } from 'wagmi/connectors';
 const ENSResolver = React.lazy(() => import('./src/components/ENSResolver'));
 const MultiChainWallet = React.lazy(() => import('./src/components/MultiChainWallet'));
 const SignatureVerifier = React.lazy(() => import('./src/components/SignatureVerifier'));
+const NFTMinter = React.lazy(() => import('./src/components/NFTMinter'));
+const NFTGallery = React.lazy(() => import('./src/components/NFTGallery'));
 
 const Home = () => {
   const { connectAsync, isPending } = useConnect();
@@ -28,6 +30,7 @@ const Home = () => {
         <li>ENS 域名解析</li>
         <li>多链钱包连接</li>
         <li>消息签名与验证</li>
+        <li>NFT铸造与展示</li>
       </ul>
       <p>请使用上方导航菜单访问各个功能页面。</p>
       
@@ -86,6 +89,12 @@ const App = () => {
               <li>
                 <Link to="/signature" style={{ textDecoration: 'none', color: '#0066cc' }}>签名验证</Link>
               </li>
+              <li>
+                <Link to="/mint" style={{ textDecoration: 'none', color: '#0066cc' }}>NFT铸造</Link>
+              </li>
+              <li>
+                <Link to="/gallery" style={{ textDecoration: 'none', color: '#0066cc' }}>我的NFT</Link>
+              </li>
             </ul>
           </nav>
         </header>
@@ -96,6 +105,8 @@ const App = () => {
               <Route path="/ens" element={<ENSResolver initialValue="" />} />
               <Route path="/wallet" element={<MultiChainWallet />} />
               <Route path="/signature" element={<SignatureVerifier />} />
+              <Route path="/mint" element={<NFTMinter />} />
+              <Route path="/gallery" element={<NFTGallery />} />
             </Routes>
           </React.Suspense>
         </main>
