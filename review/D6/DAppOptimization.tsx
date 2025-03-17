@@ -387,30 +387,315 @@ export const TransactionConfirmation: React.FC<{
     }
   };
   
+  return renderStatus();
+};
+
+/**
+ * DApp优化示例组件
+ * 整合所有优化演示
+ */
+export const DAppOptimizationExample: React.FC = () => {
+  const { library, account } = useWeb3React();
+  const [currentTxHash, setCurrentTxHash] = useState<string | null>(null);
+  
+  const handleSendTransaction = async () => {
+    if (!library || !account) return;
+    
+    try {
+      // 创建一个简单的ETH转账交易
+      const tx = await library.getSigner().sendTransaction({
+        to: ethers.constants.AddressZero, // 示例地址
+        value: ethers.utils.parseEther('0.001'),
+      });
+      
+      setCurrentTxHash(tx.hash);
+    } catch (error) {
+      console.error('Transaction error:', error);
+    }
+  };
+  
   return (
-    <div className="transaction-confirmation">
-      <h4>交易状态</h4>
-      {renderStatus()}
+    <div className="dapp-optimization-example">
+      <div className="transaction-confirmation">
+        <h4>交易状态演示</h4>
+        <button onClick={handleSendTransaction} className="action-button">
+          发送模拟交易
+        </button>
+        {currentTxHash && <TransactionConfirmation txHash={currentTxHash} />}
+      </div>
+      
+      <div className="section">
+        <h4>Meta交易演示 (无Gas交易)</h4>
+        <p>允许用户签名消息而非直接发送交易，由中继器支付Gas费用</p>
+        <MetaTransactionDemo />
+      </div>
+      
+      <div className="section">
+        <h4>批量交易优化</h4>
+        <p>将多个交易合并为一个，减少用户确认次数和总Gas成本</p>
+        <BatchTransactionDemo />
+      </div>
+      
+      <div className="section">
+        <h4>混合数据加载</h4>
+        <p>结合链上数据和链下索引数据，提高加载速度</p>
+        <HybridDataDemo />
+      </div>
+      
+      <div className="section">
+        <h4>智能缓存管理</h4>
+        <p>缓存链上数据并智能更新，减少RPC调用</p>
+        <SmartCacheDemo />
+      </div>
     </div>
   );
 };
 
 /**
- * 使用示例
+ * Meta交易演示组件
  */
-export const DAppOptimizationExample: React.FC = () => {
-  const [currentTxHash, setCurrentTxHash] = useState<string | null>(null);
+const MetaTransactionDemo: React.FC = () => {
+  const { account } = useWeb3React();
+  const [status, setStatus] = useState<string | null>(null);
   
-  // 模拟交易发送
-  const handleSendTransaction = () => {
-    // 这里通常会调用实际的合约方法
-    // 示例: 设置一个模拟的交易哈希
-    setCurrentTxHash('0x0000000000000000000000000000000000000000000000000000000000000000');
+  // 模拟合约地址和ABI
+  const contractAddress = '0x1234567890123456789012345678901234567890';
+  const abi = [
+    'function getNonce(address user) view returns (uint256)',
+    'function executeMetaTransaction(address userAddress, bytes functionSignature, bytes signature) returns (bytes)'
+  ];
+  
+  const { executeMetaTransaction } = useMetaTransactions(contractAddress, abi);
+  
+  const handleMetaTransaction = async () => {
+    if (!account) {
+      setStatus('请先连接钱包');
+      return;
+    }
+    
+    setStatus('准备元交易...');
+    
+    try {
+      // 模拟调用合约的transfer方法
+      const result = await executeMetaTransaction('transfer', [
+        '0x0000000000000000000000000000000000000001', // 接收地址
+        ethers.utils.parseEther('1.0') // 金额
+      ]);
+      
+      setStatus('元交易已发送，等待确认...');
+      console.log('Meta transaction result:', result);
+    } catch (error) {
+      console.error('Meta transaction error:', error);
+      setStatus('元交易失败');
+    }
   };
   
   return (
-    <div className="dapp-optimization-example">
-      <h3>DApp优化示例</h3>
+    <div className="meta-transaction-demo">
+      <button onClick={handleMetaTransaction} disabled={!account}>
+        执行元交易
+      </button>
+      {status && <p className="status">{status}</p>}
+    </div>
+  );
+};
+
+/**
+ * 批量交易演示组件
+ */
+const BatchTransactionDemo: React.FC = () => {
+  const { account } = useWeb3React();
+  const [results, setResults] = useState<any[] | null>(null);
+  const [loading, setLoading] = useState(false);
+  
+  // 模拟Multicall合约地址
+  const multicallAddress = '0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696';
+  
+  const { batchCalls } = useBatchTransactions(multicallAddress);
+  
+  const handleBatchCall = async () => {
+    if (!account) return;
+    
+    setLoading(true);
+    setResults(null);
+    
+    try {
+      // 模拟批量调用多个合约的balanceOf方法
+      const tokenAddresses = [
+        '0x6B175474E89094C44Da98b954EedeAC495271d0F', // DAI
+        '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', // USDC
+        '0xdAC17F958D2ee523a2206206994597C13D831ec7'  // USDT
+      ];
       
-      <div className="section">
-        <h4
+      const erc20Abi = [
+        'function balanceOf(address owner) view returns (uint256)'
+      ];
+      
+      const calls = tokenAddresses.map(address => ({
+        target: address,
+        abi: erc20Abi,
+        functionName: 'balanceOf',
+        args: [account]
+      }));
+      
+      const batchResults = await batchCalls(calls);
+      
+      // 格式化结果
+      const formattedResults = batchResults?.map((result, index) => ({
+        token: ['DAI', 'USDC', 'USDT'][index],
+        balance: ethers.utils.formatUnits(
+          result[0],
+          [18, 6, 6][index] // 对应的小数位数
+        )
+      }));
+      
+      setResults(formattedResults);
+    } catch (error) {
+      console.error('Batch call error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  return (
+    <div className="batch-transaction-demo">
+      <button onClick={handleBatchCall} disabled={!account || loading}>
+        {loading ? '加载中...' : '批量查询代币余额'}
+      </button>
+      
+      {results && (
+        <div className="results">
+          <h5>查询结果:</h5>
+          <ul>
+            {results.map((item, index) => (
+              <li key={index}>
+                {item.token}: {item.balance}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+};
+
+/**
+ * 混合数据加载演示组件
+ */
+const HybridDataDemo: React.FC = () => {
+  const [tokenId, setTokenId] = useState('');
+  
+  // 模拟合约地址、ABI和Subgraph URL
+  const contractAddress = '0x1234567890123456789012345678901234567890';
+  const abi = [
+    'function ownerOf(uint256 tokenId) view returns (address)',
+    'function tokenURI(uint256 tokenId) view returns (string)'
+  ];
+  const subgraphUrl = 'https://api.thegraph.com/subgraphs/name/example/nft-subgraph';
+  
+  const { loading, data, loadData } = useHybridDataLoader(contractAddress, abi, subgraphUrl);
+  
+  const handleLoadData = () => {
+    if (!tokenId) return;
+    loadData(tokenId);
+  };
+  
+  return (
+    <div className="hybrid-data-demo">
+      <div className="input-group">
+        <input
+          type="text"
+          value={tokenId}
+          onChange={(e) => setTokenId(e.target.value)}
+          placeholder="输入Token ID"
+        />
+        <button onClick={handleLoadData} disabled={!tokenId || loading}>
+          {loading ? '加载中...' : '加载数据'}
+        </button>
+      </div>
+      
+      {data && (
+        <div className="data-display">
+          <h5>混合数据结果:</h5>
+          <p><strong>所有者:</strong> {data.owner}</p>
+          <p><strong>Token URI:</strong> {data.tokenURI}</p>
+          <p><strong>创建时间:</strong> {new Date(data.createdAt * 1000).toLocaleString()}</p>
+          <p><strong>最后价格:</strong> {data.lastPrice ? ethers.utils.formatEther(data.lastPrice) + ' ETH' : 'N/A'}</p>
+          <p><strong>总转移次数:</strong> {data.totalTransfers}</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+/**
+ * 智能缓存演示组件
+ */
+const SmartCacheDemo: React.FC = () => {
+  const [address, setAddress] = useState('');
+  
+  // 模拟获取ETH余额的函数
+  const fetchBalance = useCallback(async () => {
+    if (!address) throw new Error('地址不能为空');
+    
+    // 模拟API调用延迟
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    // 返回模拟数据
+    return {
+      address,
+      balance: '10.5 ETH',
+      txCount: 42,
+      lastUpdated: new Date().toISOString()
+    };
+  }, [address]);
+  
+  const { 
+    data, 
+    loading, 
+    error, 
+    loadData, 
+    lastUpdated 
+  } = useSmartCache(`balance-${address}`, fetchBalance, 60000); // 1分钟缓存
+  
+  const handleLoadData = (force = false) => {
+    if (!address) return;
+    loadData(force);
+  };
+  
+  return (
+    <div className="smart-cache-demo">
+      <div className="input-group">
+        <input
+          type="text"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+          placeholder="输入ETH地址"
+        />
+        <button onClick={() => handleLoadData(false)} disabled={!address || loading}>
+          {loading ? '加载中...' : '加载数据'}
+        </button>
+        <button onClick={() => handleLoadData(true)} disabled={!address || loading}>
+          强制刷新
+        </button>
+      </div>
+      
+      {error && <p className="error">错误: {error.message}</p>}
+      
+      {data && (
+        <div className="data-display">
+          <h5>缓存数据结果:</h5>
+          <p><strong>地址:</strong> {data.address}</p>
+          <p><strong>余额:</strong> {data.balance}</p>
+          <p><strong>交易数:</strong> {data.txCount}</p>
+          <p><strong>数据时间:</strong> {data.lastUpdated}</p>
+          {lastUpdated > 0 && (
+            <p className="cache-info">
+              <small>缓存于 {new Date(lastUpdated).toLocaleTimeString()}</small>
+            </p>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
